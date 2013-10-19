@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="send" name="RackTemp">
+  <target name="send">
+    <scp todir="root:root@racktemp:/var/www/" trust="true">
+      <fileset dir="../racktemp">
+        <exclude name=".*"/>
+        <exclude name="**/.*/**"/>
+      </fileset>
+    </scp>
+  </target>
+</project>
