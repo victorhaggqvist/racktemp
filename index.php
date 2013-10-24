@@ -1,32 +1,47 @@
-<?php require_once('head.inc'); ?>
+<?php
+require_once('lib/config.inc');
+require_once(LIB_PATH.'/head.inc'); 
+
+use Snilius\Util\Bootstrap\Alert;
+use Snilius\SensorController;
+use Snilius\Sensor;
+use Snilius\SensorStats;
+?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
   <head>
-    <?php require_once('header.inc'); ?>
+    <?php require_once(TEMPLATES_PATH.'/header.php'); ?>
   </head>
   <body>
-    <?php require_once('menu.php'); ?>
+    <?php require_once(TEMPLATES_PATH.'/menu.php'); ?>
     <div class="container" id="wrapper">
+      
+      <?php 
+      $sensCont = new SensorController();
+      $sensors = $sensCont->getSensors();
+      if (!$sensCont->checkSensors($sensors)) {
+        echo Alert::danger("Something is messed up with your sensors, you better check on them!");
+      }
+      
+      ?>
+      
       <div class="row">
         <div class="col-sm-4">
           <h2>Current Temperature</h2>
-          
+          <div class="pull-right" id="clock" style="font-size: 2em;"></div>
           <p>
           <?php
-          $pdo= new PDOHelper($db_conf);
-          $sensors=$pdo->justQuery('SELECT * FROM sensors')[2];
-          
           if(count($sensors)<1)
             echo "There are no sensors yet";
           
-          foreach($sensors as $sn){
-            $ret=$pdo->justQuery("SELECT temp,timestamp FROM sensor_".$sn['name']." ORDER BY timestamp DESC LIMIT 1");
+          foreach($sensors as $snensor){
+            $sn = new Sensor($snensor['name']);
+            $current=$sn->getTemp();
             
-            $date=(date('Y-m-d',strtotime($ret[2][0]['timestamp']))==date('Y-m-d'))?date('H:i',strtotime($ret[2][0]['timestamp'])):date('Y-m-d H:i',strtotime($ret[2][0]['timestamp']));
-            echo '<strong>'.$sn['name'].'</strong>: '.mktemp($ret[2][0]['temp']).'C <span class="text-muted">('.$date.')</span><br>';
+            echo '<strong>'.$sn->name.'</strong>: '.$current['temp'].'C <span class="text-muted">('.$current['timestamp'].')</span><br>';
           }
           ?>
           </p>
@@ -39,17 +54,13 @@
             <?php
             
             foreach($sensors as $sn){
-              $sqlMin="SELECT temp,timestamp  FROM `sensor_".$sn['name']."` WHERE `timestamp` >= CURDATE() ORDER BY `temp` ASC LIMIT 1";
-              $sqlMax="SELECT temp,timestamp  FROM `sensor_".$sn['name']."` WHERE `timestamp` >= CURDATE() ORDER BY `temp` DESC LIMIT 1";
-              
-              $min=$pdo->justQuery($sqlMin);
-              $max=$pdo->justQuery($sqlMax);
+              $stat = new SensorStats($sn['name']);
+              $min=$stat->getStat('min');
+              $max=$stat->getStat('max');
               
               echo '<strong>'.$sn['name'].'</strong><br>';
-              //if($min[1]>0)
-                echo 'Min: '.mktemp($min[2][0]['temp']).'C <span class="text-muted">('.date('H:i',strtotime($min[2][0]['timestamp'])).')</span><br>';
-              //if($max[1]>0)
-                echo 'Max: '.mktemp($max[2][0]['temp']).'C <span class="text-muted">('.date('H:i',strtotime($max[2][0]['timestamp'])).')</span><br>';
+              echo 'Min: '.mktemp($min['temp']).'C <span class="text-muted">('.date('H:i',strtotime($min['timestamp'])).')</span><br>';
+              echo 'Max: '.mktemp($max['temp']).'C <span class="text-muted">('.date('H:i',strtotime($max['timestamp'])).')</span><br>';
             }
             ?>
           </p>
@@ -59,31 +70,52 @@
           <h2>Weekly Stats</h2>
           <p>
           <?php
-          $startday=date("Y-m-d",strtotime("last Monday"));
-          $sqlAvg="SELECT AVG(temp) AS temp,timestamp FROM `sensor_".$sn['name']."` WHERE `timestamp` >='".$startday."'";
-          $sqlMin="SELECT temp,timestamp  FROM `sensor_".$sn['name']."` WHERE `timestamp` >= '".$startday."' ORDER BY `temp` ASC LIMIT 1";
-          $sqlMax="SELECT temp,timestamp  FROM `sensor_".$sn['name']."` WHERE `timestamp` >= '".$startday."' ORDER BY `temp` DESC LIMIT 1";
+          $stat = new SensorStats('top');
+          $avg=$stat->getWeeklyStat('avg');
+          $min=$stat->getWeeklyStat('min');
+          $max=$stat->getWeeklyStat('max');
           
-          $avg=$pdo->justQuery($sqlAvg);
-          $max=$pdo->justQuery($sqlMax);
-          $min=$pdo->justQuery($sqlMin);
-          
-          echo '<strong>Min</strong>: '.mktemp($min[2][0]['temp']).'C<br>';
-          echo '<strong>Max</strong>: '.mktemp($max[2][0]['temp']).'C<br>';
-          echo '<strong>Avg</strong>: '.mktemp($avg[2][0]['temp']).'C';
+          echo '<strong>Min</strong>: '.mktemp($min['temp']).'C<br>';
+          echo '<strong>Max</strong>: '.mktemp($max['temp']).'C<br>';
+          echo '<strong>Avg</strong>: '.mktemp($avg['temp']).'C';
           ?>
           </p>
           <a href="#" class="btn btn-default">More &raquo;</a>
         </div>
       </div>
-      <?php require_once('footer.inc'); ?>
+      <?php require_once(TEMPLATES_PATH.'/footer.php'); ?>
     </div>
   </body>
   <script>
   $('#refresh').click(function(){
-    $.get( "lib/readtemp.php", function( data ) {
+    $.get( "lib/readtempcron.php", function( data ) {
       console.log(data);
+      window.location="../";
     });
   });
+
+  $(clock);
+
+  function clock(){
+    console.log("ss");
+    var today=new Date();
+    var h=today.getHours();
+    var m=today.getMinutes();
+    
+    h=checkTime(h);
+    m=checkTime(m);
+    
+    document.getElementById('clock').innerHTML=h+":"+m;
+
+    setTimeout(function(){
+      clock()
+      },500);
+  
+    function checkTime(i){
+      if (i<10)
+        i="0" + i;
+      return i;
+    }
+  }
   </script>
 </html>

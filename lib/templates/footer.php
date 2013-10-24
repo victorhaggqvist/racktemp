@@ -3,8 +3,8 @@
 <script>window.jQuery || document.write('<script src="lib/js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
 <script src="lib/js/plugins.js"></script>
 <script src="lib/js/main.js"></script>
+
 <?php 
-$s=new Settings();
 if($s->getValue('use-cdn')==1){
   echo '<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>';
 }else{

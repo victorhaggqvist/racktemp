@@ -1,4 +1,8 @@
 <?php
+namespace Snilius\Util;
+
+use \PDO;
+
 /*
  * A helper class for PDO
  * */

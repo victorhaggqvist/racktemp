@@ -1,5 +1,8 @@
 <?php
 
+namespace Snilius;
+
+use Snilius\Util\PDOHelper;
 
 class Auth{
   public $username;

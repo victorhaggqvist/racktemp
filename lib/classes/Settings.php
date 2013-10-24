@@ -1,5 +1,9 @@
 <?php
 
+namespace Snilius\Util;
+
+use Snilius\Util\PDOHelper;
+
 /**
  * Settings
  */
@@ -23,13 +27,12 @@ class Settings {
 	
 	public function setValue($key,$value)
 	{
-		$sql="INSERT INTO settings (key,value) VALUES (:key,:value)
+		$sql="INSERT INTO settings (`key`,`value`) VALUES (:key,:value)
           ON DUPLICATE KEY UPDATE
-          key = VALUES(:key),
-          value = VALUES(:value)";
+          `key` = :key,
+          `value` = :value";
 		$args=array('key'=>$key,'value'=>$value);
-		$res=$this->pdo->prepQuery($sql,$args);
-		print_r($res);
+		$res=$this->pdo->prepExec($sql,$args);
 		if($res[0]==1){
 		  return true;
 		}else 

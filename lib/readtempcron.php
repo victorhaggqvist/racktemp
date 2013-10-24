@@ -1,10 +1,10 @@
 <?php
 require_once 'dbconfig.php';
-require_once 'pdohelper.php';
-require_once 'settings.php';
+require_once 'classes/PDOHelper.php';
+require_once 'classes/Settings.php';
 
-$pdo = new PDOHelper($db_conf);
-$s = new Settings();
+$pdo = new \Snilius\Util\PDOHelper($db_conf);
+$s = new \Snilius\Util\Settings();
 
 $sensors=$pdo->justQuery('SELECT * FROM sensors')[2];
 
