@@ -1,6 +1,8 @@
 <?php
 namespace Snilius;
 
+require_once('SensorTools.php');
+
 use Snilius\Util\PDOHelper;
 
 /**
@@ -8,7 +10,7 @@ use Snilius\Util\PDOHelper;
  * @author victor
  *
  */
-class SensorStats {
+class SensorStats extends SensorTools{
   private $name;
   private $pdo;
   
@@ -21,7 +23,7 @@ class SensorStats {
    * Get todays stats from sensor
    * @param string $stat is either max, min or avg
    */
-  public function getStat($stat) {
+  public function getDailyStat($stat,$format=true) {
     $sql='';
     switch ($stat) {
       case 'max':
@@ -31,18 +33,22 @@ class SensorStats {
         $sql="SELECT temp,timestamp  FROM `sensor_".$this->name."` WHERE `timestamp` >= CURDATE() ORDER BY `temp` ASC LIMIT 1";
         break;
       case 'avg':
-        //@todo implement avg
+        $sql="SELECT AVG(temp) AS temp  FROM `sensor_".$this->name."` WHERE `timestamp` >= CURDATE() ORDER BY `temp` ASC LIMIT 1";
         break;
     }
     
-    return $this->pdo->justQuery($sql)[2][0];
+    $ret=$this->pdo->justQuery($sql)[2][0];
+    if ($format)
+      $ret['temp']=$this->mktemp($ret['temp']);
+    
+    return $ret;
   }
   
   /**
    * 
    * @param string $stat is either max, min or avg
    */
-  public function getWeeklyStat($stat) {
+  public function getWeeklyStat($stat,$format=true) {
     $startday=date("Y-m-d",strtotime("last Monday"));
     $sql='';
     
@@ -57,8 +63,12 @@ class SensorStats {
         $sql="SELECT AVG(temp) AS temp,timestamp FROM `sensor_".$this->name."` WHERE `timestamp` >='".$startday."'";
         break;
     }
-  
-    return $this->pdo->justQuery($sql)[2][0];
+    
+    $ret=$this->pdo->justQuery($sql)[2][0];
+    if ($format)
+      $ret['temp']=$this->mktemp($ret['temp']);
+    
+    return $ret;
   }
 }
 ?>

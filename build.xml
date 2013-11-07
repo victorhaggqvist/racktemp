@@ -3,6 +3,9 @@
   <target name="send">
     <scp todir="root:root@racktemp:/var/www/" trust="true">
       <fileset dir="../racktemp">
+        <modified>
+          <param name="cache.cachefile" value="localdev.cache"/>
+        </modified>
         <exclude name=".*"/>
         <exclude name="**/.*/**"/>
       </fileset>

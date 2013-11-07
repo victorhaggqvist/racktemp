@@ -2,12 +2,14 @@
 
 namespace Snilius;
 
+require_once('SensorTools.php');
+
 use Snilius\Util\PDOHelper;
 
 /*
  * Sensor
  */
-class Sensor{
+class Sensor extends SensorTools{
   public $name;  //alias/label for sensor
   public $id;    //DB id
   public $uid;   //hardware identifyer
@@ -31,35 +33,13 @@ class Sensor{
     
     $ret=$res[2][0];
     if ($mktemp)
-      $ret['temp']=mktemp($ret['temp'],$unit);
+      $ret['temp']=$this->mktemp($ret['temp'],$unit);
     
     if (date('Y-m-d',strtotime($ret['timestamp']))==date('Y-m-d'))//if today
       $ret['timestamp']=date('H:i',strtotime($ret['timestamp']));
     else
       $ret['timestamp']=date('Y-m-d H:i',strtotime($ret[2][0]['timestamp']));
     
-    return $ret;
-  }
-  
-  /**
-   * Format temp
-   * @param unknown $input
-   * @param string $unit
-   * @param string $round
-   * @return number
-   */
-  public function mktemp($input,$unit="c",$round=true){
-    $ret=0;
-    $temp=substr($input,0,2).'.'.substr($input,2,5);
-    if($unit=="f"){
-      $t=$temp*1.8+32;
-      $temp=$t;
-    }
-   
-    if($round)
-      $ret=round($temp,1);
-    else
-      $ret=$temp;
     return $ret;
   }
   
@@ -83,6 +63,37 @@ class Sensor{
     $sql="SELECT COUNT(temp) AS count FROM sensor_".$this->name;
     $res=$this->pdo->justQuery($sql);
     return $res[2][0]['count'];
+  }
+  
+  public function getTempList($span,$format=true) {
+    $time='';
+    switch ($span) {
+      case 'hour':
+        $time=strtotime("last Hour");
+        break;
+      case 'day':
+        $time=strtotime("last Day");
+        break;
+      case 'week':
+        $time=strtotime("last Week");
+        break;
+      default:
+        trigger_error("dow", E_USER_ERROR);
+        break;
+    }
+    
+    $sql="SELECT * FROM  `sensor_".$this->name."` WHERE  `timestamp` >=  '".date("Y-m-d H:i:s",strtotime("last Hour"))."'";
+    $res=$this->pdo->justQuery($sql);
+    if ($res[1]<1)
+      return null;
+    $temps=array();
+    foreach ($res[2] as $row) {
+      if ($format)
+        $temps[]=$this->mktemp($row['temp']);
+      else 
+        $temps[]=$row['temp'];
+    }
+    return $temps;
   }
 }
 ?>

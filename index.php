@@ -41,12 +41,14 @@ use Snilius\SensorStats;
             $sn = new Sensor($snensor['name']);
             $current=$sn->getTemp();
             
-            echo '<strong>'.$sn->name.'</strong>: '.$current['temp'].'C <span class="text-muted">('.$current['timestamp'].')</span><br>';
+            echo '<strong>'.ucfirst($sn->name).'</strong>: '.$current['temp'].'C <span class="text-muted">('.$current['timestamp'].')</span><br>';
           }
           ?>
           </p>
           
-          <a href="#" class="btn btn-default" id="refresh"><span class="glyphicon glyphicon-refresh"></span> Refresh</a>
+          <!-- <a href="#" class="btn btn-default" id="refresh"><span class="glyphicon glyphicon-refresh"></span> Refresh</a>-->
+          <strong>Past Hour</strong><br>
+          <img src="img.current.php" style="min-width:290px; min-height: 170px; border: 1px #000 solid; background: 136px url('img/chartload.gif') no-repeat;" />
         </div>
         <div class="col-sm-4">
           <h2>Daily Stats</h2>
@@ -55,12 +57,14 @@ use Snilius\SensorStats;
             
             foreach($sensors as $sn){
               $stat = new SensorStats($sn['name']);
-              $min=$stat->getStat('min');
-              $max=$stat->getStat('max');
+              $min=$stat->getDailyStat('min');
+              $max=$stat->getDailyStat('max');
+              $avg=$stat->getDailyStat('avg');
               
-              echo '<strong>'.$sn['name'].'</strong><br>';
-              echo 'Min: '.mktemp($min['temp']).'C <span class="text-muted">('.date('H:i',strtotime($min['timestamp'])).')</span><br>';
-              echo 'Max: '.mktemp($max['temp']).'C <span class="text-muted">('.date('H:i',strtotime($max['timestamp'])).')</span><br>';
+              echo '<strong>'.ucfirst($sn['name']).'</strong><br>';
+              echo 'Min: '.$min['temp'].'C <span class="text-muted">('.date('H:i',strtotime($min['timestamp'])).')</span><br>';
+              echo 'Max: '.$max['temp'].'C <span class="text-muted">('.date('H:i',strtotime($max['timestamp'])).')</span><br>';
+              echo 'Avg: '.$avg['temp'].'C<br>';
             }
             ?>
           </p>
@@ -70,14 +74,32 @@ use Snilius\SensorStats;
           <h2>Weekly Stats</h2>
           <p>
           <?php
-          $stat = new SensorStats('top');
-          $avg=$stat->getWeeklyStat('avg');
-          $min=$stat->getWeeklyStat('min');
-          $max=$stat->getWeeklyStat('max');
           
-          echo '<strong>Min</strong>: '.mktemp($min['temp']).'C<br>';
-          echo '<strong>Max</strong>: '.mktemp($max['temp']).'C<br>';
-          echo '<strong>Avg</strong>: '.mktemp($avg['temp']).'C';
+          $min = '';
+          $max = '';
+          $avg = 0;
+          
+          $i = 0;
+          foreach ($sensors as $sn) {
+            $stat = new SensorStats($sn['name']);
+            if ($i==0) {
+              $min = $stat->getWeeklyStat('min')['temp'];
+              $max = $stat->getWeeklyStat('max')['temp'];
+            }else{
+              if($stat->getWeeklyStat('min')['temp']<$min)
+                $min = $stat->getWeeklyStat('min')['temp'];
+              if($stat->getWeeklyStat('max')['temp']<$max)
+                $max = $stat->getWeeklyStat('max')['temp'];
+            }
+            $avg+= $stat->getWeeklyStat('avg')['temp'];
+            $i++;
+          }
+          
+          $avg=$avg/$i;
+          
+          echo '<strong>Min</strong>: '.$min.'C<br>';
+          echo '<strong>Max</strong>: '.$max.'C<br>';
+          echo '<strong>Avg</strong>: '.$avg.'C';
           ?>
           </p>
           <a href="#" class="btn btn-default">More &raquo;</a>
@@ -97,7 +119,6 @@ use Snilius\SensorStats;
   $(clock);
 
   function clock(){
-    console.log("ss");
     var today=new Date();
     var h=today.getHours();
     var m=today.getMinutes();

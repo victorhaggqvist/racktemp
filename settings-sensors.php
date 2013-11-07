@@ -3,9 +3,12 @@ use Snilius\SensorController;
 use Snilius\Util\Bootstrap\Alert;
 ?>
 <form class="form-horizontal" role="form" action="settings.php" method="post">
-  <p>Find you sensor by typing the folowing in the terminal <code>$ ls /sys/bus/w1/devices/</code>. The directory you a looking for will start with <code>28-****</code></p>
-  
   <?php 
+  if($s->getValue('manual-sensor-add')==1){
+  
+  echo '<p>Find you sensor by typing the folowing in the terminal <code>$ ls /sys/bus/w1/devices/</code>. The directory you a looking for will start with <code>28-****</code></p>';
+  }
+  
   $sensorController = new SensorController();
   
   $attached = $sensorController->getAttachedSensors();
