@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="lib/css/normalize.css">
 <link rel="stylesheet" href="lib/css/main.css">
+<script data-main="js/main" src="js/require.js"></script>
 <script src="lib/js/vendor/modernizr-2.6.2.min.js"></script>
 
 <?php 

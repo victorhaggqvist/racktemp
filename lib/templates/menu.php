@@ -1,3 +1,4 @@
+<!-- TODO Change to slide in menu -->
 <header class="navbar navbar-inverse navbar-fixed-top" role="banner">
   <div class="container">
     <nav role="navigation">
