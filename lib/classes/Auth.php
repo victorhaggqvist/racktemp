@@ -63,10 +63,12 @@ class Auth{
    * Logout current user
    */
   public function logout() {
-      $key=$_COOKIE['key'];
-      setcookie('key','');
-      $sql="DELETE FROM session WHERE `token`=?";
-      $this->pdo->prepExec($sql, array($key));
+      $key=@$_COOKIE['key'];
+      if ($key!='') { //don't bather if no cookie :P
+        setcookie('key','');
+        $sql="DELETE FROM session WHERE `token`=?";
+        $this->pdo->prepExec($sql, array($key));
+      }
   }
   
   /* This function is copied from http://www.raspberrypi.org/phpBB3/viewtopic.php?f=36&t=10992
