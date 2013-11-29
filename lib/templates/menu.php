@@ -18,7 +18,7 @@
         <ul class="nav navbar-nav">
           <li <?php echo (strpos($_SERVER['PHP_SELF'],'index')!==false)?'class="active"':''; ?>><a href="../">Dashboard</a>
           <li <?php echo (strpos($_SERVER['PHP_SELF'],'detailed')!==false)?'class="active"':''; ?>><a href="detailed.php">Detailed</a>
-          <li <?php echo (strpos($_SERVER['PHP_SELF'],'stats')!==false)?'class="active"':''; ?>><a href="stats.php">Statistics</a>
+          <!-- <li <?php echo (strpos($_SERVER['PHP_SELF'],'stats')!==false)?'class="active"':''; ?>><a href="stats.php">Statistics</a>-->
           <li <?php echo (strpos($_SERVER['PHP_SELF'],'settings')!==false)?'class="active"':''; ?>><a href="../settings.php">Settings</a>
         </ul>
         
