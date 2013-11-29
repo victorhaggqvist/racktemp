@@ -59,14 +59,14 @@ class Auth{
       return false;
   }
   
-    /**
+    /**#
    * Logout current user
    */
   public function logout() {
       $key=@$_COOKIE['key'];
       if ($key!='') { //don't bather if no cookie :P
         setcookie('key','');
-        $sql="DELETE FROM session WHERE `token`=?";
+        $sql="DELETE FROM sessions WHERE `token`=?";
         $this->pdo->prepExec($sql, array($key));
       }
   }
