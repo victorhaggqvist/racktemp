@@ -44,6 +44,7 @@ if(isset($_POST['sm'])){
         <input type="text" class="form-control" placeholder="Username" name="us" autofocus=""autocomplete="off">
         <input type="password" class="form-control" placeholder="Password" name="pw">
         <button class="btn btn-lg btn-primary btn-block" type="submit" name="sm">Sign in</button>
+        <div style="margin-top: 10px; color: #666;">RackTemp &copy; Snilius</div>
       </form>
       <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
       <script>window.jQuery || document.write('<script src="lib/js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
