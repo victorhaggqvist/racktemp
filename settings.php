@@ -44,4 +44,12 @@ require_once(LIB_PATH.'/head.inc');
     </div><!-- /.container -->
   </body>
   <script src="lib/js/loadtotab.js"></script>
+  <script>
+  $('.dropData').click(function(){
+    console.log($(this));
+    var sensor = $(this).attr('data-sensor');
+    $('#drop-sensor').html(sensor);
+    $('#dropName').val(sensor);
+  });
+  </script>
 </html>
