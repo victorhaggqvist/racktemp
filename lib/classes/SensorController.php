@@ -61,6 +61,19 @@ class SensorController {
     $sensors = array_slice($devs,0,count($devs)-1);   //cut away w1_bus_master1
     return $sensors;
   }
+  
+  /*
+   * Drops all metrics form a collection
+   * @param string Sensor name
+   * @return bool
+   */
+  public function dropSensorData($name) {
+    $sql="TRUNCATE `sensor_".$name."`";
+    if($this->pdo->simpleExec($sql)[0]==1)
+      return true;
+    else
+      return false;
+  }
 }
 
 ?>
