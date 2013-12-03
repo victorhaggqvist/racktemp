@@ -5,6 +5,8 @@ use \PDO;
 
 /*
  * A helper class for PDO
+ * @author Victor Häggqvist
+ * @version 0.1
  * */
 class PDOHelper extends PDO{
    private $cfg;
@@ -22,6 +24,17 @@ class PDOHelper extends PDO{
       }
   }
 
+  public function simpleExec($sql) {
+    try{
+      $sth = $this->exec($sql);
+      return array(
+          1
+      );
+    }
+    catch(Exception $e){
+      return $this->_err($e);
+    }
+  }
   /**
    * A simple query
    * @param SQL Statement $sql
