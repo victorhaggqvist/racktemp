@@ -41,7 +41,7 @@ if(isset($_POST['sm'])){
     <div class="container">
       <form class="form-signin"  action="login.php" method="post">
         <h2 class="form-signin-heading">Sign in</h2>
-        <input type="text" class="form-control" placeholder="Username" name="us" autofocus=""autocomplete="off">
+        <input type="text" class="form-control" placeholder="Username" name="us" autofocus="" autocomplete="off">
         <input type="password" class="form-control" placeholder="Password" name="pw">
         <button class="btn btn-lg btn-primary btn-block" type="submit" name="sm">Sign in</button>
         <div style="margin-top: 10px; color: #666;">RackTemp &copy; Snilius</div>
