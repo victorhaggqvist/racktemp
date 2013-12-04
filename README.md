@@ -9,10 +9,10 @@ A temprature monitoring application for Raspberry Pi, buildt with the DS18B20 se
 ##Install
 For a quick and easy install just download the installer script, [install.sh](https://raw.github.com/victorhaggqvist/racktemp/master/install.sh). It will essentially download the application and install MySQL and Apache.
 
-##Quick Docs
-#####Add new users
+##FAQ
+Q: How to add new users?
 
-Since RackTemp make use of the linux users, add a user by this shell command
+A: Since RackTemp make use of the linux users, add a user by this shell command
 
 ```sh
 $ sudo adduser [username] --no-create-home
