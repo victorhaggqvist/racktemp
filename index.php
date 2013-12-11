@@ -34,11 +34,23 @@ use Snilius\SensorStats;
           <div class="pull-right" id="clock" style="font-size: 2em;"></div>
           <p>
           <?php
+          
           if(count($sensors)<1)
             echo "There are no sensors yet";
           
-          foreach($sensors as $snensor){
-            $sn = new Sensor($snensor['name']);
+          $tempse=$sensors;
+          $sensors=array();
+          foreach ($tempse as $sensor) {
+            $sn = new Sensor($sensor['name']);
+            if($sn->isData())
+              $sensors[]=$sensor;
+          }
+          
+          if (count($sensors)<1)
+            echo "There are no data collected yet";
+          
+          foreach($sensors as $sensor){
+            $sn = new Sensor($sensor['name']);
             $current=$sn->getTemp();
             
             echo '<strong>'.ucfirst($sn->name).'</strong>: '.$current['temp'].'C <span class="text-muted">('.$current['timestamp'].')</span><br>';
@@ -68,7 +80,7 @@ use Snilius\SensorStats;
             }
             ?>
           </p>
-          <a href="#" class="btn btn-default">Today &raquo;</a>
+          <!--<a href="#" class="btn btn-default">Today &raquo;</a>-->
         </div>
         <div class="col-sm-4">
           <h2>Weekly Stats</h2>
@@ -102,7 +114,7 @@ use Snilius\SensorStats;
           echo '<strong>Avg</strong>: '.$avg.'C';
           ?>
           </p>
-          <a href="#" class="btn btn-default">More &raquo;</a>
+          <!-- <a href="#" class="btn btn-default">More &raquo;</a>-->
         </div>
       </div>
       <?php require_once(TEMPLATES_PATH.'/footer.php'); ?>
