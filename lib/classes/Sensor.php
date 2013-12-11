@@ -31,6 +31,9 @@ class Sensor extends SensorTools{
     $sql="SELECT temp,timestamp FROM sensor_".$this->name." ORDER BY timestamp DESC LIMIT 1";
     $res=$this->pdo->justQuery($sql);
     
+    if($res[1]<1)
+      return null;
+    
     $ret=$res[2][0];
     if ($mktemp)
       $ret['temp']=$this->mktemp($ret['temp'],$unit);
@@ -94,6 +97,17 @@ class Sensor extends SensorTools{
         $temps[]=$row['temp'];
     }
     return $temps;
+  }
+  
+  /**
+   * Returns if there is any collected data from sensor
+   * @return boolean
+   */
+  public function isData() {
+    if (count($this->getList(1, 1))<1)
+      return false;
+    else
+      return true;
   }
 }
 ?>
