@@ -45,7 +45,7 @@ mysql -uroot -pRackTempRocks -e "CREATE USER 'racktemp'@'localhost' IDENTIFIED B
 mysql -uroot -pRackTempRocks -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON racktemp.* TO 'racktemp'@'localhost'"
 mysql -uracktemp -pTGjJOcDT8gRnN0LqQ7gL racktemp < racktemp.sql
 
-sudo adduser www-data shadow #add www-data to shadow group to make authentication work
+sudo usermod -a -G shadow www-data #add www-data to shadow group to make authentication work
 
 echo "Installation finished"
 echo "Rebooting in 15 sec..."
