@@ -40,44 +40,31 @@ use Snilius\Util\Paginator;
       foreach ($sensors as $key => $sensor) {
         $sens = new Sensor($sensor['name']);
         $total = $sens->getListSize();
-        $paginator = new Paginator($itemsPerPage,$pagesToDisplay,$total);
         
-        $list = $sens->getList((($page*$itemsPerPage)-$itemsPerPage),$itemsPerPage);
+        echo '<div class="tab-pane'.((ArrayTool::first($sensors,$key))?" active":"").'" id="'.$sensor['name'].'">';
         
-        echo '<div class="tab-pane'.((ArrayTool::first($sensors,$key))?" active":"").'" id="'.$sensor['name'].'"><table class="table table-striped" style="margin-top:20px;">';
-        
-        echo 'Listing '.(($page*$itemsPerPage)-$itemsPerPage).' - '.($page*$itemsPerPage).' of '.$total.' from '.$sensor['name'].'<br>';
-        
-        echo $paginator->getPagination($page);
-        
-        echo '<tr><th>#</th><th>Temp</th><th>Time</th></tr>';
-        foreach ($list as $row) {
-          echo '<tr><td>'.$row['id'].'</td><td>'.$row['temp'].'</td><td>'.$row['timestamp'].'</td></tr>';
+        //if there is data collected
+        if ($total<1) {
+          echo "No data collected yet, just hang on for a cupple of minutes";
+        }else{
+          $paginator = new Paginator($itemsPerPage,$pagesToDisplay,$total);
+          
+          $list = $sens->getList((($page*$itemsPerPage)-$itemsPerPage),$itemsPerPage);
+          
+          $listStart=(($page*$itemsPerPage)-$itemsPerPage);
+          $listEnd=($page*$itemsPerPage>$total)?$total:($page*$itemsPerPage);
+          echo 'Listing '.$listStart.' - '.$listEnd.' of '.$total.' from '.$sensor['name'].'<br>';
+          
+          echo $paginator->getPagination($page,$sensor['name']);
+          echo '<table class="table table-striped" style="margin-top:20px;">'
+              .'<tr><th>#</th><th>Temp</th><th>Time</th></tr>';
+          foreach ($list as $row) {
+            echo '<tr><td>'.$row['id'].'</td><td>'.$row['temp'].'</td><td>'.$row['timestamp'].'</td></tr>';
+          }
+          echo '</table>';
+          
+          echo $paginator->getPagination($page,$sensor['name']);
         }
-        echo '</table>';
-        
-        
-        
-        $totalPages = ceil($total/$itemsPerPage);
-        $startPage = 1;
-        
-        if($page>($totalPages-($pagesToDisplay/2)))
-          $startPage=$totalPages-$pagesToDisplay;
-        else if($page>($pagesToDisplay/2))
-          $startPage=$page-($pagesToDisplay/2);
-        
-        $endPage=(($startPage+$pagesToDisplay)<$totalPages)?$startPage+$pagesToDisplay:$totalPages+1;
-        
-        echo '<ul class="pagination">';
-        echo '<li><a href="?page=1">&larr;</a></li>';
-        echo '<li><a href="'.(($page-1>0)?'?page='.($page-1):'#').'">&laquo;</a></li>';
-        for($i=$startPage; $i<$endPage;$i++){
-          echo '<li'.(($i==$page)?' class="active"':'').'><a href="?page='.$i.'#'.$sensor['name'].'">'.$i.'</a></li>';
-        }
-        echo '<li><a href="'.(($page+1<$totalPages)?'?page='.($page+1):'#').'">&raquo;</a></li>';
-        echo '<li><a href="?page='.$totalPages.'">&rarr;</a></li>';
-        echo '</ul>';
-        
         echo '</div>';
       }
       
