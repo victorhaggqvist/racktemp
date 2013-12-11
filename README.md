@@ -1,6 +1,6 @@
 RackTemp
 ========
-A temprature monitoring application for Raspberry Pi, buildt with the DS18B20 sensor
+A temprature monitoring application for Raspberry Pi, built with the DS18B20 sensor
 
 ##Requirements
 - A Raspberry Pi
