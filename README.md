@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 RackTemp
 ========
 A temprature monitoring application for Raspberry Pi, buildt with the DS18B20 sensor
@@ -18,9 +17,3 @@ A: Since RackTemp make use of the linux users, add a user by this shell command
 ```sh
 $ sudo adduser [username] --no-create-home
 ```
-=======
-racktemp
-========
-
-RackTemp: A temperature monitoring application for Raspberry Pi
->>>>>>> 8e3f9a1b203a462d27de255306c7157973517527
