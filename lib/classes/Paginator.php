@@ -26,7 +26,7 @@ class Paginator {
    * @param int $page
    * @return string
    */
-  public function getPagination($page) {
+  public function getPagination($page,$tabId='') {
     //for sace of readability, make them shorter
     $itemsPerPage = $this->itemsPerPage;
     $pagesToDisplay = $this->pagesToDisplay;
@@ -37,15 +37,23 @@ class Paginator {
     $startPage = 1;
     $startPageMobile = $startPage;
     
+    
+    //Desktop display pages
     if($page>($totalPages-($pagesToDisplay/2)))
       $startPage=$totalPages-$pagesToDisplay;
     else if($page>($pagesToDisplay/2))
       $startPage=$page-($pagesToDisplay/2);
     
+    //Mobile display pages
     if($page>($totalPages-($pagesToDisplayMobile/2)))
       $startPageMobile=$totalPages-$pagesToDisplayMobile;
     else if($page>($pagesToDisplayMobile/2))
       $startPageMobile=$page-($pagesToDisplayMobile/2);
+    
+    if($startPage<1){ //no like negative pages
+      $startPage=1;
+      $startPageMobile=1;
+    }
     
     $endPage=$totalPages+1;
     $endPageMobile = $endPage;
@@ -59,20 +67,26 @@ class Paginator {
     $this->page = $page;
     $this->totalPages = $totalPages;
     
+    $goToTab=(strlen($tabId)<1)?'':'#'.$tabId;
+    $prevPage=(($page-1>0)?'?page='.($page-1).$goToTab:'#'.$tabId);
+    $nextPage=(($page+1<=$totalPages)?'?page='.($page+1).$goToTab:'#'.$tabId);
+    
     $ret = '<ul class="pagination hidden-xs">';
-    $ret .= '<li><a href="?page=1">&larr;</a></li>';
-    $ret .= '<li><a href="'.(($page-1>0)?'?page='.($page-1):'#').'">&laquo;</a></li>';
+    $ret .= '<li><a href="?page=1'.$goToTab.'">&larr;</a></li>';
+    $ret .= '<li><a href="'.$prevPage.'">&laquo;</a></li>';
     for($i=$startPage; $i<$endPage;$i++){
-      $ret .= '<li  class="'.(($i==$page)?' active':'').'"><a href="?page='.$i.'">'.$i.'</a></li>';
+      $linkAddr = '?page='.$i.$goToTab;
+      $ret .= '<li  class="'.(($i==$page)?' active':'').'"><a href="'.$linkAddr.'">'.$i.'</a></li>';
     }
-    $ret .= '<li><a href="'.(($page+1<$totalPages)?'?page='.($page+1):'#').'">&raquo;</a></li>';
-    $ret .= '<li><a href="?page='.$totalPages.'">&rarr;</a></li>';
+    $ret .= '<li><a href="'.$nextPage.'">&raquo;</a></li>';
+    $ret .= '<li><a href="?page='.$totalPages.$goToTab.'">&rarr;</a></li>';
     $ret .= '</ul>';
     
     $ret .= '<ul class="pagination visible-xs">';
     $ret .= '<li><a href="'.(($page-1>0)?'?page='.($page-1):'#').'">&laquo;</a></li>';
     for($i=$startPageMobile; $i<$endPageMobile;$i++){
-      $ret .= '<li  class="'.(($i==$page)?'active':'').'"><a href="?page='.$i.'">'.$i.'</a></li>';
+      $linkAddr = '?page='.$i.$goToTab;
+      $ret .= '<li  class="'.(($i==$page)?'active':'').'"><a href="'.$linkAddr.'">'.$i.'</a></li>';
     }
     $ret .= '<li><a href="'.(($page+1<$totalPages)?'?page='.($page+1):'#').'">&raquo;</a></li>';
     $ret .= '</ul>';
