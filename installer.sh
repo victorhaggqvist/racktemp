@@ -24,7 +24,7 @@ echo "Enter RackTempRocks in the box that appears"
 sleep 10
 
 #install dependencies
-sudo aptitude install -y git apache2 php5 mysql-server whois  #note, whois is needed for the mkpasswd command
+sudo aptitude install -y git apache2 php5 php5-gd php5-curl mysql-server whois  #note, whois is needed for the mkpasswd command
 
 echo "Downloading and installing the lates version of RackTemp.."
 git clone git@github.com:victorhaggqvist/racktemp.git #download the application
