@@ -21,13 +21,14 @@ SET time_zone = "+00:00";
 --
 
 CREATE DATABASE racktemp;
+USE racktemp;
 
 --
 -- User: racktemp
 --
 
 CREATE USER 'racktemp'@'localhost' IDENTIFIED BY 'TGjJOcDT8gRnN0LqQ7gL';
-GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON 'racktemp'.* TO 'racktemp'@'localhost';
+GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON racktemp.* TO 'racktemp'@'localhost';
 
 -- --------------------------------------------------------
 
@@ -35,6 +36,7 @@ GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON 'racktemp'.* TO 'racktemp'@'loc
 -- Table structure for table `api_keys`
 --
 
+DROP TABLE IF EXISTS `api_keys`;
 CREATE TABLE IF NOT EXISTS `api_keys` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
@@ -50,6 +52,7 @@ CREATE TABLE IF NOT EXISTS `api_keys` (
 -- Table structure for table `sensors`
 --
 
+DROP TABLE IF EXISTS `sensors`;
 CREATE TABLE IF NOT EXISTS `sensors` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` text NOT NULL,
@@ -65,6 +68,7 @@ CREATE TABLE IF NOT EXISTS `sensors` (
 -- Table structure for table `sessions`
 --
 
+DROP TABLE IF EXISTS `sessions`;
 CREATE TABLE IF NOT EXISTS `sessions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` text NOT NULL,
@@ -80,6 +84,7 @@ CREATE TABLE IF NOT EXISTS `sessions` (
 -- Table structure for table `settings`
 --
 
+DROP TABLE IF EXISTS `settings`;
 CREATE TABLE IF NOT EXISTS `settings` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `key` varchar(50) NOT NULL,
