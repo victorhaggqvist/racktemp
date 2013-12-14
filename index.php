@@ -20,6 +20,22 @@ use Snilius\SensorStats;
     <div class="container" id="wrapper">
       
       <?php 
+
+      $ch = curl_init();
+
+      curl_setopt($ch, CURLOPT_URL, "https://raw.github.com/victorhaggqvist/racktemp/master/VERSION");
+      curl_setopt($ch, CURLOPT_HEADER, 0);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+      $version = curl_exec($ch);
+      
+      curl_close($ch);
+      $localVersion = shell_exec("cat /var/www/VERSION");
+      
+      if ($localVersion<$version) {
+        echo Alert::info('There is a new version of RackTemp available, head over Github for more <a href="https://github.com/victorhaggqvist/racktemp/" style="color:#000;">info</a>');
+      }
+      
       $sensCont = new SensorController();
       $sensors = $sensCont->getSensors();
       if (!$sensCont->checkSensors($sensors)) {
