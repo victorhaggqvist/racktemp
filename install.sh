@@ -29,7 +29,7 @@ sleep 10
 
 #install dependencies
 
-sudo aptitude install -y git apache2 php5 php5-gd php5-curl mysql-server whois  #note, whois is needed for the mkpasswd command
+sudo aptitude install -y git apache2 php5 php5-gd php5-curl php5-mysql mysql-server whois  #note, whois is needed for the mkpasswd command
 
 echo "Downloading and installing the lates version of RackTemp.."
 git clone https://github.com/victorhaggqvist/racktemp.git #download the application
@@ -52,6 +52,8 @@ echo "Setting up DB"
 #mysql -uroot -pRackTempRocks -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON racktemp.* TO 'racktemp'@'localhost'"
 #mysql -uracktemp -pTGjJOcDT8gRnN0LqQ7gL racktemp < racktemp.sql
 mysql -uroot -pRackTempRocks -e "source racktemp.sql"
+sudo rm racktemp.sql
+sudo rm index.html
 
 sudo usermod -a -G shadow www-data #add www-data to shadow group to make authentication work
 
