@@ -22,9 +22,20 @@
     "grunt": "~0.4.2",
     "grunt-contrib-jshint": "~0.7.2",
     "grunt-contrib-watch": "~0.5.3",
-    "grunt-contrib-qunit": "~0.3.0",
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-uglify": "~0.2.7",
-    "grunt-contrib-sass": "^0.7.3"
-  }
+    "grunt-contrib-sass": "^0.7.3",
+    "grunt-contrib-copy": "^0.5.0",
+    "grunt-phplint": "0.0.5"
+  },
+  "bwr": {
+    "bootstrap": {
+      "js": "bower_components/sass-bootstrap/dist/js/bootstrap.min.js",
+      "fonts": "bower_components/sass-bootstrap/dist/fonts/*"
+    },
+    "d3": "bower_components/d3/d3.min.js",
+    "jquery": "bower_components/jquery/dist/jquery.min.js",
+    "modernizr": "bower_components/modernizr/modernizr.js"
+  },
+  "appjs": "app/js/"
 }

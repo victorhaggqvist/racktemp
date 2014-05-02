@@ -17,22 +17,15 @@ module.exports = function(grunt) {
         stripBanners: true
       },
       dist: {
-        src: ['lib/<%= pkg.name %>.js'],
-        dest: 'dist/<%= pkg.name %>.js'
+        src: ['js/*.js'],
+        dest: 'app/js/racktemp.js'
       }
     },
     uglify: {
-      options: {
-        banner: '<%= banner %>'
-      },
-      dist: {
-        src: '<%= concat.dist.dest %>',
-        dest: 'dist/<%= pkg.name %>.min.js'
-      }
+
     },
     jshint: {
       options: {
-        curly: true,
         eqeqeq: true,
         immed: true,
         latedef: true,
@@ -44,19 +37,18 @@ module.exports = function(grunt) {
         boss: true,
         eqnull: true,
         browser: true,
+        indent: 2,
         globals: {
-          jQuery: true
+          jQuery: true,
+          $: true
         }
       },
       gruntfile: {
         src: 'Gruntfile.js'
       },
-      lib_test: {
-        src: ['lib/**/*.js', 'test/**/*.js']
+      main: {
+        src: ['js/**/*.js']
       }
-    },
-    qunit: {
-      files: ['test/**/*.html']
     },
     watch: {
       gruntfile: {
@@ -67,18 +59,61 @@ module.exports = function(grunt) {
         files: '<%= jshint.lib_test.src %>',
         tasks: ['jshint:lib_test', 'qunit']
       }
+    },
+    copy: {
+      d3: {
+        src: '<%= pkg.bwr.d3 %>',
+        dest:'<%= pkg.appjs %>d3.min.js'
+      },
+      jquery: {
+        src: '<%= pkg.bwr.jquery %>',
+        dest:'<%= pkg.appjs %>jquery.min.js'
+      },
+      bootstrap_js: {
+        src: '<%= pkg.bwr.bootstrap.js %>',
+        dest:'<%= pkg.appjs %>bootstrap.min.js'
+      },
+      bootstrap_fonts: {
+        expand: true,
+        flatten: true,
+        src: '<%= pkg.bwr.bootstrap.fonts %>',
+        dest:'app/style/'
+      }
+    },
+    sass: {
+      bootstrap: {
+        options: {
+          style: 'compressed'
+        },
+        files: {
+          'app/style/bootstrap.min.css': 'sass/bootstrap.scss'
+        }
+      },
+      racktemp: {
+        options: {
+          style: 'compressed'
+        },
+        files: {
+          'app/style/racktemp.min.css': 'sass/racktemp.scss'
+        }
+      }
+    },
+    phplint: {
+      racktemp: ['app/**/*.php']
     }
   });
 
-  // These plugins provide necessary tasks.
+  // load plugs
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-sass');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks("grunt-phplint");
 
-  // Default task.
+
   grunt.registerTask('default', ['jshint', 'qunit', 'concat', 'uglify']);
+  grunt.registerTask('build',['phplint','sass','jshint:main','copy','uglify']);
 
 };
