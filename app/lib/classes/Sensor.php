@@ -109,7 +109,7 @@ class Sensor extends SensorTools{
    * @return boolean
    */
   public function isData() {
-    if (count($this->getList(1, 1))<1)
+    if (count($this->getList(0, 1))<1)
       return false;
     return true;
   }
