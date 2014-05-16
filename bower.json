@@ -19,6 +19,7 @@
   ],
   "dependencies": {
     "d3": "~3.4.6",
-    "sass-bootstrap": "~3.0.2"
+    "sass-bootstrap": "~3.0.2",
+    "c3": "~0.1.34"
   }
 }

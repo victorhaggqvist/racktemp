@@ -8,13 +8,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "ssh://git@git.hggqvst.local/racktemp/racktemp.git"
+    "url": "ssh://git@github.com/racktemp/racktemp.git"
   },
   "keywords": [
     "temp"
   ],
   "author": "victor",
-  "license": "GPL",
+  "license": "GPLv3",
   "engines": {
     "node": ">= 0.10.0"
   },
@@ -26,7 +26,8 @@
     "grunt-contrib-uglify": "~0.2.7",
     "grunt-contrib-sass": "^0.7.3",
     "grunt-contrib-copy": "^0.5.0",
-    "grunt-phplint": "0.0.5"
+    "grunt-phplint": "0.0.5",
+    "grunt-notify": "^0.3.0"
   },
   "bwr": {
     "bootstrap": {
@@ -34,8 +35,13 @@
       "fonts": "bower_components/sass-bootstrap/dist/fonts/*"
     },
     "d3": "bower_components/d3/d3.min.js",
+    "c3": {
+      "js": "bower_components/c3/c3.min.js",
+      "css": "bower_components/c3/c3.css"
+    },
     "jquery": "bower_components/jquery/dist/jquery.min.js",
     "modernizr": "bower_components/modernizr/modernizr.js"
   },
-  "appjs": "app/js/"
+  "appjs": "app/js/",
+  "appcss": "app/style/"
 }

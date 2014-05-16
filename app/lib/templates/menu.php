@@ -1,4 +1,3 @@
-<!-- TODO Change to slide in menu -->
 <header class="navbar navbar-inverse navbar-fixed-top" role="banner">
   <div class="container">
     <nav role="navigation">
@@ -18,7 +17,7 @@
         <ul class="nav navbar-nav">
           <li <?php echo (strpos($_SERVER['PHP_SELF'],'index')!==false)?'class="active"':''; ?>><a href="./">Dashboard</a>
           <li <?php echo (strpos($_SERVER['PHP_SELF'],'detailed')!==false)?'class="active"':''; ?>><a href="detailed.php">Detailed</a>
-          <!-- <li <?php echo (strpos($_SERVER['PHP_SELF'],'stats')!==false)?'class="active"':''; ?>><a href="stats.php">Statistics</a>-->
+          <li <?php echo (strpos($_SERVER['PHP_SELF'],'stats')!==false)?'class="active"':''; ?>><a href="stats.php">Statistics</a>
           <li <?php echo (strpos($_SERVER['PHP_SELF'],'settings')!==false)?'class="active"':''; ?>><a href="./settings.php">Settings</a>
         </ul>
 
