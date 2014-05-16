@@ -1,0 +1,12 @@
+{
+    "name": "snilius/racktempapi",
+    "require": {
+        "slim/slim": "2.*"
+    },
+    "authors": [
+        {
+            "name": "Victor Häggqvist",
+            "email": "victor@snilius.com"
+        }
+    ]
+}
