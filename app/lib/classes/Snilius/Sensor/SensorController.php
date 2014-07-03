@@ -53,10 +53,12 @@ class SensorController {
 
   /**
    * Add new sesor to system
-   * @param string $name Label for sensor
-   * @param string $uid  Hardware identifyer, most likely something like 28-***
+   * @param Sensor $sensor A Sensor object
+   * @return boolean if addition was successfull
    */
-  public function addSensor($name,$uid) {
+  public function addSensor($sensor) {
+    $name = $sensor->name;
+    $uid = $sensor->uid;
     // add into control table
     $sql = "INSERT INTO sensors (name,uid)VALUES(?,?)";
     if ($this->pdo->prepQuery($sql,array($name,$uid))[0] == 1) {
