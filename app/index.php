@@ -161,7 +161,8 @@ use Snilius\Sensor\SensorStats;
       ?>
     </div><!-- /.container -->
 
-  </body>
+  <?php if (strlen($startTemplate)<1): ?>
+
   <script src="js/d3.min.js"></script>
   <script src="js/c3.min.js"></script>
   <script src="js/clock.js"></script>
@@ -203,5 +204,7 @@ use Snilius\Sensor\SensorStats;
     }
   });
   </script>
+<?php endif; ?>
+</body>
 
 </html>
