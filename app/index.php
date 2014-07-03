@@ -34,21 +34,27 @@ use Snilius\Sensor\SensorStats;
 
       $sensorController = new SensorController();
       $sensors = $sensorController->getSensors();
-      if (!$sensorController->checkSensors($sensors) && $s->getValue('dev-ignore-no-sensors') != 1) {
+
+
+      if (!$sensorController->checkSensors($sensors) &&
+        $s->getValue('dev-ignore-no-sensors') != 1 &&
+        count($sensors)>0) {
         echo Alert::danger("Something is messed up with your sensors, you better check on them!");
       }
 
       $startTemplate = '';
-      if(count($sensors) < 1)
-        $startTemplate = 'firsttime.php';
-
       $activeSensors = array();
-      foreach ($sensors as $sensor) {
-        if($sensor->isData())
-          $activeSensors[] = $sensor;
+      if (count($sensors)>0) {
+        foreach ($sensors as $sensor) {
+          if($sensor->isData())
+            $activeSensors[] = $sensor;
+        }
+      }else{
+        $startTemplate = 'firsttime.php';
       }
 
-      if (count($activeSensors)<1)
+
+      if (count($activeSensors)<1 && strlen($startTemplate)<1)
         $startTemplate = 'nodata.php';
 
       // should be good to go for showing stats
