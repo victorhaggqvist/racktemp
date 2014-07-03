@@ -1,11 +1,13 @@
-<?php 
+<?php
 use Snilius\Util\Bootstrap\Alert;
+use Snilius\RackTemp\Api;
+
 $api = new Api();
 if(isset($_GET['delkey'])){
   $id=$_GET['delkey'];
   if($api->deleteKey($id))
     echo Alert::success('Key removed');
-  else 
+  else
     echo Alert::warning('Some thing whent wrong.. give it another try');
 }
 
@@ -30,7 +32,7 @@ if (isset($_POST['submit-api'])) {
 <h3>Keys</h3>
 <table class="table">
 <tr><th>#</th><th>Name</th><th>Key</th><th>Last Access</th><th>Actions</th></tr>
-<?php 
+<?php
 $list = $api->listKey();
 foreach ($list as $l) {
   $access=(isset($l['last_access']))?$l['last_access']:'<span class="text-muted">Never Accessed</span>';
