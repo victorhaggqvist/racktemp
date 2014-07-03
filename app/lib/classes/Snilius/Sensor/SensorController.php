@@ -61,14 +61,16 @@ class SensorController {
     $uid = $sensor->uid;
     // add into control table
     $sql = "INSERT INTO sensors (name,uid)VALUES(?,?)";
-    if ($this->pdo->prepQuery($sql,array($name,$uid))[0] == 1) {
+    $insert = $this->pdo->prepExec($sql, array($name, $uid));
+
+    if ($insert[0] == 1) {
       // create table for data
       $sql = "CREATE TABLE IF NOT EXISTS `sensor_".$name."` (
               `id` int(11) NOT NULL AUTO_INCREMENT,
               `temp` int(11) NOT NULL,
               `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
               PRIMARY KEY (`id`))";
-      if ($this->pdo->justQuery($sql)[0] == 1)
+      if ($this->pdo->simpleExec($sql)[0] == 1)
         return true;
       return false;
     }else
