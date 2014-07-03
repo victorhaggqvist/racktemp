@@ -2,7 +2,7 @@
 <footer>
   <div class="row">
     <div class="col-md-4">
-      <p>RackTemp v<?php echo shell_exec('cat ./VERSION'); ?> <a href="https://github.com/victorhaggqvist/racktemp">Source</a></p>
+      <p>RackTemp v<?php echo file_get_contents('../VERSION'); ?> <a href="https://github.com/victorhaggqvist/racktemp">Source</a></p>
     </div>
     <div class="col-md-4"><p>Copyright &copy; 2013-2014 Snilus</p></div>
     <div class="col-md-4"><p>Licensed by GPLv3</p></div>
