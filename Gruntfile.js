@@ -43,7 +43,7 @@ module.exports = function(grunt) {
       gruntfile: {
         src: 'Gruntfile.js'
       },
-      racktemp: {
+      main: {
         src: ['js/**/*.js']
       }
     },
@@ -56,7 +56,7 @@ module.exports = function(grunt) {
         files: ['app/**/*.php','js/*.js','sass/*'],
         tasks: ['jshint:main','copy:js', 'phplint','sass:racktemp'],
         options: {
-          reload: true
+          livereload: true
         }
       }
     },
