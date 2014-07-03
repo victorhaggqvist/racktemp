@@ -21,14 +21,13 @@ class SensorController {
    */
   public function getSensors() {
     $res = $this->pdo->justQuery('SELECT * FROM sensors')[2];
+    $sensorArray = array();
     if (count($res)>0) {
-      $sensorArray = array();
       foreach ($res as $sensor) {
         $sensorArray[] = new Sensor($sensor);
       }
-      return $sensorArray;
     }
-    return false;
+    return $sensorArray;
   }
 
   /**
@@ -37,6 +36,9 @@ class SensorController {
    * @return boolean If sensors are ok
    */
   public function checkSensors($sensors) {
+    if (!$sensors)
+      return false;
+
     $attached = $this->getAttachedSensors();
 
     if ($attached == null) // if this is null, you are probubly not on a rpi and just testing stuff

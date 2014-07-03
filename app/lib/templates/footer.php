@@ -5,7 +5,7 @@
       <p>RackTemp v<?php echo file_get_contents('../VERSION'); ?> <a href="https://github.com/victorhaggqvist/racktemp">Source</a></p>
     </div>
     <div class="col-md-4"><p>Copyright &copy; 2013-2014 Snilus</p></div>
-    <div class="col-md-4"><p>Licensed by GPLv3</p></div>
+    <div class="col-md-4"><p>Licensed under GPLv3</p></div>
   </div>
 </footer>
 <script src="js/jquery.min.js"></script>

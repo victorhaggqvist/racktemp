@@ -25,27 +25,47 @@ class GraphApi {
     }
   }
 
+  /**
+   * [getSpanHour description]
+   * @return [type] [description]
+   */
   private function getSpanHour() {
     $sensors = $this->sensorCtrl->getSensors();
-
+    $activeSensors = 0;
     $response = array();
 
-    for ($i=0; $i < count($sensors); $i++) {
+    // go through all sensors
+    for ($i = 0; $i < count($sensors); $i++) {
       $stat = $sensors[$i]->getTempList('hour');
 
+      // timestamps for the x axis in c3 chart
       if ($i == 0) {
         $response[$i][] = 'x';
         foreach ($stat as $s)
           $response[$i][] = $s['timestamp'];
       }
 
-      $response[$i+1][] = $sensors[$i]->name;
-      foreach ($stat as $s)
-        $response[$i+1][] = $s['temp'];
-
+      // show only sensors with recent stats
+      if (count($stat)>1) {
+        $activeSensors++;
+        $response[$i+1][] = $sensors[$i]->name;
+        foreach ($stat as $s)
+          $response[$i+1][] = $s['temp'];
+      }
     }
 
-    return $this->arrayToCSV($response);
+    $ret = '';
+    $cvsCols = $activeSensors + 1;
+    // var_dump($cvsCols);
+    // var_dump($response);
+    for ($i=0; $i < $cvsCols; $i++) {
+      for ($j=0; $j < count($response[0]); $j++) {
+        $ret .= $response[$j][$i].($j == $cvsCols?'':',');
+      }
+      $ret.="\n";
+    }
+
+    return $ret;
   }
 
   private function arrayToCSV($array) {
