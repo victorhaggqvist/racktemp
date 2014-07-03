@@ -1,6 +1,7 @@
 <?php
 use Snilius\Sensor\SensorController;
 use Snilius\Util\Bootstrap\Alert;
+use Snilius\Sensor\Sensor;
 
 $sensorController = new SensorController();
 
@@ -24,12 +25,13 @@ if (isset($_POST['dropData'])) {
 
   $attached = $sensorController->getAttachedSensors();
   $registered = $sensorController->getSensors();
+
   $new = null;
   if ($attached != null) {
     foreach ($attached as &$a){
       $exists=true;
       foreach ($registered as $r){
-        if ($r['uid'] == $a)
+        if ($r->uid == $a)
           $exists = false;
       }
       if ($exists)
@@ -46,30 +48,31 @@ if (isset($_POST['dropData'])) {
 
   <?php
   if (isset($_POST['add'])) {
-    $uid = $_POST['uid'];
-    $label = $_POST['label'];
+    $uids = $_POST['uid'];
+    $labels = $_POST['label'];
     $post = $_POST;
 
     $currentSensors = $sensorController->getSensors();
 
-    foreach ($uid as $key=> $ui) {
-      if (!empty($ui)){             //if field not empty
-        if (!empty($label[$key])){ //if corrseponding labeĺ is set
+    foreach ($uids as $key=> $uid) {
+      if (!empty($uid)){             //if field not empty
+        if (!empty($labels[$key])){  //if corrseponding labeĺ is set
 
           $exists = false;
           foreach ($currentSensors as $cs)
-            if($cs['uid'] == $ui)     //if not allready in
+            if($cs->uid == $uid)     //if not allready in
               $exists = true;
 
           if (!$exists){           //then we are good
-            if ($sensorController->addSensor($label[$key],$ui))
-              echo Alert::success("Sensor ".$i." added");
+            $sensor = new Sensor($labels[$key],$uid);
+            if ($sensorController->addSensor($sensor))
+              echo Alert::success("Sensor ".$uid." added");
             else
               echo Alert::danger("DB mess");
           }else
-            echo Alert::danger("It looks like ".$i." already exists, so don't add it aganin");
+            echo Alert::danger("It looks like ".$uid." already exists, so don't add it aganin");
         }else
-          echo Alert::danger("Please specify a Label for sensor ".$i);
+          echo Alert::danger("Please specify a Label for sensor ".$uid);
       }
     }
   }
@@ -117,6 +120,9 @@ if (isset($_POST['dropData'])) {
   <h3>Existing sensors</h3>
   <form class="form-horizontal" role="form" method="post">
   <?php
+  // update incase new was added
+  $registered = $sensorController->getSensors();
+
   if(count($registered)<1)
     echo "There are no sensors yet";
 
