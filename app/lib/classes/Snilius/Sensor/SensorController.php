@@ -11,7 +11,7 @@ class SensorController {
   /**
    * Create a SensorController
    */
-  public function __construct(){
+  public function __construct() {
     $this->pdo = new PDOHelper($GLOBALS['db_conf']);
   }
 
@@ -56,7 +56,7 @@ class SensorController {
    * @param string $name Label for sensor
    * @param string $uid  Hardware identifyer, most likely something like 28-***
    */
-  public function addSensor($name,$uid){
+  public function addSensor($name,$uid) {
     // add into control table
     $sql = "INSERT INTO sensors (name,uid)VALUES(?,?)";
     if ($this->pdo->prepQuery($sql,array($name,$uid))[0] == 1) {
@@ -77,7 +77,7 @@ class SensorController {
    * Get array of attached sensors
    * @return array Array of hardware id's
    */
-  public function getAttachedSensors(){
+  public function getAttachedSensors() {
     $exc = shell_exec("ls /sys/bus/w1/devices/ | grep 28"); //get all devices
     if(strpos($exc, 'null') == false) // ie, no such file
       return null;
