@@ -4,7 +4,7 @@ sudo debconf-set-selections <<< 'mysql-server-5.5 mysql-server/root_password_aga
 
 sudo apt-get update
 sudo apt-get -y updgrade
-sudo apt-get -y install nginx php5 php5-fpm php5-mysql php5-gd vim mysql-server-5.5 php5-curl
+sudo apt-get -y install nginx php5 php5-fpm php5-mysql php5-gd vim mysql-server-5.5 php5-curl php5-cli screen
 
 # bind mysql to all
 cat /etc/mysql/my.cnf | sed 's/bind-address/#bind-address/' > mymod.cnf
