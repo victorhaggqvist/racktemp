@@ -24,7 +24,7 @@ use Snilius\Sensor\SensorStats;
       $version = curl_exec($ch);
       curl_close($ch);
 
-      $localVersion = file_get_contents('./VERSION');
+      $localVersion = file_get_contents('../VERSION');
 
       if ($localVersion < $version) {
         $message = 'There is a new version of RackTemp available, head over Github for more '.
