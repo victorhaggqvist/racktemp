@@ -97,10 +97,12 @@ CREATE TABLE IF NOT EXISTS `settings` (
 -- Dumping data for table `settings`
 --
 
-INSERT INTO `settings` (`id`, `key`, `value`) VALUES
-(2, 'use-cdn', '0'),
-(3, 'auth', '0'),
-(4, 'manual-sensor-add', '0');
+INSERT INTO `settings` (`key`, `value`) VALUES
+('use-cdn','0'),
+('auth','0'),
+('manual-sensor-add','0'),
+('dev-ignore-no-sensors','1'),
+('send-stats','0');
 
 DELIMITER $$
 --
