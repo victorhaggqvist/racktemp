@@ -1,4 +1,4 @@
-#!/usr/bin/php
+#!/usr/bin/env php
 <?php
 
 define('AUTOLOAD_PATH', './app/lib/classes');
@@ -12,7 +12,9 @@ $sensors = $sensorController->getSensors();
 
 foreach ($sensors as $sensor) {
   $last = $sensor->getList(0,1);
-  $newtemp = simulateTemp($last[0]['temp']);
+  $temp = (null !== @$last[0]['temp'])?$last[0]['temp']:'25000';
+  $newtemp = simulateTemp($temp);
+  echo "Temp ".$newtemp."\n";
   $sensor->addData($newtemp);
 }
 
