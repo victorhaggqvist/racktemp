@@ -16,13 +16,15 @@ class Sensor extends SensorTools{
 
   private $pdo;
 
-  public function __construct($sensor) {
+  public function __construct($sensor, $uid='') {
     if (is_array($sensor)) {
       $this->name = $sensor['name'];
       $this->id = $sensor['id'];
       $this->uid = $sensor['uid'];
-    }else
+    }else{
       $this->name = $sensor;
+      $this->uid = $uid;
+    }
 
     $this->pdo = new PDOHelper($GLOBALS['db_conf']);
   }
