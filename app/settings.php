@@ -39,14 +39,15 @@ require_once LIB_PATH.'/head.inc';
 
       <?php require_once TEMPLATES_PATH.'/footer.php'; ?>
     </div><!-- /.container -->
+
+    <script src="js/loadtotab.js"></script>
+    <script>
+    $('.dropData').click(function(){
+      console.log($(this));
+      var sensor = $(this).attr('data-sensor');
+      $('#drop-sensor').html(sensor);
+      $('#dropName').val(sensor);
+    });
+    </script>
   </body>
-  <script src="js/loadtotab.js"></script>
-  <script>
-  $('.dropData').click(function(){
-    console.log($(this));
-    var sensor = $(this).attr('data-sensor');
-    $('#drop-sensor').html(sensor);
-    $('#dropName').val(sensor);
-  });
-  </script>
 </html>
