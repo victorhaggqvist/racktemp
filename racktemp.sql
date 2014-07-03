@@ -27,7 +27,7 @@ USE racktemp;
 -- User: racktemp
 --
 
-CREATE USER 'racktemp'@'localhost' IDENTIFIED BY 'TGjJOcDT8gRnN0LqQ7gL';
+CREATE USER 'racktemp'@'localhost' IDENTIFIED BY 'ddcxN18FSDN8bQdjySBp';
 GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON racktemp.* TO 'racktemp'@'localhost';
 
 -- --------------------------------------------------------
