@@ -18,3 +18,4 @@ if($s->getValue('use-cdn') == 1){
 ?>
 
 <link rel="stylesheet" href="style/racktemp.min.css">
+<link rel="stylesheet" href="style/c3.css">
