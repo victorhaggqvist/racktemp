@@ -16,6 +16,9 @@ abstract class SensorTools {
    * @return number
    */
   public function mktemp($input,$unit="c",$round=true){
+    if ($input == null)
+      return null;
+
     $ret=0;
     $temp=substr($input,0,2).'.'.substr($input,2,5);
     if($unit=="f"){
