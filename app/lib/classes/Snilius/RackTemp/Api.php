@@ -71,23 +71,11 @@ class Api {
   }
 
   /**
-   * Get current temp
-   * @param unknown $param
+   * Check if submitted auth is valid
+   * @param  int    $timestamp timestamp
+   * @param  string $token     Auth token (sha512(timestamp+apikey))
+   * @return boolean            If valid keypair
    */
-  public function getCurrent() {
-
-    $sensorController = new SensorController();
-    $list = $sensorController->getSensors();
-    var_dump($list);
-    $ret = array();
-    foreach ($list as $l) {
-
-      $stat = new SensorStats($l['name']);
-      $data = $sensor->
-      $temp = $this->pdo->justQuery("SELECT temp, timestamp FROM sensor_".$l['name']." ORDER BY timestamp desc LIMIT 1");
-      $temp[2][0]['name']=$l['name'];
-      if($temp[1] == 1)
-        $ret[]=$temp[2][0];
   public function checkKeyPair($timestamp, $token) {
     $keys = $this->getKeys();
     foreach ($keys as $key) {
@@ -104,6 +92,7 @@ class Api {
     }
     return false;
   }
+
   /**
    * Check if timestamp is in valid range
    * @param  inte $timestamp Timestamp
@@ -115,7 +104,6 @@ class Api {
     return abs($timestamp-$now) < $allowedDiff;
   }
 
-    return $ret;
   public function getJavaScriptHelper($keyName) {
     $key = $this->getKey($keyName);
     $timestamp = time();
@@ -128,5 +116,28 @@ class Api {
 
     return $script;
   }
+
+  // /**
+  //  * Get current temp
+  //  * @param unknown $param
+  //  */
+  // public function getCurrent() {
+
+  //   $sensorController = new SensorController();
+  //   $list = $sensorController->getSensors();
+  //   var_dump($list);
+  //   $ret = array();
+  //   foreach ($list as $l) {
+
+  //     $stat = new SensorStats($l['name']);
+  //     $data = $sensor->
+  //     $temp = $this->pdo->justQuery("SELECT temp, timestamp FROM sensor_".$l['name']." ORDER BY timestamp desc LIMIT 1");
+  //     $temp[2][0]['name']=$l['name'];
+  //     if($temp[1] == 1)
+  //       $ret[]=$temp[2][0];
+  //   }
+
+  //   return $ret;
+  // }
 }
 ?>
