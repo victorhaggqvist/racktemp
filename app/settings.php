@@ -1,6 +1,5 @@
 <?php
-require_once 'lib/config.inc';
-require_once LIB_PATH.'/head.inc';
+require_once 'lib/head.inc';
 ?>
 <!DOCTYPE html>
 <html>
