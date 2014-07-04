@@ -38,3 +38,6 @@ sudo cp /usr/share/zoneinfo/${TZ} /etc/localtime
 sudo service nginx restart
 sudo service mysql restart
 sudo service php5-fpm restart
+
+# autostart nginx
+sudo update-rc.d nginx defaults
