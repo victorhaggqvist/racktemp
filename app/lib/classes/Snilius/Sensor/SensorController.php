@@ -67,7 +67,7 @@ class SensorController {
     if ($insert[0] == 1) {
 
       // create table for data
-      $name = preg_replace(' ', '_', $name);
+      $name = preg_replace('/\s/', '_', $name);
       $sql = "CREATE TABLE IF NOT EXISTS `sensor_".$name."` (
               `id` int(11) NOT NULL AUTO_INCREMENT,
               `temp` int(11) NOT NULL,
