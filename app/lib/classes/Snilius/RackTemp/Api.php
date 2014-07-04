@@ -88,7 +88,22 @@ class Api {
       $temp[2][0]['name']=$l['name'];
       if($temp[1] == 1)
         $ret[]=$temp[2][0];
+  public function checkKeyPair($timestamp, $token) {
+    $keys = $this->getKeys();
+    foreach ($keys as $key) {
+      if (
+            (
+              hash('sha512', $timestamp.$key['key']) == $token||
+              hash('sha512', $key['key'].$timestamp) == $token
+            )
+            &&
+            $this->checkTimestamp($timestamp)
+          ){
+        return true;
+      }
     }
+    return false;
+  }
   /**
    * Check if timestamp is in valid range
    * @param  inte $timestamp Timestamp
