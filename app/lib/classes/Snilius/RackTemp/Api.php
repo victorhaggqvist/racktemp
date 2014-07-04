@@ -38,7 +38,11 @@ class Api {
       return false;
   }
 
-  public function listKey() {
+  /**
+   * Get an array of keys and info
+   * @return array Array of keys with info
+   */
+  public function getKeys() {
     $ret = $this->pdo->justQuery("SELECT `id`,`name`,`key`,`last_access` FROM api_keys");
     return $ret[2];
   }
