@@ -48,6 +48,14 @@ class Api {
   }
 
   /**
+   * Get a api key
+   * @param  staring $keyName Name of the key
+   * @return array          key with info
+   */
+  public function getKey($keyName) {
+    $ret = $this->pdo->prepQuery("SELECT `id`,`name`,`key`,`last_access` FROM api_keys WHERE `name` = ?", array($keyName));
+    return $ret[2][0];
+  }
    * Remove a key
    * @param unknown $id
    * @return boolean
