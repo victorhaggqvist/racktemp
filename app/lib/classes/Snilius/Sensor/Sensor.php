@@ -123,5 +123,24 @@ class Sensor extends SensorTools{
     $sql = "INSERT INTO sensor_".$this->name." (temp)VALUES(?)";
     $this->pdo->prepExec($sql,array($temp));
   }
+
+  /**
+   * Get an hour average temp. optionaly -n hours back
+   * @param  string|int $past Optionaly, N hours in past (-42)
+   * @return array            Array with temp 'tempavg' and first time in limit 'timestamp'
+   */
+  public function getTempHourAverage($past = '') {
+    $time1 = strtotime(strlen($past)>0?$past.' hour':'now');
+    $time2 = strtotime(strlen($past)>0?--$past.' hour':'-1 hour');
+    $date1 = date("Y-m-d H:i:s",$time1);
+    $date2 = date("Y-m-d H:i:s",$time2);
+
+    $sql= "SELECT ROUND(AVG(`temp`),0) as tempavg FROM `sensor_".$this->name."` WHERE `timestamp` BETWEEN '".$date2."' AND '".$date1."'";
+    $ret = $this->pdo->justQuery($sql);
+    if ($ret[1] == 1) {
+      return array('tempavg' => $this->mktemp($ret[2][0]['tempavg']), 'timestamp' => $time2);
+    }
+    return false;
+  }
 }
 ?>
