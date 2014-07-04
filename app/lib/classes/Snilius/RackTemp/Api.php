@@ -56,6 +56,8 @@ class Api {
     $ret = $this->pdo->prepQuery("SELECT `id`,`name`,`key`,`last_access` FROM api_keys WHERE `name` = ?", array($keyName));
     return $ret[2][0];
   }
+
+  /**
    * Remove a key
    * @param unknown $id
    * @return boolean
