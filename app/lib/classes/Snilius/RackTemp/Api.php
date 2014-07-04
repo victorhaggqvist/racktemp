@@ -101,6 +101,17 @@ class Api {
   }
 
     return $ret;
+  public function getJavaScriptHelper($keyName) {
+    $key = $this->getKey($keyName);
+    $timestamp = time();
+    $token = hash('sha512', $timestamp . $key['key']);
+    $script = "<script>";
+    $script .= "function makeApiUrl(apiPath){";
+    $script .= "return 'http://".$timestamp.":".$token."@".$_SERVER["HTTP_HOST"]."/api/'+apiPath;";
+    $script .= "}";
+    $script .= "</script>";
+
+    return $script;
   }
 }
 ?>
