@@ -89,6 +89,16 @@ class Api {
       if($temp[1] == 1)
         $ret[]=$temp[2][0];
     }
+  /**
+   * Check if timestamp is in valid range
+   * @param  inte $timestamp Timestamp
+   * @return boolean         If in valid range
+   */
+  private function checkTimestamp($timestamp) {
+    $allowedDiff = 3600 * 12;
+    $now = time();
+    return abs($timestamp-$now) < $allowedDiff;
+  }
 
     return $ret;
   }
