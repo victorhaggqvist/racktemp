@@ -40,3 +40,23 @@ foreach ($list as $l) {
 }
 ?>
 </table>
+<h3>Usage</h3>
+
+<?php
+$apikey = 'UtUSD3gIKFz8BsPSQSJ2dmYc73b3Mu42uG1c8YibCEetgDj4g';
+$timestamp = time();
+$token = hash('sha512', $timestamp . $apikey);
+ ?>
+
+<pre class="prettyprint">
+&lt;?php
+$apikey = 'a_sample_key';
+// value: $apikey = a_sample_key
+$timestamp = time();
+// value: $time = <?php echo $timestamp."\n" ?>
+$token = hash('sha512', $timestamp . $apikey);
+// value: $token = '<?php echo $token; ?>'
+?&gt;
+</pre>
+This is the used in HTTP Basic auth with the timestamp as user and token as password.
+<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
