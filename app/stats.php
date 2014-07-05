@@ -1,12 +1,10 @@
 <?php
-require_once 'lib/config.inc' ;
-require_once LIB_PATH.'/head.inc' ;
+require_once 'lib/head.inc' ;
 ?>
 <!DOCTYPE html>
 <html>
   <head>
     <?php require_once TEMPLATES_PATH.'/header.php'; ?>
-    <link rel="stylesheet" href="style/c3.css">
   </head>
   <body>
     <?php require_once TEMPLATES_PATH.'/menu.php'; ?>
