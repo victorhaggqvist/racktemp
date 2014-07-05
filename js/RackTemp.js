@@ -42,7 +42,7 @@ var RackTemp = (function (){
           type: 'timeseries',
           tick: {
             count: 12,
-            format: '%H%M'
+            format: '%H'
           }
         },
         y:{
@@ -50,11 +50,6 @@ var RackTemp = (function (){
             text: 'Degree (C)',
             position: 'outer-middle'
           }
-        }
-      },
-      tooltip: {
-        format: {
-          title: function (d) { return timeFormat(d); }
         }
       }
     };
@@ -102,10 +97,27 @@ var RackTemp = (function (){
     });
   };
 
+  var _isArrayAllNull = function (arr){
+    for (var i = arr.length - 1; i >= 0; i--) {
+      if (arr[i] !== null)
+        return false;
+    }
+    return true;
+  };
+
+  var isChartEmpty = function (chartArray){
+    for (var i = 1; i < chartArray.length; i++) {
+      if (!_isArrayAllNull(chartArray[i]))
+        return false;
+    }
+    return true;
+  };
+
   return {
     chart: chart,
     clock: clock,
-    loadToTab: loadToTab
+    loadToTab: loadToTab,
+    isChartEmpty: isChartEmpty
   };
 
 })();
