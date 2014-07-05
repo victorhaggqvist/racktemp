@@ -1,6 +1,6 @@
 <?php
 
-namespace Snilius\RackTemp;
+namespace Snilius\RackTemp\Api;
 
 use Snilius\Util\PDOHelper;
 use Snilius\Util\StringTool;
@@ -54,7 +54,10 @@ class Api {
    */
   public function getKey($keyName) {
     $ret = $this->pdo->prepQuery("SELECT `id`,`name`,`key`,`last_access` FROM api_keys WHERE `name` = ?", array($keyName));
-    return $ret[2][0];
+    if ($ret[1] == 1) {
+      return $ret[2][0];
+    }
+    return false;
   }
 
   /**
@@ -108,15 +111,32 @@ class Api {
     $key = $this->getKey($keyName);
     $timestamp = time();
     $token = hash('sha512', $timestamp . $key['key']);
-    $script = "<script>";
-    $script .= "function makeApiUrl(apiPath){";
-    $script .= "return 'http://".$timestamp.":".$token."@".$_SERVER["HTTP_HOST"]."/api/'+apiPath;";
-    $script .= "}";
-    $script .= "</script>";
 
-    return $script;
   }
 
+
+  public function getWebKey() {
+    $key = $this->getKey('web');
+    if (!$key) {
+      if ($this->newKey('web'))
+        $key = $this->getKey('web');
+    }
+    $keyPair = $this->makeKeyPair($key['key']);
+
+    return "'".$keyPair['timestamp']."','".$keyPair['token']."','".$_SERVER["HTTP_HOST"]."'";
+  }
+
+  /**
+   * Genarate a key pair from a key
+   * @param  string $key Api key
+   * @return array      keypair
+   */
+  private function makeKeyPair($key) {
+    $ret['timestamp'] = time();
+    $ret['token'] = hash('sha512', $ret['timestamp'].$key);
+
+    return $ret;
+  }
   // /**
   //  * Get current temp
   //  * @param unknown $param
