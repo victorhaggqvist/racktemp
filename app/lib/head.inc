@@ -1,7 +1,7 @@
 <?php
 
 require_once 'config.inc';
-require_once 'classes/autoload.php';
+require_once __DIR__.'/../../vendor/autoload.php';
 
 $s = new \Snilius\Util\Settings();
 
