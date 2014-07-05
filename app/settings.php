@@ -39,8 +39,9 @@ require_once 'lib/head.inc';
       <?php require_once TEMPLATES_PATH.'/footer.php'; ?>
     </div><!-- /.container -->
 
-    <script src="js/loadtotab.js"></script>
+    <script src="js/RackTemp.js"></script>
     <script>
+    RackTemp.loadToTab();
     $('.dropData').click(function(){
       console.log($(this));
       var sensor = $(this).attr('data-sensor');
