@@ -10,7 +10,7 @@ class ApiAuthMiddleware extends \Slim\Middleware {
     // Get reference to application
     $app = $this->app;
 
-    $api = new \Snilius\RackTemp\Api();
+    $api = new \Snilius\RackTemp\Api\Api();
 
     if (!isset($_SERVER['PHP_AUTH_USER'])) {
       header('WWW-Authenticate: Basic realm="My Realm"');
@@ -68,7 +68,7 @@ $app->group('/graph', function() use ($app) {
 
   // Graph for predefined span
   $app->get('/span/:span', 'verifySpan', function($span) use ($app) {
-    $api = new Snilius\RackTemp\Api\GraphApi();
+    $api = new \Snilius\RackTemp\Api\GraphApi();
     $graphData = $api->getSpan($span);
 
     $app->contentType('application/json');
