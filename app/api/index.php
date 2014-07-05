@@ -1,8 +1,5 @@
 <?php
-define("AUTOLOAD_PATH",'../lib/classes/');
 require_once '../lib/head.inc';      // will cause fail if not logged in!!!
-require_once 'vendor/autoload.php';
-
 
 /**
 * Slim middleware for basic http auth

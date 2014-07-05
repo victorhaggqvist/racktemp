@@ -9,5 +9,8 @@
           "name": "Victor Häggqvist",
           "email": "victor@snilius.com"
       }
-  ]
+  ],
+  "autoload": {
+      "psr-4": {"Snilius\\": "php/"}
+  }
 }
