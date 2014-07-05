@@ -85,6 +85,8 @@ class GraphApi {
 
     return json_encode($response);
   }
+
+
   private function getSpanDay() {
     $sensors = $this->sensorCtrl->getSensors();
 
@@ -118,12 +120,6 @@ class GraphApi {
     return json_encode($response);
   }
 
-  private function arrayToCSV($array) {
-    $csv = '';
-    foreach ($array as $a)
-      $csv .= implode(',', $a)."\n";
-
-    return $csv;
   private function generateDaySpan($sensor) {
     $list = array();
     for ($i=0; $i >= -24; $i--) {
