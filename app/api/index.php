@@ -3,7 +3,49 @@ define("AUTOLOAD_PATH",'../lib/classes/');
 require_once '../lib/head.inc';      // will cause fail if not logged in!!!
 require_once 'vendor/autoload.php';
 
-$app = new \Slim\Slim();
+
+/**
+* Slim middleware for basic http auth
+*/
+class ApiAuthMiddleware extends \Slim\Middleware {
+
+  public function call() {
+    // Get reference to application
+    $app = $this->app;
+
+    $api = new \Snilius\RackTemp\Api();
+
+    if (!isset($_SERVER['PHP_AUTH_USER'])) {
+      header('WWW-Authenticate: Basic realm="My Realm"');
+      header('HTTP/1.0 401 Unauthorized');
+      echo '401 Unauthorized';
+      exit;
+    } else {
+
+      $timestamp = $_SERVER['PHP_AUTH_USER'];
+      $token = $_SERVER['PHP_AUTH_PW'];
+
+      if ($api->checkKeyPair($timestamp, $token)) {
+        // All good, run application
+        $this->next->call();
+      }else{
+        echo 'Invalid token';
+        if ($timestamp == 'tea')
+          $app->status(418);
+        else
+          $app->status(401);
+      }
+    }
+  }
+}
+
+$app = new \Slim\Slim(array(
+    'log.level' => \Slim\Log::DEBUG,
+    'mode' => 'development',
+    'debug' => true
+));
+
+$app->add(new ApiAuthMiddleware());
 
 // Graph API
 $app->group('/graph', function() use ($app) {
@@ -32,7 +74,7 @@ $app->group('/graph', function() use ($app) {
     $api = new Snilius\RackTemp\Api\GraphApi();
     $graphData = $api->getSpan($span);
 
-    $app->contentType('text/csv');
+    $app->contentType('application/json');
     echo $graphData;
 
   });
@@ -55,7 +97,12 @@ $app->group('/graph', function() use ($app) {
 // });
 
 $app->get('/', function(){
+  echo 'Gz auth worked';
   // serve api doc, or just link github
+});
+
+$app->get('/test', function(){
+  echo 'test';
 });
 
 $app->run();
