@@ -1,6 +1,6 @@
 <?php
 use Snilius\Util\Bootstrap\Alert;
-use Snilius\RackTemp\Api;
+use Snilius\RackTemp\Api\Api;
 
 $api = new Api();
 if(isset($_GET['delkey'])){
