@@ -63,7 +63,7 @@ module.exports = function(grunt) {
         tasks: ['jshint:gruntfile']
       },
       racktemp: {
-        files: ['app/**/*.php','js/*.js','sass/*'],
+        files: ['**/*.php','js/*.js','sass/*'],
         tasks: ['jshint:main','uglify:dev', 'phplint','sass:racktemp'],
         options: {
           livereload: true
@@ -123,7 +123,7 @@ module.exports = function(grunt) {
       }
     },
     phplint: {
-      racktemp: ['app/**/*.php']
+      main: ['php/**/*.php', 'app/**/*.php']
     }
   });
 
