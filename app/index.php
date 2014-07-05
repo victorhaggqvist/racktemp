@@ -79,8 +79,7 @@ use Snilius\Sensor\SensorStats;
 
           <!-- <a href="#" class="btn btn-default" id="refresh"><span class="glyphicon glyphicon-refresh"></span> Refresh</a>-->
           <strong>Past Hour</strong><br>
-          <div id="today"></div>
-          <!-- <img src="img.current.php" style="min-width:290px; min-height: 170px; border: 1px #000 solid; background: 136px url('img/chartload.gif') no-repeat;" /> -->
+          <div id="today" style="height: 180px;"></div>
         </div><!-- /.col-sm-4 Latest Temperature -->
 
         <div class="col-sm-4">
@@ -157,8 +156,15 @@ use Snilius\Sensor\SensorStats;
         </div><!-- /.col-sm-4 Weekly Stats -->
 
       </div><!-- /.row -->
+      <div class="row">
+        <div class="col-md-12">
+
+        </div>
+      </div>
 
       <?php
+      $api = new \Snilius\RackTemp\Api();
+      echo $api->getJavaScriptHelper('web');
       }else { // show appropriate template
         require_once  TEMPLATES_PATH.'/'.$startTemplate;
       }
@@ -168,10 +174,6 @@ use Snilius\Sensor\SensorStats;
     </div><!-- /.container -->
 
   <?php if (strlen($startTemplate)<1): ?>
-
-  <script src="js/d3.min.js"></script>
-  <script src="js/c3.min.js"></script>
-  <script src="js/clock.js"></script>
   <script>
   // $('#refresh').click(function(){
   //   $.get( "lib/readtempcron.php", function( data ) {
@@ -179,36 +181,53 @@ use Snilius\Sensor\SensorStats;
   //     window.location="../";
   //   });
   // });
-
-  clock();
   </script>
   <script>
-  var dataAsColumn = [
-    ['x', '2013-12-03 15:25:03', '2013-12-03 15:30:03', '2013-12-03 15:35:03', '2013-12-03 15:40:03', '2013-12-03 15:45:03', '2013-12-03 15:50:03', '2013-12-03 15:55:03', '2013-12-03 16:00:03', '2013-12-03 16:05:03', '2013-12-03 16:10:03', '2013-12-03 16:15:03'],
-    ['top', 20.375, 20.312, 20.437, 20.375, 20.375, 20.500, 20.500, 20.500, 20.437, 20.375, 20.437],
-    ['bottom', 17.687, 17.37, 18.125, 18.125, 18.000, 18.000, 17.875, 17.750, 17.750, 17.875, 18.125]
-  ];
+  console.log(RackTemp);
+  RackTemp.clock();
+  function fetchData(url, callback){
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState !== 4 || xhr.status !== 200){ return; }
+      callback(xhr.responseText);
+    };
+    xhr.send();
+  }
 
-  c3.generate({
-    bindto: '#today',
-    data: {
-      x: 'x',
-      url: 'api/graph/span/hour',
-      type: 'spline'
-    },
-    axis: {
-      x: {
-        // label: 'Minute',
-        type: 'timeseries',
-        tick: {
-          format: '%M'
-        }
-      },
-      y: {
-        // label: 'Temprature'
-      }
-    }
+  fetchData(makeApiUrl('graph/span/hour'), function(resp){
+    var chartData = JSON.parse(resp);
+    chart.load({
+      columns: chartData
+    });
   });
+
+  var chart = c3.generate(RackTemp.chart.hour);
+
+  // var chart = c3.generate({
+  //     bindto: '#today',
+  //     data: {
+  //         columns: [],
+  //         type: 'spline',
+  //         x: 'x'
+  //     },
+  //     axis: {
+  //       x: {
+  //         type: 'timeseries',
+  //         tick: {
+  //           format: '%M'
+  //         }
+  //       }
+  //     },
+  //     tooltip: {
+  //       format: {
+  //         title: function (d) {
+  //           timeFormat = d3.time.format('%H:%M');
+  //            return timeFormat(d);
+  //          }
+  //       }
+  //     }
+  // });
   </script>
 <?php endif; ?>
 </body>
