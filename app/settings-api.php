@@ -33,7 +33,7 @@ if (isset($_POST['submit-api'])) {
 <table class="table">
 <tr><th>#</th><th>Name</th><th>Key</th><th>Last Access</th><th>Actions</th></tr>
 <?php
-$list = $api->listKey();
+$list = $api->getKeys();
 foreach ($list as $l) {
   $access=(isset($l['last_access']))?$l['last_access']:'<span class="text-muted">Never Accessed</span>';
   echo '<tr><td>'.$l['id'].'</td><td>'.$l['name'].'</td><td>'.$l['key'].'</td><td>'.$access.'</td><td style="padding:2px;"><a href="settings.php?delkey='.$l['id'].'#api" class="btn btn-danger">Delete</a></td></tr>';
