@@ -21,6 +21,16 @@ module.exports = function(grunt) {
     //     dest: 'app/js/racktemp.js'
     //   }
     // },
+    uglify: {
+      dev: {
+        options: {
+          beautify: true,
+          mangle: false
+        },
+        src: 'js/RackTemp.js',
+        dest: 'app/js/RackTemp.js'
+      },
+    },
     jshint: {
       options: {
         eqeqeq: true,
@@ -54,7 +64,7 @@ module.exports = function(grunt) {
       },
       racktemp: {
         files: ['app/**/*.php','js/*.js','sass/*'],
-        tasks: ['jshint:main','copy:js', 'phplint','sass:racktemp'],
+        tasks: ['jshint:main','uglify:dev', 'phplint','sass:racktemp'],
         options: {
           livereload: true
         }
@@ -119,7 +129,7 @@ module.exports = function(grunt) {
 
   // load plugs
   // grunt.loadNpmTasks('grunt-contrib-concat');
-  // grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-sass');
