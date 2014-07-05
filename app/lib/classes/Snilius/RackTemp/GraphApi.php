@@ -18,7 +18,9 @@ class GraphApi {
       case 'hour':
         return $this->getSpanHour();
         break;
-
+      case 'day':
+        return $this->getSpanDay();
+        break;
       default:
         # code...
         break;
