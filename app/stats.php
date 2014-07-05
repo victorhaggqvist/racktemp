@@ -15,43 +15,45 @@ require_once 'lib/head.inc' ;
           <div id="today"></div>
         </div>
         <div class="col-md-6">
-          <div id="today" style="width: 500px; height:200px;"></div>
+          <!-- <div id="today2" style="width: 500px; height:200px;"></div> -->
+          <div id="today2"></div>
         </div>
       </div>
 
       <?php require_once TEMPLATES_PATH.'/footer.php'; ?>
     </div><!-- /.container -->
   </body>
-  <script src="js/loadtotab.js"></script>
-  <script src="js/d3.min.js"></script>
-  <script src="js/c3.min.js"></script>
-  <script>
-  // var dataAsColumn = [
-  //   ['x', '2013-12-03 15:25:03', '2013-12-03 15:30:03', '2013-12-03 15:35:03', '2013-12-03 15:40:03', '2013-12-03 15:45:03', '2013-12-03 15:50:03', '2013-12-03 15:55:03', '2013-12-03 16:00:03', '2013-12-03 16:05:03', '2013-12-03 16:10:03', '2013-12-03 16:15:03'],
-  //   ['top', 20.375, 20.312, 20.437, 20.375, 20.375, 20.500, 20.500, 20.500, 20.437, 20.375, 20.437],
-  //   ['bottom', 17.687, 17.37, 18.125, 18.125, 18.000, 18.000, 17.875, 17.750, 17.750, 17.875, 18.125]
-  // ];
 
-  c3.generate({
-    bindto: '#today',
-    data: {
-      url: 'api/graph/span/hour',
-      x: 'x',
-      type: 'spline'
-    },
-    axis: {
-      x: {
-        // label: 'Minute',
-        type: 'timeseries',
-        tick: {
-          format: '%M'
-        }
-      },
-      y: {
-        // label: 'Temprature'
-      }
+  <?php
+  $api = new \Snilius\RackTemp\Api();
+   ?>
+
+  <script>
+  RackTemp.setApiAuth(<?php echo $api->getWebKey(); ?>); // jshint ignore:line
+  function fetchData(url, callback){
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState !== 4 || xhr.status !== 200){ return; }
+      callback(xhr.responseText);
+    };
+    xhr.send();
+  }
+
+  var chart = c3.generate(RackTemp.chart.today);
+
+  // fetch today
+  fetchData(makeApiUrl('graph/span/day'), function(resp){
+    var chartData = JSON.parse(resp);
+    if (RackTemp.isChartEmpty(chartData)) {
+      document.getElementById('today').innerHTML = 'No chart data';
+    }else{
+      chart.load({
+        columns: chartData
+      });
     }
   });
+
   </script>
 </html>
 
