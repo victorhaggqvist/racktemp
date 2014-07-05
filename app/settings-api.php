@@ -51,11 +51,11 @@ $token = hash('sha512', $timestamp . $apikey);
 <pre class="prettyprint">
 &lt;?php
 $apikey = 'a_sample_key';
-// value: $apikey = a_sample_key
+// value: a_sample_key
 $timestamp = time();
-// value: $time = <?php echo $timestamp."\n" ?>
+// value: <?php echo $timestamp."\n" ?>
 $token = hash('sha512', $timestamp . $apikey);
-// value: $token = '<?php echo $token; ?>'
+// value: '<?php echo $token; ?>'
 ?&gt;
 </pre>
 This is the used in HTTP Basic auth with the timestamp as user and token as password.
