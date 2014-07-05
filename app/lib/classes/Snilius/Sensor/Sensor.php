@@ -138,7 +138,7 @@ class Sensor extends SensorTools{
     $sql= "SELECT ROUND(AVG(`temp`),0) as tempavg FROM `sensor_".$this->name."` WHERE `timestamp` BETWEEN '".$date2."' AND '".$date1."'";
     $ret = $this->pdo->justQuery($sql);
     if ($ret[1] == 1) {
-      return array('tempavg' => $this->mktemp($ret[2][0]['tempavg']), 'timestamp' => $time2);
+      return array('tempavg' => $this->mktemp($ret[2][0]['tempavg']), 'timestamp' => $date2);
     }
     return false;
   }
