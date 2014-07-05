@@ -40,21 +40,23 @@ class GraphApi {
     for ($i = 0; $i < count($sensors); $i++) {
       $stat = $sensors[$i]->getTempList('hour');
 
-      // timestamps for the x axis in c3 chart
-      if ($i == 0) {
-        $response[$i] = array();
-        $response[$i][] = "x";
-        foreach ($stat as $s)
-          $response[$i][] = $s['timestamp'];
-      }
+      if ($stat != null) {
+        // timestamps for the x axis in c3 chart
+        if ($i == 0) {
+          $response[$i] = array();
+          $response[$i][] = "x";
+          foreach ($stat as $s)
+            $response[$i][] = $s['timestamp'];
+        }
 
-      // show only sensors with recent stats
-      if (count($stat)>1) {
-        $activeSensors++;
-        $response[$i+1] = array();
-        $response[$i+1][] = $sensors[$i]->name;
-        foreach ($stat as $s)
-          $response[$i+1][] = $s['temp'];
+        // show only sensors with recent stats
+        if (count($stat)>1) {
+          $activeSensors++;
+          $response[$i+1] = array();
+          $response[$i+1][] = $sensors[$i]->name;
+          foreach ($stat as $s)
+            $response[$i+1][] = $s['temp'];
+        }
       }
     }
 
