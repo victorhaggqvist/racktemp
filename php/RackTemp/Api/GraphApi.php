@@ -21,6 +21,9 @@ class GraphApi {
       case 'day':
         return $this->getSpanDay();
         break;
+      case 'week':
+        return $this->getSpanWeek();
+        break;
       default:
         # code...
         break;
@@ -113,7 +116,6 @@ class GraphApi {
         $response[$i+1] = array();
         $response[$i+1][] = $sensors[$i]->name;
         foreach ($stat as $s){
-          // var_dump($s);
           $response[$i+1][] = $s['tempavg'];
         }
       }
@@ -129,6 +131,20 @@ class GraphApi {
     }
     return $list;
   }
+
+  private function getSpanWeek() {
+    $sensors = $this->sensorCtrl->getSensors();
+
+    // $stats = array();
+    foreach ($sensors as $sensor) {
+      $stats[] = $sensor->getWeekStats();
+    }
+
+    $json = $this->makeJson($sensors, $stats);
+
+    return $json;
+  }
+
   /**
    * Create a json array from fetched stats to be pased on to c3
    * @param  array $sensors A array of sensors
