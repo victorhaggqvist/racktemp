@@ -59,7 +59,6 @@ var RackTemp = (function (){
       data: _default.data,
       axis: {
         x: {
-          label: 'Minute',
           type: 'timeseries',
           tick: {
             count: 12,
@@ -165,7 +164,7 @@ var RackTemp = (function (){
     _fetchData(_makeApiUrl('graph/span/day'), function(resp){
       var chartData = JSON.parse(resp);
       if (RackTemp.isChartEmpty(chartData)) {
-        document.getElementById(chart.today.bindto).innerHTML = 'No chart data';
+        document.getElementById(chart.today.bindto.substring(1)).innerHTML = 'No chart data';
       }else{
         chartToday.load({
           columns: chartData
@@ -181,7 +180,7 @@ var RackTemp = (function (){
     _fetchData(_makeApiUrl('graph/span/hour'), function(resp){
       var chartData = JSON.parse(resp);
       if (RackTemp.isChartEmpty(chartData)) {
-        document.getElementById(config.bindto).innerHTML = 'No chart data';
+        document.getElementById(config.bindto.substring(1)).innerHTML = 'No chart data';
       }else{
         chartHour.load({
           columns: chartData
@@ -197,7 +196,7 @@ var RackTemp = (function (){
     _fetchData(_makeApiUrl('graph/span/week'), function(resp){
       var chartData = JSON.parse(resp);
       if (RackTemp.isChartEmpty(chartData)) {
-        document.getElementById(config.bindto).innerHTML = 'No chart data';
+        document.getElementById(config.bindto.substring(1)).innerHTML = 'No chart data';
       }else{
         chartWeek.load({
           columns: chartData
