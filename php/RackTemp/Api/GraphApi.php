@@ -36,32 +36,40 @@ class GraphApi {
    */
   private function getSpanHour() {
     $sensors = $this->sensorCtrl->getSensors();
-    $activeSensors = 0;
-    $response = array();
 
-    // go through all sensors
-    for ($i = 0; $i < count($sensors); $i++) {
-      $stat = $sensors[$i]->getTempList('hour');
-
-      if ($stat != null) {
-        // timestamps for the x axis in c3 chart
-        if ($i == 0) {
-          $response[$i] = array();
-          $response[$i][] = "x";
-          foreach ($stat as $s)
-            $response[$i][] = $s['timestamp'];
-        }
-
-        // show only sensors with recent stats
-        if (count($stat)>1) {
-          $activeSensors++;
-          $response[$i+1] = array();
-          $response[$i+1][] = $sensors[$i]->name;
-          foreach ($stat as $s)
-            $response[$i+1][] = $s['temp'];
-        }
-      }
+    foreach ($sensors as $sensor) {
+      $stats[] = $sensor->getHourStats();
     }
+
+    $json = $this->makeJson($sensors, $stats);
+
+    return $json;
+    // $activeSensors = 0;
+    // $response = array();
+
+    // // go through all sensors
+    // for ($i = 0; $i < count($sensors); $i++) {
+    //   $stat = $sensors[$i]->getTempList('hour');
+
+    //   if ($stat != null) {
+    //     // timestamps for the x axis in c3 chart
+    //     if ($i == 0) {
+    //       $response[$i] = array();
+    //       $response[$i][] = "x";
+    //       foreach ($stat as $s)
+    //         $response[$i][] = $s['timestamp'];
+    //     }
+
+    //     // show only sensors with recent stats
+    //     if (count($stat)>1) {
+    //       $activeSensors++;
+    //       $response[$i+1] = array();
+    //       $response[$i+1][] = $sensors[$i]->name;
+    //       foreach ($stat as $s)
+    //         $response[$i+1][] = $s['temp'];
+    //     }
+    //   }
+    // }
 
     // $ret = '';
     // $cvsCols = $activeSensors + 1;
@@ -95,42 +103,22 @@ class GraphApi {
   private function getSpanDay() {
     $sensors = $this->sensorCtrl->getSensors();
 
-    $activeSensors = 0;
-    $response = array();
-
-    // go through all sensors
-    for ($i = 0; $i < count($sensors); $i++) {
-      $stat = $this->generateDaySpan($sensors[$i]);
-
-      // timestamps for the x axis in c3 chart
-      if ($i == 0) {
-        $response[$i] = array();
-        $response[$i][] = "x";
-        foreach ($stat as $s)
-          $response[$i][] = $s['timestamp'];
-      }
-
-      // show only sensors with recent stats
-      if (count($stat)>1) {
-        $activeSensors++;
-        $response[$i+1] = array();
-        $response[$i+1][] = $sensors[$i]->name;
-        foreach ($stat as $s){
-          $response[$i+1][] = $s['tempavg'];
-        }
-      }
+    foreach ($sensors as $sensor) {
+      $stats[] = $sensor->getDayStats();
     }
 
-    return json_encode($response);
+    $json = $this->makeJson($sensors, $stats);
+
+    return $json;
   }
 
-  private function generateDaySpan($sensor) {
-    $list = array();
-    for ($i=0; $i >= -24; $i--) {
-      $list[] = $sensor->getTempHourAverage($i);
-    }
-    return $list;
-  }
+  // private function generateDaySpan($sensor) {
+  //   $list = array();
+  //   for ($i=0; $i >= -24; $i--) {
+  //     $list[] = $sensor->getTempHourAverage($i);
+  //   }
+  //   return $list;
+  // }
 
   private function getSpanWeek() {
     $sensors = $this->sensorCtrl->getSensors();
