@@ -143,6 +143,98 @@ class Sensor extends SensorTools{
     return false;
   }
 
+  public function getTempTwoHourAverage($past = '') {
+    $time1 = strtotime(strlen($past)>0?$past.' hour':'now');
+    $time2 = strtotime(strlen($past)>0?($past-2).' hour':'-2 hour');
+    $date1 = date("Y-m-d H:i:s",$time1);
+    $date2 = date("Y-m-d H:i:s",$time2);
+
+    $sql= "SELECT ROUND(AVG(`temp`),0) as tempavg FROM `sensor_".$this->name."` WHERE `timestamp` BETWEEN '".$date2."' AND '".$date1."'";
+    $ret = $this->pdo->justQuery($sql);
+    if ($ret[1] == 1) {
+      return array('tempavg' => $this->mktemp($ret[2][0]['tempavg']), 'timestamp' => $date2);
+    }
+    return false;
+  }
+
+  public function getDayStats() {
+    $sql = 'SELECT temp, timestamp FROM (
+            SELECT
+              ROUND(AVG(temp)) AS temp,
+              timestamp,
+              ROUND(UNIX_TIMESTAMP(timestamp) / (60 * 60)) AS timekey
+            FROM sensor_'.$this->name.'
+            WHERE timestamp >= NOW() - INTERVAL 1 DAY
+            GROUP BY timekey
+            ORDER BY timestamp ASC) as must';
+
+  }
+
+  /**
+   * Get week stats
+   *
+   * Stat is the avg temp for spans of two hours in a period of a week from now
+   *
+   * @return array|boolean Matrix of stats or false if there is nothing
+   */
+  public function getWeekStats() {
+    $sql = 'SELECT temp, timestamp FROM (
+            SELECT
+              ROUND(AVG(temp)) AS temp,
+              DATE_ADD(
+                DATE_FORMAT(timestamp, "%Y-%m-%d %H:00:00"),
+                INTERVAL IF(HOUR(timestamp)%2<1,0,1) HOUR
+              ) AS timestamp,
+              ROUND(UNIX_TIMESTAMP(timestamp) / (120 * 60)) AS timekey
+            FROM sensor_'.$this->name.'
+            WHERE timestamp >= NOW() - INTERVAL 1 WEEK
+            GROUP BY timekey) as musthav';
+
+    $ret = $this->pdo->justQuery($sql);
+
+    if ($ret[0] == 1) {
+      $aWeekBack = strtotime(date('H')%2==0?'-1 week':'-1 week -1 hour');
+      $expected = $this->getExpectedTimes('week', $aWeekBack);
+
+      for ($i=0; $i < count($expected); $i++) {
+        $find = $this->recursive_array_search($expected[$i]['timestamp'],$ret[2]);
+
+        if (!$find) {
+          $expected[$i]['temp'] = null; // nulling makes a better chart then just skipping a time
+        }else{
+          $expected[$i]['temp'] = $this->mktemp($ret[2][$find]['temp']);
+        }
+      }
+
+      return $expected;
+    }
+
+    return false;
+  }
+
+  /**
+   * Genarates the timestamp that are expected to be within a complete set of stats
+   *
+   * Range expectations
+   * week, every 2 hours
+   *
+   * @param  [type] $range [description]
+   * @param  [type] $start [description]
+   * @return [type]        [description]
+   */
+  private function getExpectedTimes($range, $start) {
+    $span['week'] = ' +2 hour';
+    $times = array();
+
+    $t = $start;
+    while ($t < time()){
+      $times[]['timestamp'] = date("Y-m-d H:00:00", $t);
+      $t = strtotime(date("Y-m-d H:i", $t).$span[$range]);
+    }
+
+    return $times;
+  }
+
   /**
    * Find the row key of a value in a matix
    *
