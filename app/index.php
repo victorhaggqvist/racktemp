@@ -163,7 +163,7 @@ use Snilius\Sensor\SensorStats;
       </div>
 
       <?php
-      $api = new \Snilius\RackTemp\Api();
+      $api = new \Snilius\RackTemp\Api\Api();
       echo $api->getJavaScriptHelper('web');
       }else { // show appropriate template
         require_once  TEMPLATES_PATH.'/'.$startTemplate;
@@ -183,51 +183,9 @@ use Snilius\Sensor\SensorStats;
   // });
   </script>
   <script>
-  console.log(RackTemp);
   RackTemp.clock();
-  function fetchData(url, callback){
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', url, true);
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState !== 4 || xhr.status !== 200){ return; }
-      callback(xhr.responseText);
-    };
-    xhr.send();
-  }
-
-  fetchData(makeApiUrl('graph/span/hour'), function(resp){
-    var chartData = JSON.parse(resp);
-    chart.load({
-      columns: chartData
-    });
-  });
-
-  var chart = c3.generate(RackTemp.chart.hour);
-
-  // var chart = c3.generate({
-  //     bindto: '#today',
-  //     data: {
-  //         columns: [],
-  //         type: 'spline',
-  //         x: 'x'
-  //     },
-  //     axis: {
-  //       x: {
-  //         type: 'timeseries',
-  //         tick: {
-  //           format: '%M'
-  //         }
-  //       }
-  //     },
-  //     tooltip: {
-  //       format: {
-  //         title: function (d) {
-  //           timeFormat = d3.time.format('%H:%M');
-  //            return timeFormat(d);
-  //          }
-  //       }
-  //     }
-  // });
+  RackTemp.setApiInfo(<?php echo $api->getWebKey(); ?>); // jshint ignore:line
+  RackTemp.createChartHour();
   </script>
 <?php endif; ?>
 </body>
