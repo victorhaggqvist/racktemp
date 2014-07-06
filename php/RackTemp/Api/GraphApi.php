@@ -129,6 +129,34 @@ class GraphApi {
     }
     return $list;
   }
+  /**
+   * Create a json array from fetched stats to be pased on to c3
+   * @param  array $sensors A array of sensors
+   * @param  array $stats   A array of stats for passed sensors
+   * @return string         json
+   */
+  public function makeJson($sensors, $stats) {
+    $response = array();
+
+    // go through all sensors
+    for ($i = 0; $i < count($sensors); $i++) {
+      // timestamps for the x axis in c3 chart
+      if ($i == 0) {
+        $response[$i][] = "x";
+        foreach ($stats[$i] as $s)
+          $response[$i][] = $s['timestamp'];
+      }
+
+      // show only sensors with recent stats
+      if (count($stats[$i])>1) {
+        $response[$i+1][] = $sensors[$i]->name;
+        foreach ($stats[$i] as $s)
+          $response[$i+1][] = $s['temp'];
+      }
+    }
+
+    return json_encode($response);
+  }
 }
 
  ?>
