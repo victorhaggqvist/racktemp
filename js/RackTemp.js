@@ -1,5 +1,5 @@
 /* jshint unused: false */
-/* global d3 */
+/* global d3, c3 */
 
 var RackTemp = (function (){
 "use strict";
@@ -38,11 +38,32 @@ var RackTemp = (function (){
       data: _default.data,
       axis: {
         x: {
-          abel: 'Minute',
+          label: 'Hour',
           type: 'timeseries',
           tick: {
             count: 12,
             format: '%H'
+          }
+        },
+        y:{
+          label: {
+            text: 'Degree (C)',
+            position: 'outer-middle'
+          }
+        }
+      }
+    };
+
+    var week = {
+      bindto: '#week',
+      data: _default.data,
+      axis: {
+        x: {
+          label: 'Minute',
+          type: 'timeseries',
+          tick: {
+            count: 12,
+            format: '%d/%m %H'
           }
         },
         y:{
@@ -59,7 +80,8 @@ var RackTemp = (function (){
 
     return {
       hour: hour,
-      today: today
+      today: today,
+      week: week
     };
 
   })();
@@ -113,11 +135,86 @@ var RackTemp = (function (){
     return true;
   };
 
+  var _timestamp, _token, _host;
+
+  var _makeApiUrl = function (apiPath){
+    // TODO: Make protocol dynamic, maby send it with the vars from setApiInfo
+    // using PHP check on HTTP_REFERER for https
+    return 'http://'+_timestamp+':'+_token+'@'+_host+'/api/'+apiPath;
+  };
+
+  var setApiInfo = function(timestamp, token, host){
+    _timestamp = timestamp;
+    _token = token;
+    _host = host;
+  };
+
+  var _fetchData = function (url, callback){
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState !== 4 || xhr.status !== 200){ return; }
+      callback(xhr.responseText);
+    };
+    xhr.send();
+  };
+
+  var createChartToday = function(){
+    var chartToday = c3.generate(chart.today);
+
+    _fetchData(_makeApiUrl('graph/span/day'), function(resp){
+      var chartData = JSON.parse(resp);
+      if (RackTemp.isChartEmpty(chartData)) {
+        document.getElementById(chart.today.bindto).innerHTML = 'No chart data';
+      }else{
+        chartToday.load({
+          columns: chartData
+        });
+      }
+    });
+  };
+
+  var createChartHour = function(){
+    var config = chart.hour;
+    var chartHour = c3.generate(config);
+
+    _fetchData(_makeApiUrl('graph/span/hour'), function(resp){
+      var chartData = JSON.parse(resp);
+      if (RackTemp.isChartEmpty(chartData)) {
+        document.getElementById(config.bindto).innerHTML = 'No chart data';
+      }else{
+        chartHour.load({
+          columns: chartData
+        });
+      }
+    });
+  };
+
+  var createChartWeek = function(){
+    var config = chart.week;
+    var chartWeek = c3.generate(config);
+
+    _fetchData(_makeApiUrl('graph/span/week'), function(resp){
+      var chartData = JSON.parse(resp);
+      if (RackTemp.isChartEmpty(chartData)) {
+        document.getElementById(config.bindto).innerHTML = 'No chart data';
+      }else{
+        chartWeek.load({
+          columns: chartData
+        });
+      }
+    });
+  };
+
   return {
     chart: chart,
     clock: clock,
     loadToTab: loadToTab,
-    isChartEmpty: isChartEmpty
+    isChartEmpty: isChartEmpty,
+    setApiInfo: setApiInfo,
+    createChartToday: createChartToday,
+    createChartHour: createChartHour,
+    createChartWeek: createChartWeek
   };
 
 })();
