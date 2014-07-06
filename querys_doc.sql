@@ -10,3 +10,14 @@ SELECT
 FROM sensor_mysen
 WHERE timestamp >= NOW() - INTERVAL 1 WEEK
 GROUP BY timekey) as musthav;   # must have alias apperently
+
+# day stats
+SELECT temp, timestamp FROM (
+SELECT
+  ROUND(AVG(temp)) AS temp,
+  timestamp,
+  ROUND(UNIX_TIMESTAMP(timestamp) / (60 * 60)) AS timekey
+FROM sensor_mysen
+WHERE timestamp >= NOW() - INTERVAL 1 DAY
+GROUP BY timekey
+ORDER BY timestamp ASC) as must;
