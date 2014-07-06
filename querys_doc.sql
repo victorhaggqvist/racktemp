@@ -1,4 +1,4 @@
-# week stats
+# week stats, Sensor->getWeekStats
 SELECT temp, timestamp FROM (   # wrapper to strip of timekey
 SELECT
   ROUND(AVG(temp)) AS temp,
