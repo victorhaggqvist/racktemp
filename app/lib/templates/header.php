@@ -7,15 +7,4 @@
 <link rel="icon" href="favicon.ico" />
 <link rel="apple-touch-icon-precomposed" href="/img/apple-touch-icon-precomposed.png" type="image/png">
 
-<?php
-if($s->getValue('use-cdn') == 1){
-  echo '<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">';
-  echo '<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">';
-}else{
-  echo '<link rel="stylesheet" href="style/bootstrap.min.css">';
-  // echo '<link rel="stylesheet" href="style/bootstrap-theme.min.css">';
-}
-?>
-
 <link rel="stylesheet" href="style/racktemp.min.css">
-<link rel="stylesheet" href="style/c3.css">
