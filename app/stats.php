@@ -17,8 +17,13 @@ require_once 'lib/head.inc' ;
         </div>
         <div class="col-md-6">
           <h3>Week</h3>
-          <!-- <div id="today2" style="width: 500px; height:200px;"></div> -->
           <div id="week"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h3>Month</h3>
+          <div id="month"></div>
         </div>
       </div>
 
@@ -34,7 +39,7 @@ require_once 'lib/head.inc' ;
   RackTemp.setApiInfo(<?php echo $api->getWebKey(); ?>); // jshint ignore:line
   RackTemp.createChartToday();
   RackTemp.createChartWeek();
-
+  RackTemp.createChartMonth();
   </script>
 </html>
 
