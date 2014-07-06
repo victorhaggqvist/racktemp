@@ -142,6 +142,13 @@ class GraphApi {
   public function makeJson($sensors, $stats) {
     $response = array();
 
+    // var_dump($stats);
+    for ($i=0; $i < count($stats); $i++) {
+      if (!$stats[$i]) {
+        $stats[$i]=array(null,null);
+      }
+    }
+
     // go through all sensors
     for ($i = 0; $i < count($sensors); $i++) {
       // timestamps for the x axis in c3 chart
