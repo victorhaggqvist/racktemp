@@ -1,7 +1,6 @@
 #!/usr/bin/env php
 <?php
 
-define('AUTOLOAD_PATH', './app/lib/classes');
 require_once 'app/lib/head.inc';
 
 
