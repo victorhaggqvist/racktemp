@@ -11,25 +11,46 @@ module.exports = function(grunt) {
       '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
       ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
     // Task configuration.
-    // concat: {
-    //   options: {
-    //     banner: '<%= banner %>',
-    //     stripBanners: true
-    //   },
-    //   dist: {
-    //     src: ['js/*.js'],
-    //     dest: 'app/js/racktemp.js'
-    //   }
-    // },
+    concat: {
+      options: {
+        banner: '<%= banner %>',
+        stripBanners: true
+      },
+      css: {
+        src: 'build/*.css',
+        dest: 'app/style/racktemp.min.css'
+      }
+    },
     uglify: {
-      dev: {
+      js_dev: {
         options: {
           beautify: true,
           mangle: false
         },
         src: 'js/RackTemp.js',
-        dest: 'app/js/RackTemp.js'
+        dest: 'app/js/racktemp.min.js'
       },
+      js: {
+        options: {
+          stripBanners: true
+        },
+        src: 'js/RackTemp.js',
+        dest: 'app/js/racktemp.min.js'
+      },
+      bootstrap: {
+        options: {
+          stripBanners: true
+        },
+        src: 'bower_components/bootstrap-sass-twbs/assets/javascripts/bootstrap.js',
+        dest: 'app/js/bootstrap.min.js'
+      },
+      jquery: {
+        options: {
+          stripBanners: true
+        },
+        src: 'bower_components/jquery/dist/jquery.js',
+        dest: 'app/js/jquery.min.js'
+      }
     },
     jshint: {
       options: {
@@ -64,7 +85,7 @@ module.exports = function(grunt) {
       },
       racktemp: {
         files: ['**/*.php','js/*.js','sass/*'],
-        tasks: ['jshint:main','uglify:dev', 'phplint','sass:racktemp'],
+        tasks: ['jshint:main','uglify:js_dev', 'phplint','sass:racktemp', 'concat:css'],
         options: {
           livereload: true
         }
@@ -72,45 +93,28 @@ module.exports = function(grunt) {
     },
     copy: {
       d3: {
-        src: '<%= pkg.bwr.d3 %>',
-        dest:'<%= pkg.appjs %>d3.min.js'
+        src: 'bower_components/d3/d3.min.js',
+        dest:'app/js/d3.min.js'
       },
-      c3_js: {
-        src: '<%= pkg.bwr.c3.js %>',
-        dest:'<%= pkg.appjs %>c3.min.js'
-      },
-      c3_css: {
-        src: '<%= pkg.bwr.c3.css %>',
-        dest:'<%= pkg.appcss %>c3.css'
-      },
-      jquery: {
-        src: '<%= pkg.bwr.jquery %>',
-        dest:'<%= pkg.appjs %>jquery.min.js'
-      },
-      bootstrap_js: {
-        src: '<%= pkg.bwr.bootstrap.js %>',
-        dest:'<%= pkg.appjs %>bootstrap.min.js'
+      c3: {
+        src: 'bower_components/c3/c3.min.js',
+        dest:'app/js/c3.min.js'
       },
       bootstrap_fonts: {
         expand: true,
         flatten: true,
-        src: '<%= pkg.bwr.bootstrap.fonts %>',
-        dest:'<%= pkg.appcss %>'
-      },
-      js: {
-        expand: true,
-        flatten: true,
-        src: 'js/*',
-        dest: '<%= pkg.appjs %>'
+        src: 'bower_components/bootstrap-sass-twbs/assets/fonts/bootstrap/*',
+        dest:'app/style/'
       }
     },
     sass: {
       bootstrap: {
         options: {
-          style: 'compressed'
+          style: 'compressed',
+          loadPath: 'bower_components/bootstrap-sass-twbs/assets/stylesheets'
         },
         files: {
-          '<%= pkg.appcss %>bootstrap.min.css': 'sass/bootstrap.scss'
+          'build/bootstrap.min.css': 'sass/bootstrap.scss'
         }
       },
       racktemp: {
@@ -118,28 +122,39 @@ module.exports = function(grunt) {
           style: 'compressed'
         },
         files: {
-          '<%= pkg.appcss %>racktemp.min.css': 'sass/racktemp.scss'
+          'build/racktemp.min.css': 'sass/racktemp.scss'
         }
       }
     },
     phplint: {
       main: ['php/**/*.php', 'app/**/*.php']
-    }
+    },
+    cssmin: {
+      c3: {
+        files: {
+          'build/c3.min.css': 'bower_components/c3/c3.css'
+        }
+      }
+    },
+    clean: ["build", "app/js", "app/style"]
   });
 
   // load plugs
-  // grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-sass');
-  grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks("grunt-phplint");
   grunt.loadNpmTasks("grunt-notify");
+  grunt.loadNpmTasks("grunt-phplint");
+  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-sass');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
 
-  // grunt.registerTask('default', ['jshint', 'qunit', 'concat', 'uglify']);
-  grunt.registerTask('default', 'watch:racktemp');
-  grunt.registerTask('build',['phplint','sass','jshint','copy',]);
+  grunt.registerTask('jsdist', ['uglify:js', 'uglify:bootstrap', 'uglify:jquery']);
+  grunt.registerTask('default', ['sass', 'cssmin', 'jshint', 'copy', 'jsdist', 'concat', 'phplint']);
+  grunt.registerTask('build',['default']);
+  grunt.registerTask('cleanbuild',['clean', 'default']);
 
 };
