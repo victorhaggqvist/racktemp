@@ -25,7 +25,7 @@ class GraphApi {
         return $this->getSpanWeek();
         break;
       default:
-        # code...
+        trigger_error("Invalid span: $span", E_USER_ERROR);
         break;
     }
   }
