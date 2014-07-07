@@ -76,34 +76,34 @@ class Sensor extends SensorTools{
     return $res[2][0]['count'];
   }
 
-  public function getTempList($span,$format=true) {
-    $time = '';
-    switch ($span) {
-      case 'hour':
-        $time = strtotime("last Hour");
-        break;
-      case 'day':
-        $time = strtotime("last Day");
-        break;
-      case 'week':
-        $time = strtotime("last Week");
-        break;
-      default:
-        trigger_error("dow", E_USER_ERROR);
-        break;
-    }
+  // public function getTempList($span,$format=true) {
+  //   $time = '';
+  //   switch ($span) {
+  //     case 'hour':
+  //       $time = strtotime("last Hour");
+  //       break;
+  //     case 'day':
+  //       $time = strtotime("last Day");
+  //       break;
+  //     case 'week':
+  //       $time = strtotime("last Week");
+  //       break;
+  //     default:
+  //       trigger_error("dow", E_USER_ERROR);
+  //       break;
+  //   }
 
-    $sql = "SELECT timestamp, temp FROM  `sensor_".$this->name."` WHERE  `timestamp` >= '".date("Y-m-d H:i:s", $time)."'";
-    $res = $this->pdo->justQuery($sql);
-    if ($res[1] < 1)
-      return null;
-    $response = array();
-    foreach ($res[2] as &$row) {
-      if ($format)
-        $row['temp'] = $this->mktemp($row['temp']);
-    }
-    return $res[2];
-  }
+  //   $sql = "SELECT timestamp, temp FROM  `sensor_".$this->name."` WHERE  `timestamp` >= '".date("Y-m-d H:i:s", $time)."'";
+  //   $res = $this->pdo->justQuery($sql);
+  //   if ($res[1] < 1)
+  //     return null;
+  //   $response = array();
+  //   foreach ($res[2] as &$row) {
+  //     if ($format)
+  //       $row['temp'] = $this->mktemp($row['temp']);
+  //   }
+  //   return $res[2];
+  // }
 
   /**
    * Returns if there is any collected data from sensor
@@ -124,35 +124,51 @@ class Sensor extends SensorTools{
     $this->pdo->prepExec($sql,array($temp));
   }
 
-  /**
-   * Get an hour average temp. optionaly -n hours back
-   * @param  string|int $past Optionaly, N hours in past (-42)
-   * @return array            Array with temp 'tempavg' and first time in limit 'timestamp'
-   */
-  public function getTempHourAverage($past = '') {
-    $time1 = strtotime(strlen($past)>0?$past.' hour':'now');
-    $time2 = strtotime(strlen($past)>0?--$past.' hour':'-1 hour');
-    $date1 = date("Y-m-d H:i:s",$time1);
-    $date2 = date("Y-m-d H:i:s",$time2);
+  // /**
+  //  * Get an hour average temp. optionaly -n hours back
+  //  * @param  string|int $past Optionaly, N hours in past (-42)
+  //  * @return array            Array with temp 'tempavg' and first time in limit 'timestamp'
+  //  */
+  // public function getTempHourAverage($past = '') {
+  //   $time1 = strtotime(strlen($past)>0?$past.' hour':'now');
+  //   $time2 = strtotime(strlen($past)>0?--$past.' hour':'-1 hour');
+  //   $date1 = date("Y-m-d H:i:s",$time1);
+  //   $date2 = date("Y-m-d H:i:s",$time2);
 
-    $sql= "SELECT ROUND(AVG(`temp`),0) as tempavg FROM `sensor_".$this->name."` WHERE `timestamp` BETWEEN '".$date2."' AND '".$date1."'";
+  //   $sql= "SELECT ROUND(AVG(`temp`),0) as tempavg FROM `sensor_".$this->name."` WHERE `timestamp` BETWEEN '".$date2."' AND '".$date1."'";
+  //   $ret = $this->pdo->justQuery($sql);
+  //   if ($ret[1] == 1) {
+  //     return array('tempavg' => $this->mktemp($ret[2][0]['tempavg']), 'timestamp' => $date2);
+  //   }
+  //   return false;
+  // }
+
+  // public function getTempTwoHourAverage($past = '') {
+  //   $time1 = strtotime(strlen($past)>0?$past.' hour':'now');
+  //   $time2 = strtotime(strlen($past)>0?($past-2).' hour':'-2 hour');
+  //   $date1 = date("Y-m-d H:i:s",$time1);
+  //   $date2 = date("Y-m-d H:i:s",$time2);
+
+  //   $sql= "SELECT ROUND(AVG(`temp`),0) as tempavg FROM `sensor_".$this->name."` WHERE `timestamp` BETWEEN '".$date2."' AND '".$date1."'";
+  //   $ret = $this->pdo->justQuery($sql);
+  //   if ($ret[1] == 1) {
+  //     return array('tempavg' => $this->mktemp($ret[2][0]['tempavg']), 'timestamp' => $date2);
+  //   }
+  //   return false;
+  // }
+
+  public function getHourStats() {
+    $sql = 'SELECT temp, timestamp
+            FROM sensor_'.$this->name.'
+            WHERE timestamp >= NOW() - INTERVAL 1 HOUR';
+
     $ret = $this->pdo->justQuery($sql);
-    if ($ret[1] == 1) {
-      return array('tempavg' => $this->mktemp($ret[2][0]['tempavg']), 'timestamp' => $date2);
-    }
-    return false;
-  }
 
-  public function getTempTwoHourAverage($past = '') {
-    $time1 = strtotime(strlen($past)>0?$past.' hour':'now');
-    $time2 = strtotime(strlen($past)>0?($past-2).' hour':'-2 hour');
-    $date1 = date("Y-m-d H:i:s",$time1);
-    $date2 = date("Y-m-d H:i:s",$time2);
-
-    $sql= "SELECT ROUND(AVG(`temp`),0) as tempavg FROM `sensor_".$this->name."` WHERE `timestamp` BETWEEN '".$date2."' AND '".$date1."'";
-    $ret = $this->pdo->justQuery($sql);
-    if ($ret[1] == 1) {
-      return array('tempavg' => $this->mktemp($ret[2][0]['tempavg']), 'timestamp' => $date2);
+    if ($ret[1]>0) {
+      foreach ($ret[2] as &$row) {
+        $row['temp'] = $this->mktemp($row['temp']);
+      }
+      return $ret[2];
     }
     return false;
   }
@@ -168,6 +184,15 @@ class Sensor extends SensorTools{
             GROUP BY timekey
             ORDER BY timestamp ASC) as must';
 
+    $ret = $this->pdo->justQuery($sql);
+
+    if ($ret[1]>0) {
+      foreach ($ret[2] as &$row) {
+        $row['temp'] = $this->mktemp($row['temp']);
+      }
+      return $ret[2];
+    }
+    return false;
   }
 
   /**
@@ -212,18 +237,42 @@ class Sensor extends SensorTools{
     return false;
   }
 
+  public function getMonthStats() {
+    $sql = 'SELECT temp, timestamp FROM (
+            SELECT
+              ROUND(AVG(temp)) AS temp,
+              DATE_FORMAT(timestamp, "%Y-%m-%d %H:00:00") AS timestamp,
+              ROUND(UNIX_TIMESTAMP(timestamp) / (300 * 60)) AS timekey
+            FROM sensor_'.$this->name.'
+            WHERE timestamp >= NOW() - INTERVAL 1 MONTH
+            GROUP BY timekey) as must';
+
+    $ret = $this->pdo->justQuery($sql);
+
+    if ($ret[1]>0) {
+      foreach ($ret[2] as &$row) {
+        $row['temp'] = $this->mktemp($row['temp']);
+      }
+      return $ret[2];
+    }
+
+    return false;
+  }
+
   /**
    * Genarates the timestamp that are expected to be within a complete set of stats
    *
    * Range expectations
    * week, every 2 hours
+   * month, every 4 hours
    *
-   * @param  [type] $range [description]
-   * @param  [type] $start [description]
-   * @return [type]        [description]
+   * @param  string $range Timerange, see range expencations
+   * @param  int    $start Start unix timestamp
+   * @return array         Array of timestamps
    */
   private function getExpectedTimes($range, $start) {
     $span['week'] = ' +2 hour';
+    $span['month'] = ' +4 hour';
     $times = array();
 
     $t = $start;
