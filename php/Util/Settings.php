@@ -29,6 +29,30 @@ class Settings {
       return false;
   }
 
+  /**
+   * Get multiple values as one, to reduce requests
+   * @param  array $keyList Array of keys to get
+   * @return array          $array[key]=value
+   */
+  public function getValues($keyList) {
+    $sql = "SELECT `key`, `value` FROM settings WHERE";
+    foreach ($keyList as $key) {
+      $sql .= " `key` LIKE ? OR";
+    }
+    $sql = substr($sql, 0, strlen($sql)-3);
+
+    $query = $this->pdo->prepQuery($sql, $keyList);
+
+    if ($query[1]>0) {
+      $ret = array();
+      foreach ($query[2] as $q) {
+        $ret[$q['key']] = $q['value'];
+      }
+      return $ret;
+    }else
+      return false;
+
+  }
   public function setValue($key,$value) {
     $sql="INSERT INTO settings (`key`,`value`) VALUES (:key,:value)
           ON DUPLICATE KEY UPDATE
