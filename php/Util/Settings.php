@@ -53,6 +53,13 @@ class Settings {
       return false;
 
   }
+
+  /**
+   * Set a key/value-pair, created if not exists
+   * @param string $key   The key
+   * @param etring $value The value
+   * @return boolean      If set was successfull
+   */
   public function setValue($key,$value) {
     $sql="INSERT INTO settings (`key`,`value`) VALUES (:key,:value)
           ON DUPLICATE KEY UPDATE
