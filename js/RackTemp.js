@@ -28,7 +28,7 @@ var RackTemp = (function (){
       },
       tooltip: {
         format: {
-          title: function (d) { return timeFormat(d); }
+          title: function (d) { return hourTooltipFormat(d); }
         }
       }
     };
@@ -74,13 +74,41 @@ var RackTemp = (function (){
       }
     };
 
+    var month = {
+      bindto: '#month',
+      data: _default.data,
+      axis: {
+        x: {
+          type: 'timeseries',
+          tick: {
+            count: 24,
+            format: '%d/%m'
+          }
+        },
+        y:{
+          label: {
+            text: 'Degree (C)',
+            position: 'outer-middle'
+          }
+        }
+      },
+      tooltip: {
+        format: {
+          title: function (d) { return monthTooltipFormat(d); }
+        }
+      }
+    };
+
     // Format date object to HH:MM with leading zero
-    var timeFormat = d3.time.format('%H:%M');
+    var hourTooltipFormat = d3.time.format('%H:%M');
+
+    var monthTooltipFormat = d3.time.format('%d/%m %H');
 
     return {
       hour: hour,
       today: today,
-      week: week
+      week: week,
+      month: month
     };
 
   })();
@@ -205,6 +233,22 @@ var RackTemp = (function (){
     });
   };
 
+  var createChartMonth = function(){
+    var config = chart.month;
+    var chartMonth = c3.generate(config);
+
+    _fetchData(_makeApiUrl('graph/span/month'), function(resp){
+      var chartData = JSON.parse(resp);
+      if (RackTemp.isChartEmpty(chartData)) {
+        document.getElementById(config.bindto.substring(1)).innerHTML = 'No chart data';
+      }else{
+        chartMonth.load({
+          columns: chartData
+        });
+      }
+    });
+  };
+
   return {
     chart: chart,
     clock: clock,
@@ -213,7 +257,8 @@ var RackTemp = (function (){
     setApiInfo: setApiInfo,
     createChartToday: createChartToday,
     createChartHour: createChartHour,
-    createChartWeek: createChartWeek
+    createChartWeek: createChartWeek,
+    createChartMonth: createChartMonth
   };
 
 })();
