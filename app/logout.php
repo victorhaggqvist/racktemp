@@ -1,13 +1,9 @@
 <?php
 
-use Snilius\Auth;
-require_once('lib/config.inc');
-require_once(LIB_PATH.'/dbconfig.php');
-require_once(CLASS_PATH.'/PDOHelper.php');
-require_once(CLASS_PATH.'/Auth.php');
+require_once 'lib/head.inc';
 
-$auth = new Auth();
+$auth = new \Snilius\Auth();
 $auth->logout();
 
-header('Location: index.php');
+header('Location: ./login.php');
 ?>
