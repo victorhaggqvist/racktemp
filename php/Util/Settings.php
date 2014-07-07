@@ -48,6 +48,13 @@ class Settings {
       foreach ($query[2] as $q) {
         $ret[$q['key']] = $q['value'];
       }
+
+      // Handle keys not yet defined
+      $diff = $this->keyListDiff($keyList, $ret);
+      foreach ($diff as $key) {
+        $ret[$key] = false;
+      }
+
       return $ret;
     }else
       return false;
@@ -71,6 +78,21 @@ class Settings {
       return true;
     }else
       return false;
+  }
+
+  /**
+   * Check if a array of keys exists as keys in array
+   * @param  array $keyList    A array of keys, ie a array of strings
+   * @param  array $actualList The array to check if the given list of keys exists in
+   * @return array             The diff of keys
+   */
+  private function keyListDiff($keyList, $actualList) {
+    $diff = array();
+    foreach ($keyList as $key) {
+      if (!array_key_exists($key, $actualList))
+        $diff[] = $key;
+    }
+    return $diff;
   }
 }
 
