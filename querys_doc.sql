@@ -26,11 +26,8 @@ ORDER BY timestamp ASC) as must;
 SELECT temp, timestamp FROM (
 SELECT
   ROUND(AVG(temp)) AS temp,
-  DATE_ADD(
-    DATE_FORMAT(timestamp, "%Y-%m-%d %H:00:00"),
-    INTERVAL IF(HOUR(timestamp)%2<1,0,1) HOUR
-  ) AS timestamp,
+  DATE_FORMAT(timestamp, "%Y-%m-%d %H:00:00") AS timestamp,
   ROUND(UNIX_TIMESTAMP(timestamp) / (240 * 60)) AS timekey
 FROM sensor_mysen
 WHERE timestamp >= NOW() - INTERVAL 1 MONTH
-GROUP BY timekey;) as must;
+GROUP BY timekey) as must;
