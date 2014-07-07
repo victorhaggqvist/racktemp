@@ -43,4 +43,4 @@ sudo service php5-fpm restart
 sudo update-rc.d nginx defaults
 
 # make give access to shadow
-sudo usermod -a -G shadow www-data
+sudo usermod -a -G shadow vagrant
