@@ -41,3 +41,6 @@ sudo service php5-fpm restart
 
 # autostart nginx
 sudo update-rc.d nginx defaults
+
+# make give access to shadow
+sudo usermod -a -G shadow www-data
