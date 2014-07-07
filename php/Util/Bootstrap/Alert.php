@@ -12,7 +12,7 @@ class Alert {
    * @param  boolean $strong Include catch word
    * @return string          HTML to display
    */
-  public static function danger($msg, $strong=true) {
+  public static function danger($msg, $strong=false) {
     return Alert::makeAlert('danger', $msg, $strong);
   }
 
@@ -22,7 +22,7 @@ class Alert {
    * @param  boolean $strong Include catch word
    * @return string          HTML to display
    */
-  public static function warning($msg, $strong=true) {
+  public static function warning($msg, $strong=false) {
     return Alert::makeAlert('warning', $msg, $strong);
   }
 
@@ -32,7 +32,7 @@ class Alert {
    * @param  boolean $strong Include catch word
    * @return string          HTML to display
    */
-  public static function success($msg, $strong=true) {
+  public static function success($msg, $strong=false) {
     return Alert::makeAlert('success', $msg, $strong);
   }
 
@@ -42,7 +42,7 @@ class Alert {
    * @param  boolean $strong Include catch word
    * @return string          HTML to display
    */
-  public static function info($msg, $strong=true) {
+  public static function info($msg, $strong=false) {
     return Alert::makeAlert('info', $msg, $strong);
   }
 
@@ -54,7 +54,7 @@ class Alert {
    * @return string          Constructed HTML
    */
   private static function makeAlert($type, $msg, $strong) {
-    return '<div class="alert alert-'.$type.'">'.(($strong)?"<strong>Sweet!</strong> ":"").$msg.'</div>';
+    return '<div class="alert alert-'.$type.'">'.(($strong)?"<strong>$strong</strong> ":"").$msg.'<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button></div>';
   }
 }
 ?>
