@@ -8,8 +8,9 @@ $sensorController = new \Snilius\Sensor\SensorController();
 $sensors = $sensorController->getSensors();
 $pdo = new Snilius\Util\PDOHelper($GLOBALS['db_conf']);
 
-$time = strtotime('2014-07-02 24:00');
-$endtime = strtotime('2014-06-18 24:00');
+// $time = strtotime('2014-07-02 24:00');
+$time = strtotime('2014-06-18 24:00');
+$endtime = strtotime('2014-05-18 24:00');
 
 $temp['mysen'] = '24500';
 $temp['mysen2'] = '23500';
