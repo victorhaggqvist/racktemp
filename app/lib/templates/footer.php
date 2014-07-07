@@ -1,4 +1,8 @@
 <hr>
+
+<?php if ($_SERVER["DOCUMENT_URI"]=='/login.php'): ?>
+<footer><div style="margin-top: 10px; color: #666;">RackTemp v<?php echo file_get_contents('../VERSION'); ?> &copy; 2013-2014 Snilus</div></footer>
+<?php else: ?>
 <footer>
   <div class="row">
     <div class="col-md-4">
@@ -8,6 +12,7 @@
     <div class="col-md-4"><p>Licensed under GPLv3</p></div>
   </div>
 </footer>
+<?php endif; ?>
 <script src="js/jquery.min.js"></script>
 
 <?php
