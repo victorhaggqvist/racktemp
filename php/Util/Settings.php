@@ -14,14 +14,19 @@ class Settings {
     $this->pdo=new PDOHelper($GLOBALS['db_conf']);
   }
 
+  /**
+   * Get a value based on key
+   * @param  string $key The key
+   * @return string      The value
+   */
   public function getValue($key) {
     $sql="SELECT * FROM settings WHERE `key`=:key";
     $args=array('key'=>$key);
     $res=$this->pdo->prepQuery($sql,$args);
-    if($res[0]==1){
+    if($res[1]==1){
       return $res[2][0]['value'];
     }else
-      return $res;
+      return false;
   }
 
   public function setValue($key,$value) {
