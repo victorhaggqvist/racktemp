@@ -12,6 +12,10 @@ class Auth {
     $this->pdo = new PDOHelper($GLOBALS['db_conf']);
   }
 
+  /**
+   * Creates a new session for the current user
+   * @return boolean If creation was successfull
+   */
   public function createSession() {
     $id = session_id();
     $token = uniqid('',true);
@@ -32,7 +36,7 @@ class Auth {
 
  /**
   * Check if session exist
-  * @return bool session existensy
+  * @return bool     session existensy
   */
   public function checkSession() {
     $key = @$_COOKIE['key'];
@@ -77,10 +81,12 @@ class Auth {
    * with this since php5-auth-pam is not inte Rasbian repos anyway
    * Appearently mkpasswd is not installed in Rasbian-2013-09-25 which this project is based on,
    * this is solved by installing whois
+   * @param  string $username The username
+   * @param  string $password The password
+   * @return boolean          If valid
    */
   public function validateLogin($username, $password) {
       $shadow = explode("$", shell_exec("cat /etc/shadow | grep " . $username . " | awk -F : '{print $2}'"));
-      print_r($shadow);
       if (count($shadow) < 3) {
         return 0;
       } else {
@@ -100,7 +106,7 @@ class Auth {
         }
         $pass = shell_exec("mkpasswd -m " . $encription . " " . $password . " " . $shadow['2'] . "");
         $this->username = $username;
-        return (trim(implode("$", $shadow)) == trim($pass) ? 1 : 0);
+        return (trim(implode("$", $shadow)) == trim($pass) ? true : false);
       }
   }
 }
