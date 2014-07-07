@@ -1,4 +1,4 @@
-/* jshint unused: false */
+/* jshint unused: false, devel: true */
 /* global d3, c3 */
 
 var RackTemp = (function (){
@@ -249,6 +249,46 @@ var RackTemp = (function (){
     });
   };
 
+  var _smtpPresetsSet = [{
+    "host": "smtp.gmail.com",
+    "port": "465",
+    "encryption": 1 // TLS
+  }];
+
+  var smtpSettingsSetup = function(){
+     var _smtpPresets = document.getElementById('smtp-presets');
+     var _smtpHost = document.getElementById('smtp-host');
+     var _smtpPort = document.getElementById('smtp-port');
+     var _smtpEncryption = document.getElementById('smtp-encryption');
+     var _smtpAuth = document.getElementById('smtp-auth');
+     var _smtpUser = document.getElementById('smtp-user');
+     var _smtpPassword = document.getElementById('smtp-password');
+
+     _smtpPresets.onchange = function(e){
+        var _currentPreset = _smtpPresets.options[_smtpPresets.selectedIndex].value;
+
+        if (_smtpPresetsSet[_currentPreset] !== undefined) {
+          _smtpHost.value = _smtpPresetsSet[_currentPreset].host;
+          _smtpPort.value = _smtpPresetsSet[_currentPreset].port;
+          _smtpEncryption.selectedIndex = _smtpPresetsSet[_currentPreset].encryption;
+        }
+     };
+
+     _smtpAuth.onclick = function(){
+      if (!_smtpAuth.checked) {
+        _smtpUser.disabled = true;
+        _smtpPassword.disabled = true;
+        _smtpUser.required = false;
+        _smtpPassword.required = false;
+      }else {
+        _smtpUser.disabled = false;
+        _smtpPassword.disabled = false;
+        _smtpUser.required = true;
+        _smtpPassword.required = true;
+      }
+     };
+  };
+
   return {
     chart: chart,
     clock: clock,
@@ -258,7 +298,8 @@ var RackTemp = (function (){
     createChartToday: createChartToday,
     createChartHour: createChartHour,
     createChartWeek: createChartWeek,
-    createChartMonth: createChartMonth
+    createChartMonth: createChartMonth,
+    smtpSettingsSetup: smtpSettingsSetup
   };
 
 })();
