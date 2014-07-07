@@ -24,6 +24,9 @@ class GraphApi {
       case 'week':
         return $this->getSpanWeek();
         break;
+      case 'month':
+        return $this->getSpanMonth();
+        break;
       default:
         trigger_error("Invalid span: $span", E_USER_ERROR);
         break;
@@ -133,6 +136,19 @@ class GraphApi {
     return $json;
   }
 
+  private function getSpanMonth() {
+    $sensors = $this->sensorCtrl->getSensors();
+
+    // $stats = array();
+    foreach ($sensors as $sensor) {
+      $stats[] = $sensor->getMonthStats();
+    }
+
+    $json = $this->makeJson($sensors, $stats);
+
+    return $json;
+  }
+
   /**
    * Create a json array from fetched stats to be pased on to c3
    * @param  array $sensors A array of sensors
@@ -142,7 +158,6 @@ class GraphApi {
   public function makeJson($sensors, $stats) {
     $response = array();
 
-    // var_dump($stats);
     for ($i=0; $i < count($stats); $i++) {
       if (!$stats[$i]) {
         $stats[$i]=array(null,null);
