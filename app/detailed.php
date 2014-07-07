@@ -70,5 +70,7 @@ use Snilius\Util\Paginator;
       ?>
     </div><!-- /.container -->
   </body>
-  <script src="js/loadtotab.js"></script>
+  <script>
+    RackTemp.loadToTab();
+  </script>
 </html>
