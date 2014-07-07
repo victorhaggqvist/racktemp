@@ -9,7 +9,6 @@ require_once 'lib/head.inc';
   <body>
     <?php require_once TEMPLATES_PATH.'/menu.php'; ?>
     <div class="container wrapper">
-      <h1>Settings</h1>
 
       <ul class="nav nav-tabs">
         <li class="active"><a href="#sensors" data-toggle="tab">Sensors</a></li>
