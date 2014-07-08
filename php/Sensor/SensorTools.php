@@ -10,16 +10,15 @@ namespace Snilius\Sensor;
 abstract class SensorTools {
   /**
    * Format temp
-   * @param unknown $input
+   * @param string $input
    * @param string $unit
    * @param string $round
    * @return number
    */
-  public function mktemp($input,$unit="c",$round=true){
+  public function mktemp($input, $unit="c", $round=true){
     if ($input == null)
       return null;
 
-    $ret=0;
     $input = explode('.', $input)[0];
     $temp = $this->py_slice($input, ':-3').'.'.substr($input,2,5);
     if($unit=="f"){
@@ -27,6 +26,7 @@ abstract class SensorTools {
       $temp=$t;
     }
 
+    $ret = 0;
     if($round)
       $ret=round($temp,1);
     else
