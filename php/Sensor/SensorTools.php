@@ -20,7 +20,8 @@ abstract class SensorTools {
       return null;
 
     $ret=0;
-    $temp=substr($input,0,2).'.'.substr($input,2,5);
+    $input = explode('.', $input)[0];
+    $temp = $this->py_slice($input, ':-3').'.'.substr($input,2,5);
     if($unit=="f"){
       $t=$temp*1.8+32;
       $temp=$t;
