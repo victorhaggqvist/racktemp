@@ -36,7 +36,7 @@ if (isset($_POST['submit-notification'])) {
     $s->setValue('tempt-'.$sensor->name.'-min', $_POST['tempt-'.$sensor->name.'-min']);
   }
 
-  $s->setValue('notifications-enabled', ($_POST['notifications-enabled']=="on")?1:0);
+  $s->setValue('notifications-enabled', (@$_POST['notifications-enabled']=="on")?1:0);
   $s->setValue('notifications-interval', $_POST['notifications-interval']);
 
   echo Alert::success('Settings updated');
