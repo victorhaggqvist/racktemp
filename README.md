@@ -22,9 +22,6 @@ sudo mv racktemp/* /var/www/  #move application to web root
 sudo rm -r racktemp/
 ```
 
-#Apache mods
-sudo a2enmod rewrite
-
 For a quick and easy install just download and run the installer script, [install.sh](https://raw.github.com/victorhaggqvist/racktemp/master/install.sh). It will essentially download the application and install MySQL and Apache.
 
 Type the following in your Pi's terminal to download and run the script
