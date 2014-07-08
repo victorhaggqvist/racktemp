@@ -1,37 +1,40 @@
 <?php
 
-// namespace Snilius\RackTemp;
+namespace Snilius\RackTemp\Api;
 
-// require_once LIB_PATH.'/../vendor/autoload.php';
+/**
+* Slim middleware for basic http auth
+*/
+class ApiAuthMiddleware extends \Slim\Middleware {
 
-// use Snilius\RackTemp\Api;
-// use Slim\Middleware;
+  public function call() {
+    // Get reference to application
+    $app = $this->app;
 
-// /**
-// * Slim middleware for basic http auth
-// */
-// class ApiAuthMiddleware extends \Slim\Middleware {
+    $api = new \Snilius\RackTemp\Api\Api();
 
-//   public function call() {
-//     // Get reference to application
-//     $app = $this->app;
+    if (!isset($_SERVER['PHP_AUTH_USER'])) {
+      header('WWW-Authenticate: Basic realm="My Realm"');
+      header('HTTP/1.0 401 Unauthorized');
+      echo '401 Unauthorized';
+      exit;
+    } else {
 
-//     $api = new Api();
+      $timestamp = $_SERVER['PHP_AUTH_USER'];
+      $token = $_SERVER['PHP_AUTH_PW'];
 
-//     $timestamp = $_SERVER['PHP_AUTH_USER'];
-//     $token = $_SERVER['PHP_AUTH_PW'];
-
-//     if ($api->checkKeyPair($timestamp, $token)) {
-//       echo 'all good';
-//     }else{
-//       echo 'booooooooooooo';
-//       $app->stop();
-//     }
-
-//     // Run inner middleware and application
-//     $this->next->call();
-
-//   }
-// }
+      if ($api->checkKeyPair($timestamp, $token)) {
+        // All good, run application
+        $this->next->call();
+      }else{
+        echo 'Invalid token';
+        if ($timestamp == 'tea')
+          $app->status(418);
+        else
+          $app->status(401);
+      }
+    }
+  }
+}
 
  ?>
