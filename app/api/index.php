@@ -1,5 +1,5 @@
 <?php
-require_once '../lib/head.inc';      // will cause fail if not logged in!!!
+require_once '../lib/head.inc';
 
 /**
 * Slim middleware for basic http auth
