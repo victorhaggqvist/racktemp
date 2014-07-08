@@ -90,6 +90,7 @@ class Api {
             &&
             $this->checkTimestamp($timestamp)
           ){
+        $this->updateKeyLastUsed($key['name']);
         return true;
       }
     }
@@ -137,27 +138,14 @@ class Api {
 
     return $ret;
   }
-  // /**
-  //  * Get current temp
-  //  * @param unknown $param
-  //  */
-  // public function getCurrent() {
 
-  //   $sensorController = new SensorController();
-  //   $list = $sensorController->getSensors();
-  //   var_dump($list);
-  //   $ret = array();
-  //   foreach ($list as $l) {
-
-  //     $stat = new SensorStats($l['name']);
-  //     $data = $sensor->
-  //     $temp = $this->pdo->justQuery("SELECT temp, timestamp FROM sensor_".$l['name']." ORDER BY timestamp desc LIMIT 1");
-  //     $temp[2][0]['name']=$l['name'];
-  //     if($temp[1] == 1)
-  //       $ret[]=$temp[2][0];
-  //   }
-
-  //   return $ret;
-  // }
+  /**
+   * Update last used time for key;
+   * @param  string $keyNane The key name
+   */
+  public function updateKeyLastUsed($keyNane) {
+    $sql = 'UPDATE api_keys SET last_access = NOW() WHERE `name` = ?';
+    $this->pdo->prepExec($sql, array($keyNane));
+  }
 }
 ?>
