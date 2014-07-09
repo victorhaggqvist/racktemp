@@ -41,7 +41,44 @@ class Worker {
   }
 
   public function doNotifications() {
-    echo "doNotifications\n";
+    $s = new \Snilius\Util\Settings();
+    $enabled = $s->getValue('notifications-enabled');
+
+    if ($enabled == '1') {
+      $interval = intval($s->getValue('notifications-interval'))*60*60;
+      $lastnote = $s->getValue('notifications-last');
+      $lastnote = (!$lastnote)?strtotime('-'.($interval/60/60).' minutes'):$lastnote;
+
+      if (time()-$interval < $lastnote) {   // if interval has past
+        $sensorCtrl = new \Snilius\Sensor\SensorController();
+        $sensors = $sensorCtrl->getSensors();
+        $message = '';
+
+        foreach ($sensors as $sensor) {
+          $temp = $sensor->getList(0, 1);
+          if (strtotime($temp['timestamp']) > strtotime('-10 minutes')) { // if temp is new
+            $min = $s->getValue('tempt-'.$sensor->name.'-min');
+            $max = $s->getValue('tempt-'.$sensor->name.'-max');
+
+            if ($temp['temp'] <= $min) {
+              $message .= $sensor->name.' is bellow defined minimum a '.$sensor->mktemp($temp['temp'])."\n";
+              echo 'Triggered min';
+            }elseif ($temp['temp'] >= $max) {
+              $message .= $sensor->name.' is above defined maximum a '.$sensor->mktemp($temp['temp'])."\n";
+              echo 'Triggered max';
+            }
+          }
+        }
+
+        if (strlen($message) > 0) {
+          $msg = "RackTemp Temprature Notification\n\n";
+          $msg .= $message;
+
+          $mailer = new \Snilius\RackTemp\Mailer();
+          echo $mailer->sendNotification($msg);
+        }
+      }
+    }
   }
 }
 
