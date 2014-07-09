@@ -22,12 +22,12 @@ $set = $s->getValues(array('auth', 'use-cdn', 'manual-sensor-add', 'send-stats')
     <span class="help-block">Require users to login in order to access racktemp</span>
   </div>
 
-  <div class="checkbox">
+<!--   <div class="checkbox">
     <label>
       <input type="checkbox" name="use-cdn" <?php echo ($set['use-cdn']==1)?'checked':'';?>> Use CDN for Bootstrap
     </label>
     <span class="help-block">Load Bootstrap resources from CDN rather than from local machine. A internet connection are obviously required to do this</span>
-  </div>
+  </div> -->
 
   <div class="checkbox">
     <label>
