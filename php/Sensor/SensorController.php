@@ -86,7 +86,7 @@ class SensorController {
    */
   public function getAttachedSensors() {
     $exc = shell_exec("ls /sys/bus/w1/devices/ | grep 28"); //get all devices
-    if(strpos($exc, 'null') == false) // ie, no such file
+    if (strpos($exc, '28') === false) // ie, grep empty
       return null;
     $sensors = preg_split("/[\s]/",trim($exc));      //put them in an array
     return $sensors;
