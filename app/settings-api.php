@@ -4,7 +4,7 @@ use Snilius\RackTemp\Api\Api;
 
 $api = new Api();
 if(isset($_GET['delkey'])){
-  $id=$_GET['delkey'];
+  $id = $_GET['delkey'];
   if($api->deleteKey($id))
     echo Alert::success('Key removed');
   else
@@ -12,10 +12,11 @@ if(isset($_GET['delkey'])){
 }
 
 if (isset($_POST['submit-api'])) {
-  $name=@$_POST['name'];
-  $api = new Api();
+  $name = @$_POST['name'];
   if($api->newKey($name))
-    echo Alert::success('API key generated');
+    echo Alert::success('API key <strong>'.$name.'</strong> created');
+  else
+    echo Alert::warning('Some thing whent wrong.. give it another try');
 }
 ?>
 <h3>Add key</h3>
