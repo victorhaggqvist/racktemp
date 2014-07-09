@@ -44,7 +44,7 @@ foreach ($list as $l) {
 <h3>Usage</h3>
 
 <?php
-$apikey = 'UtUSD3gIKFz8BsPSQSJ2dmYc73b3Mu42uG1c8YibCEetgDj4g';
+$apikey = $api->getKey('web')['key'];
 $timestamp = time();
 $token = hash('sha512', $timestamp . $apikey);
  ?>
