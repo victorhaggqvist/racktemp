@@ -35,6 +35,10 @@ Create a new MySQL user for RackTemp.
 CREATE USER 'racktemp'@'localhost' IDENTIFIED BY '[racktemp password]';
 GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON racktemp.* TO 'racktemp'@'localhost';
 ```
+Initiate Database
+```sql
+source /home/pi/racktemp/bootstrap.sql;
+```
 
 Edit the file `/home/pi/racktemp/app/lib/config.inc` to correspond with the user you just created.
 
@@ -75,7 +79,13 @@ sudo crontab crons
 rm crons
 ```
 
-###7 Reboot
+###7 Install RackTemp dependencies
+```sh
+cd: cd racktemp: curl -sS https://getcomposer.org/installer | php
+php composer.phar install
+```
+
+###8 Reboot
 Now reboot your Raspberry Pi to make all changes go through.
 ```sh
 sudo reboot
