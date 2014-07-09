@@ -62,10 +62,10 @@ class Worker {
 
             if ($temp['temp'] <= $min) {
               $message .= $sensor->name.' is bellow defined minimum a '.$sensor->mktemp($temp['temp'])."\n";
-              echo 'Triggered min';
+              echo "Triggered min\n";
             }elseif ($temp['temp'] >= $max) {
               $message .= $sensor->name.' is above defined maximum a '.$sensor->mktemp($temp['temp'])."\n";
-              echo 'Triggered max';
+              echo "Triggered max\n";
             }
           }
         }
@@ -75,7 +75,7 @@ class Worker {
           $msg .= $message;
 
           $mailer = new \Snilius\RackTemp\Mailer();
-          echo $mailer->sendNotification($msg);
+          echo $mailer->sendNotification($msg)."\n";
         }
       }
     }
