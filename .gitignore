@@ -29,8 +29,8 @@ node_modules
 bower_components
 .sass-cache
 
-app/js
-app/style
+#app/js
+#app/style
 composer.phar
 vendor/
 
