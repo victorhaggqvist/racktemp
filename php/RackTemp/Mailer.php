@@ -12,31 +12,25 @@ use \Snilius\Util\Settings;
 class Mailer {
   private $pdo;
   private $settings;
+  private $mail;
 
   function __construct() {
     $this->pdo = new PDOHelper($GLOBALS['db_conf']);
     $this->settings = new Settings();
-  }
 
-  /**
-   * Send a testmail with current settings
-   * @return string Test result
-   */
-  public function sendTest() {
-    $s = $this->settings;
-    $mail = new \PHPMailer;
+    $this->mail = new \PDOHelper();
 
-    $mail->isSMTP();                                      // Set mailer to use SMTP
-    $mail->Host = $s->getValue('smtp-host');  // Specify main and backup SMTP servers
+    $this->mail->isSMTP();
+    $this->mail->Host = $this->settings->getValue('smtp-host');
 
-    if ($s->getValue('smtp-auth') == '1') {
-      $mail->SMTPAuth = true;                               // Enable SMTP authentication
-      $mail->Username = $s->getValue('smtp-user');                 // SMTP username
-      $mail->Password = $s->getValue('smtp-password');                           // SMTP password
+    if ($this->settings->getValue('smtp-auth') == '1') {
+      $this->mail->SMTPAuth = true;
+      $this->mail->Username = $this->settings->getValue('smtp-user');
+      $this->mail->Password = $this->settings->getValue('smtp-password');
     }
 
     $encryption = '';
-    switch ($s->getValue('smtp-encryption')) {
+    switch ($this->settings->getValue('smtp-encryption')) {
       case '1':
         $encryption = false;
         break;
@@ -49,26 +43,47 @@ class Mailer {
     }
 
     if ($encryption)
-      $mail->SMTPSecure = $encryption;                            // Enable encryption, 'ssl' also accepted
+      $this->mail->SMTPSecure = $encryption;
 
-    $mail->From = 'racktemp@example.com';
-    $mail->FromName = 'RackTemp Mailer';
-    $mail->addAddress($s->getValue('smtp-to'));               // Name is optional
-    $mail->addReplyTo('info@example.com', 'Information');
+    $this->mail->From = 'racktemp@example.com';
+    $this->mail->FromName = 'RackTemp Mailer';
+    $this->mail->addAddress($this->settings->getValue('smtp-to'));
 
-    $mail->WordWrap = 50;                                 // Set word wrap to 50 characters
+    $this->mail->WordWrap = 50;
+  }
 
-    $mail->Subject = 'RackTemp test mail';
-    $mail->Body    = 'This is the message body, it works!';
+  /**
+   * Send a testmail with current settings
+   * @return string Test result
+   */
+  public function sendTest() {
+    $this->mail->Subject = 'RackTemp test mail';
+    $this->mail->Body    = 'This is the message body, it works!';
 
     $ret = '';
-    if(!$mail->send()) {
-        $ret = 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
+    if(!$this->mail->send()) {
+      $ret = 'Message could not be sent. Mailer Error: ' . $this->mail->ErrorInfo;
     } else {
-        $ret = 'Message has been sent';
+      $ret = 'Message has been sent';
     }
 
     return $ret;
+  }
+
+  /**
+   * Send notification email
+   * @param  string $message The notification message
+   * @return string          Mail result
+   */
+  public function sendNotification($message) {
+    $this->mail->Subject = 'RackTemp Notification';
+    $this->mail->Body = $message;
+
+    if(!$this->mail->send()) {
+      return 'Notification could not be sent. Mailer Error: ' . $this->mail->ErrorInfo;
+    } else {
+      return 'Notification has been sent';
+    }
   }
 }
 
