@@ -45,7 +45,7 @@ class SensorController {
       return false;
 
     foreach ($sensors as $sensor) {
-      if (!in_array($sensor['uid'],$attached))
+      if (!in_array($sensor->uid,$attached))
         return false;
     }
     return true;
