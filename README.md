@@ -11,7 +11,7 @@ A temprature monitoring application for Raspberry Pi, built with the DS18B20 sen
 ###0 Install required packages (and make sure you are up-to-date)
 You will be asked to enter the root password for MySQL, make sure to remember it.
 ```sh
-sudo apt-get update && sudo apt-get -y updgrade && sudo apt-get -y install git nginx php5 php5-fpm php5-mysql php5-curl php5-cli mysql-server whois
+sudo apt-get update && sudo apt-get -y upgrade && sudo apt-get -y install git nginx php5 php5-fpm php5-mysql php5-curl php5-cli mysql-server whois
 ```
 
 ###1 Get latest RackTemp
