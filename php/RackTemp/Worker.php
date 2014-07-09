@@ -27,8 +27,8 @@ class Worker {
           //get temp
           $parts=split("=",$line[1]);
           $temp=$parts[count($parts)-1];
-          // $sensor->addDate($temp);
-          echo "dry $temp";
+          $sensor->addData($temp);
+          echo "Log temp {$sensor->name} $temp";
         }else{
           echo 'Failed to fetch temp from '.$sensor->uid.' at '.date('Y-m-d H:i:s')."\n";
           file_put_contents(__DIR__.'/read.log', 'Failed to fetch temp from '.$sensor->uid.' at '.date('Y-m-d H:i:s')."\n");
