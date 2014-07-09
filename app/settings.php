@@ -12,7 +12,7 @@ require_once 'lib/head.inc';
 
       <ul class="nav nav-tabs">
         <li class="active"><a href="#sensors" data-toggle="tab">Sensors</a></li>
-        <li><a href="#logging" data-toggle="tab">Logging</a></li>
+        <!-- <li><a href="#logging" data-toggle="tab">Logging</a></li> -->
         <li><a href="#general" data-toggle="tab">General</a></li>
         <li><a href="#api" data-toggle="tab">API</a></li>
         <li><a href="#notifications" data-toggle="tab">Notifications</a></li>
