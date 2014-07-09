@@ -111,10 +111,10 @@ if (isset($_POST['dropData'])) {
       Label: A custom name for the sensor, must be unique
     </div>
   </div>
-  <button type="submit" class="btn btn-primary" name="add">Add</button>
 <?php
 }
 ?>
+  <button type="submit" class="btn btn-primary" name="add">Add</button>
 </form>
 
   <h3>Existing sensors</h3>
