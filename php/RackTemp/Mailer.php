@@ -18,7 +18,7 @@ class Mailer {
     $this->pdo = new PDOHelper($GLOBALS['db_conf']);
     $this->settings = new Settings();
 
-    $this->mail = new \PDOHelper();
+    $this->mail = new \PHPMailer();
 
     $this->mail->isSMTP();
     $this->mail->Host = $this->settings->getValue('smtp-host');
