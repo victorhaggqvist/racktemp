@@ -81,7 +81,7 @@ rm crons
 
 ###7 Install RackTemp dependencies
 ```sh
-cd: cd racktemp: curl -sS https://getcomposer.org/installer | php
+cd; cd racktemp; curl -sS https://getcomposer.org/installer | php
 php composer.phar install
 ```
 
