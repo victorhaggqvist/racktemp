@@ -17,7 +17,7 @@
 
 <?php
 if($s->getValue('use-cdn') == 1)
-  echo '<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>';
+  echo '<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>';
 else
   echo '<script src="js/bootstrap.min.js"></script>';
 
