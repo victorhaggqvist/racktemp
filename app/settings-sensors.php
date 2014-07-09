@@ -14,6 +14,36 @@ if (isset($_POST['dropData'])) {
     echo Alert::danger("Data drop didn\'t go as expected, you may give it another try");
 }
 
+if (isset($_POST['add'])) {
+  $uids = $_POST['uid'];
+  $labels = $_POST['label'];
+  $post = $_POST;
+
+  $currentSensors = $sensorController->getSensors();
+
+  foreach ($uids as $key=> $uid) {
+    if (!empty($uid)){             //if field not empty
+      if (!empty($labels[$key])){  //if corrseponding labeĺ is set
+
+        $exists = false;
+        foreach ($currentSensors as $cs)
+          if($cs->uid == $uid)     //if not allready in
+            $exists = true;
+
+        if (!$exists){           //then we are good
+          $sensor = new Sensor($labels[$key],$uid);
+          if ($sensorController->addSensor($sensor))
+            echo Alert::success("Sensor ".$uid." added");
+          else
+            echo Alert::danger("DB mess");
+        }else
+          echo Alert::danger("It looks like ".$uid." already exists, so don't add it aganin");
+      }else
+        echo Alert::danger("Please specify a Label for sensor ".$uid);
+    }
+  }
+}
+
 ?>
 <form class="form-horizontal" role="form" action="settings.php" method="post">
   <?php
@@ -47,35 +77,6 @@ if (isset($_POST['dropData'])) {
   <h3>Add sensors <?php echo $label; ?></h3>
 
   <?php
-  if (isset($_POST['add'])) {
-    $uids = $_POST['uid'];
-    $labels = $_POST['label'];
-    $post = $_POST;
-
-    $currentSensors = $sensorController->getSensors();
-
-    foreach ($uids as $key=> $uid) {
-      if (!empty($uid)){             //if field not empty
-        if (!empty($labels[$key])){  //if corrseponding labeĺ is set
-
-          $exists = false;
-          foreach ($currentSensors as $cs)
-            if($cs->uid == $uid)     //if not allready in
-              $exists = true;
-
-          if (!$exists){           //then we are good
-            $sensor = new Sensor($labels[$key],$uid);
-            if ($sensorController->addSensor($sensor))
-              echo Alert::success("Sensor ".$uid." added");
-            else
-              echo Alert::danger("DB mess");
-          }else
-            echo Alert::danger("It looks like ".$uid." already exists, so don't add it aganin");
-        }else
-          echo Alert::danger("Please specify a Label for sensor ".$uid);
-      }
-    }
-  }
 
   if (count($new) > 0) {
     foreach ($new as $n) {
