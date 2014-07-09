@@ -55,7 +55,7 @@ class Worker {
         $message = '';
 
         foreach ($sensors as $sensor) {
-          $temp = $sensor->getList(0, 1);
+          $temp = $sensor->getList(0, 1)[0];
           if (strtotime($temp['timestamp']) > strtotime('-10 minutes')) { // if temp is new
             $min = $s->getValue('tempt-'.$sensor->name.'-min');
             $max = $s->getValue('tempt-'.$sensor->name.'-max');
