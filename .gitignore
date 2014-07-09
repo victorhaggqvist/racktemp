@@ -39,3 +39,4 @@ vendor/
 # composer.lock
 
 build
+config.inc
