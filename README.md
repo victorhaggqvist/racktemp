@@ -73,9 +73,9 @@ sudo sh -c 'echo "w1-therm" >> /etc/modules'
 
 ###6 Set cron job
 ```sh
-sudo crontab -l > crons
+crontab -l > crons
 echo "*/5 * * * * php /home/pi/racktemp/racktemp/cron.php >> /dev/null" >> crons
-sudo crontab crons
+crontab crons
 rm crons
 ```
 
