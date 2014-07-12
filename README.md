@@ -94,13 +94,13 @@ sudo reboot
 ```
 
 ##FAQ
-Q: How to add new users?
-
-A: Since RackTemp make use of the linux users, add a user by this shell command
+**How to add new users?**
+Since RackTemp make use of the linux users, add a user by this shell command
 
 ```sh
 $ sudo adduser [username] --no-create-home
 ```
 
-##Disclaimer
-RackTemp is provided as is without any warranty. I'm not responsible for any damage this software may cause.
+
+#License
+GPLv3
