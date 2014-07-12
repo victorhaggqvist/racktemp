@@ -40,3 +40,4 @@ vendor/
 
 build
 config.inc
+vagrantconf/dev.*
