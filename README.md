@@ -53,6 +53,21 @@ sudo ln -s /home/pi/racktemp/racktemp.conf /etc/nginx/sites-enabled/racktemp.con
 sudo update-rc.d nginx defaults
 sudo usermod -a -G shadow www-data
 ```
+This will give you RackTemps web UI over regular HTTP. But if you are like me you will likely want to have HTTPS too. If you don't care about HTTPS you could jump right to step 4.
+
+Here is how to enable https.
+
+First of you will need a Key and a Certificate (and well a CSR too). The following will give you a selfsigned cert.
+```
+mkdir -p /home/pi/racktemp/ssl; cd /home/pi/racktemp/ssl
+openssl genrsa -out racktemp.key 4096
+openssl req -new -key racktemp.key -out racktemp.csr -subj "/C=SE/ST=Some State/O=Foo/CN=example.com/"
+openssl x509 -req -in racktemp.csr -out racktemp.crt -signkey racktemp.key -days 1000
+```
+
+Now you will need to uncomment the https server part of the config file.
+
+Open `/home/pi/racktemp/racktemp.conf` and uncomment the server section in the bottom of the file with `listen 443` in it.
 
 ###4 Timezone
 Make sure you have your timezone set correctly. Otherwise you will get strange stats.
