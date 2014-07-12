@@ -167,7 +167,7 @@ var RackTemp = (function (){
   var _makeApiUrl = function (apiPath){
     // TODO: Make protocol dynamic, maby send it with the vars from setApiInfo
     // using PHP check on HTTP_REFERER for https
-    return 'http://'+_timestamp+':'+_token+'@'+_host+'/api/'+apiPath;
+    return '//'+_timestamp+':'+_token+'@'+_host+'/api/'+apiPath;
   };
 
   var setApiInfo = function(timestamp, token, host){
