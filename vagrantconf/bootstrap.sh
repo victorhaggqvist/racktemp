@@ -35,6 +35,13 @@ sudo echo "date.timezone = '${TZ}'" | sudo tee -a /etc/php5/fpm/php.ini
 sudo echo ${TZ} | sudo tee -a /etc/timezone
 sudo cp /usr/share/zoneinfo/${TZ} /etc/localtime
 
+# generate cert
+cd /vagrant/vagrantconf
+openssl genrsa -out dev.key 4096
+openssl req -new -key dev.key -out dev.csr -subj "/C=SE/ST=Stockholm/O=Foo/CN=example.com/"
+openssl x509 -req -in dev.csr -out dev.crt -signkey dev.key -days 500
+
+
 sudo service nginx restart
 sudo service mysql restart
 sudo service php5-fpm restart
