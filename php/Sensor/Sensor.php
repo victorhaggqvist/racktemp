@@ -9,7 +9,7 @@ use Snilius\Util\PDOHelper;
 /*
  * Sensor
  */
-class Sensor extends SensorTools{
+class Sensor extends SensorTools {
   public $name;  //alias/label for sensor
   public $id;    //DB id
   public $uid;   //hardware identifyer
@@ -112,6 +112,13 @@ class Sensor extends SensorTools{
   }
 
   public function getDayStats() {
+    $timeTreshhold = strtotime('-12 hours');
+    $recordedTime = $this->getFirstReportedDataTime();
+
+    if (!$recordedTime || strtotime($recordedTime)>$timeTreshhold) {
+      return array();
+    }
+
     $sql = 'SELECT temp, timestamp FROM (
             SELECT
               ROUND(AVG(temp)) AS temp,
@@ -141,6 +148,13 @@ class Sensor extends SensorTools{
    * @return array|boolean Matrix of stats or false if there is nothing
    */
   public function getWeekStats() {
+    $timeTreshhold = strtotime('-1 week');
+    $recordedTime = $this->getFirstReportedDataTime();
+
+    if (!$recordedTime || strtotime($recordedTime)>$timeTreshhold) {
+      return array();
+    }
+
     $sql = 'SELECT temp, timestamp FROM (
             SELECT
               ROUND(AVG(temp)) AS temp,
@@ -176,6 +190,13 @@ class Sensor extends SensorTools{
   }
 
   public function getMonthStats() {
+    $timeTreshhold = strtotime('-1 month');
+    $recordedTime = $this->getFirstReportedDataTime();
+
+    if (!$recordedTime || strtotime($recordedTime)>$timeTreshhold) {
+      return array();
+    }
+
     $sql = 'SELECT temp, timestamp FROM (
             SELECT
               ROUND(AVG(temp)) AS temp,
@@ -236,6 +257,20 @@ class Sensor extends SensorTools{
       if($needle===$value OR (is_array($value) && $this->recursive_array_search($needle,$value) !== false)) {
         return $current_key;
       }
+    }
+    return false;
+  }
+
+  /**
+   * Get the time for the firts reported data
+   * @return string|boolean   Timestamp string or false if no data
+   */
+  private function getFirstReportedDataTime() {
+    $sql = 'SELECT timestamp FROM  sensor_'.$this->name.' ORDER BY timestamp ASC LIMIT 0,1';
+
+    $ret = $this->pdo->justQuery($sql);
+    if ($ret[1]>0) {
+      return $ret[2][0]['timestamp'];
     }
     return false;
   }
