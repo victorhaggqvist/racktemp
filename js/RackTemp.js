@@ -186,13 +186,15 @@ var RackTemp = (function (){
     xhr.send();
   };
 
+  var _noChartData = '<div class="jumbotron"><p>No chart data jet</p></div>';
+
   var createChartToday = function(){
     var chartToday = c3.generate(chart.today);
 
     _fetchData(_makeApiUrl('graph/span/day'), function(resp){
       var chartData = JSON.parse(resp);
       if (RackTemp.isChartEmpty(chartData)) {
-        document.getElementById(chart.today.bindto.substring(1)).innerHTML = 'No chart data';
+        document.getElementById(chart.today.bindto.substring(1)).innerHTML = _noChartData;
       }else{
         chartToday.load({
           columns: chartData
@@ -208,7 +210,7 @@ var RackTemp = (function (){
     _fetchData(_makeApiUrl('graph/span/hour'), function(resp){
       var chartData = JSON.parse(resp);
       if (RackTemp.isChartEmpty(chartData)) {
-        document.getElementById(config.bindto.substring(1)).innerHTML = 'No chart data';
+        document.getElementById(config.bindto.substring(1)).innerHTML = _noChartData;
       }else{
         chartHour.load({
           columns: chartData
@@ -224,7 +226,7 @@ var RackTemp = (function (){
     _fetchData(_makeApiUrl('graph/span/week'), function(resp){
       var chartData = JSON.parse(resp);
       if (RackTemp.isChartEmpty(chartData)) {
-        document.getElementById(config.bindto.substring(1)).innerHTML = 'No chart data';
+        document.getElementById(config.bindto.substring(1)).innerHTML = _noChartData;
       }else{
         chartWeek.load({
           columns: chartData
@@ -240,7 +242,7 @@ var RackTemp = (function (){
     _fetchData(_makeApiUrl('graph/span/month'), function(resp){
       var chartData = JSON.parse(resp);
       if (RackTemp.isChartEmpty(chartData)) {
-        document.getElementById(config.bindto.substring(1)).innerHTML = 'No chart data';
+        document.getElementById(config.bindto.substring(1)).innerHTML = _noChartData;
       }else{
         chartMonth.load({
           columns: chartData
