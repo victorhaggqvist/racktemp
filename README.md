@@ -11,7 +11,7 @@ A temprature monitoring application for Raspberry Pi, built with the DS18B20 sen
 ###0 Install required packages (and make sure you are up-to-date)
 You will be asked to enter the root password for MySQL, make sure to remember it.
 ```sh
-sudo apt-get update && sudo apt-get -y upgrade && sudo apt-get -y install git nginx php5 php5-fpm php5-mysql php5-curl php5-cli mysql-server whois
+sudo apt-get update; sudo apt-get -y upgrade; sudo apt-get -y install git nginx php5 php5-fpm php5-mysql php5-curl php5-cli mysql-server whois
 ```
 
 ###1 Get latest RackTemp
@@ -39,6 +39,8 @@ Initiate Database
 ```sql
 source /home/pi/racktemp/bootstrap.sql;
 ```
+
+Type `\q` in the mysql prompt to exit it.
 
 Edit the file `/home/pi/racktemp/app/lib/config.inc` to correspond with the user you just created.
 
@@ -71,10 +73,10 @@ sudo sh -c 'echo "w1-gpio" >> /etc/modules'
 sudo sh -c 'echo "w1-therm" >> /etc/modules'
 ```
 
-###6 Set cron job
+###6 Add cron job
 ```sh
 crontab -l > crons
-echo "*/5 * * * * php /home/pi/racktemp/racktemp/cron.php >> /dev/null" >> crons
+echo "*/5 * * * * php /home/pi/racktemp/cron.php >> /dev/null" >> crons
 crontab crons
 rm crons
 ```
