@@ -67,7 +67,7 @@ openssl x509 -req -in racktemp.csr -out racktemp.crt -signkey racktemp.key -days
 
 Now you will need to uncomment the https server part of the config file.
 
-Open `/home/pi/racktemp/racktemp.conf` and uncomment the server section in the bottom of the file with `listen 443` in it.
+Open `/home/pi/racktemp/racktemp.conf` and uncomment the server section in the bottom of the file with `listen 443` in it. You might also uncomment the redirect on line 17.
 
 ###4 Timezone
 Make sure you have your timezone set correctly. Otherwise you will get strange stats.
