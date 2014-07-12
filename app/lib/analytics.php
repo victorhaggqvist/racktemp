@@ -6,6 +6,6 @@
 
   ga('create', 'UA-46767520-3', '<?php echo $_SERVER["SERVER_NAME"]; ?>');
   ga('send', 'pageview');
-  <?php echo isset($_COOKIE["PHPSESSID"])?"ga(‘set’, ‘&uid’, '".$_COOKIE["PHPSESSID"]."');":''; ?>
+  <?php echo isset($_COOKIE["PHPSESSID"])?"ga('set', '&uid', '".$_COOKIE["PHPSESSID"]."');":''; ?>
 
 </script>
