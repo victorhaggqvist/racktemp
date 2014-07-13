@@ -65,7 +65,7 @@ expect eof
 
 echo "$SECURE_MYSQL"
 
-cat /home/pi/racktemp/app/lib/config.inc.sample | sed 's/SillyPassword/${RACKTEMP_PW}/' > /home/pi/racktemp/app/lib/config.inc
+cat /home/pi/racktemp/app/lib/config.inc.sample | sed "s/SillyPassword/${RACKTEMP_PW}/" > /home/pi/racktemp/app/lib/config.inc
 
 echo "Configure Nginx..."
 sudo rm /etc/nginx/sites-enabled/default
