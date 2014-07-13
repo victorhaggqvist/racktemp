@@ -13,10 +13,10 @@ while [[ -z "$MYSQL_ROOT_PW" ]]; do
 done
 
 echo "Installing package dependencies..."
-sudo debconf-set-selections <<< 'mysql-server-5.5 mysql-server/root_password password ${MYSQL_ROOT_PW}'
-sudo debconf-set-selections <<< 'mysql-server-5.5 mysql-server/root_password_again password ${MYSQL_ROOT_PW}'
+echo "mysql-server-5.5 mysql-server/root_password password ${MYSQL_ROOT_PW}" | sudo debconf-set-selections
+echo "mysql-server-5.5 mysql-server/root_password_again password ${MYSQL_ROOT_PW}" | sudo debconf-set-selections
 
-echo "Updateing package cache.."
+echo "Getting system up-to-date.."
 sudo apt-get -qq update
 sudo apt-get -qq upgrade
 echo "Installing packages.."
@@ -26,13 +26,13 @@ echo "Getting latest RackTemp.."
 cd; git clone https://github.com/victorhaggqvist/racktemp.git racktemp
 
 echo "Configuring RackTemp.."
-RACKTEMP_PW = $(tr -dc A-Za-z0-9_ < /dev/urandom | head -c 20)
-SQL << EOF
+RACKTEMP_PW=$(tr -dc A-Za-z0-9_ < /dev/urandom | head -c 20)
+SQL=$(cat << EOF
 CREATE DATABASE racktemp;
 CREATE USER 'racktemp'@'localhost' IDENTIFIED BY '${RACKTEMP_PW}';
 GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON racktemp.* TO 'racktemp'@'localhost';
 source /home/pi/racktemp/configs/bootstrap.sql;
-EOF
+EOF)
 mysql -u root -p${MYSQL_ROOT_PW} -e "${SQL}"
 
 SECURE_MYSQL=$(expect -c "
@@ -76,8 +76,8 @@ read https
 
 if [[ -z "$https" || "$https" != "n" || "$https" != "N" ]]; then
   echo "HTTPS config.."
-  conf = $(head -n 22 configs/racktemp.conf)
-  sslstrip = $(tail -n 16 configs/racktemp.conf | cut -c2-)
+  conf=$(head -n 22 configs/racktemp.conf)
+  sslstrip=$(tail -n 16 configs/racktemp.conf | cut -c2-)
   echo "$conf $sslstrip" > configs/racktemp.conf
 
   echo "Generating certificate.."
