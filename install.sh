@@ -20,7 +20,7 @@ echo "Getting system up-to-date.."
 sudo apt-get -qq update
 sudo apt-get -qq upgrade
 echo "Installing packages.."
-sudo apt-get -qq install git nginx php5 php5-fpm php5-mysql php5-curl php5-cli mysql-server-5.5 whois expect
+sudo apt-get -qq install git nginx php5 php5-fpm php5-mysql php5-curl php5-cli mysql-server-5.5 whois expect vim
 
 echo "Getting latest RackTemp.."
 cd; git clone https://github.com/victorhaggqvist/racktemp.git racktemp
