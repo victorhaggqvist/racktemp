@@ -76,9 +76,9 @@ read https
 
 if [[ -z "$https" || "$https" != "n" || "$https" != "N" ]]; then
   echo "HTTPS config.."
-  conf=$(head -n 22 configs/racktemp.conf)
+  conf=$(head -n 21 configs/racktemp.conf)
   sslstrip=$(tail -n 16 configs/racktemp.conf | cut -c2-)
-  echo "$conf $sslstrip" > configs/racktemp.conf
+  echo -e "$conf \n $sslstrip" > configs/racktemp.conf
 
   echo "Generating certificate.."
   mkdir -p /home/pi/racktemp/ssl; cd /home/pi/racktemp/ssl
