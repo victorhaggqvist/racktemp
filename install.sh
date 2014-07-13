@@ -67,7 +67,7 @@ cat /home/pi/racktemp/app/lib/config.inc.sample | sed 's/SillyPassword/${RACKTEM
 
 echo "Configure Nginx..."
 sudo rm /etc/nginx/sites-enabled/default
-sudo ln -s /home/pi/racktemp/configs/racktemp.conf /etc/nginx/sites-enabled/racktemp.conf
+sudo ln -sf /home/pi/racktemp/configs/racktemp.conf /etc/nginx/sites-enabled/racktemp.conf
 sudo update-rc.d nginx defaults
 sudo usermod -a -G shadow www-data
 
