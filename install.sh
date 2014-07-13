@@ -31,7 +31,7 @@ SQL << EOF
 CREATE DATABASE racktemp;
 CREATE USER 'racktemp'@'localhost' IDENTIFIED BY '${RACKTEMP_PW}';
 GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON racktemp.* TO 'racktemp'@'localhost';
-source /home/pi/racktemp/bootstrap.sql;
+source /home/pi/racktemp/configs/bootstrap.sql;
 EOF
 mysql -u root -p${MYSQL_ROOT_PW} -e "${SQL}"
 
@@ -67,7 +67,7 @@ cat /home/pi/racktemp/app/lib/config.inc.sample | sed 's/SillyPassword/${RACKTEM
 
 echo "Configure Nginx..."
 sudo rm /etc/nginx/sites-enabled/default
-sudo ln -s /home/pi/racktemp/racktemp.conf /etc/nginx/sites-enabled/racktemp.conf
+sudo ln -s /home/pi/racktemp/configs/racktemp.conf /etc/nginx/sites-enabled/racktemp.conf
 sudo update-rc.d nginx defaults
 sudo usermod -a -G shadow www-data
 
