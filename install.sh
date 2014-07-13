@@ -30,12 +30,12 @@ git checkout dev
 echo "Configuring RackTemp.."
 RACKTEMP_PW=$(tr -dc A-Za-z0-9_ < /dev/urandom | head -c 20)
 SQL=$(cat << EOF
-CREATE DATABASE racktemp;
+CREATE DATABASE  IF NOT EXISTS racktemp;
 CREATE USER 'racktemp'@'localhost' IDENTIFIED BY '${RACKTEMP_PW}';
 GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON racktemp.* TO 'racktemp'@'localhost';
 source /home/pi/racktemp/configs/bootstrap.sql;
 EOF)
-mysql -u root -p${MYSQL_ROOT_PW} -e "${SQL}"
+echo "$SQL" | mysql -u root -p${MYSQL_ROOT_PW}
 
 SECURE_MYSQL=$(expect -c "
 
