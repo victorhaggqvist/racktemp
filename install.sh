@@ -24,6 +24,8 @@ sudo apt-get -qq install git nginx php5 php5-fpm php5-mysql php5-curl php5-cli m
 
 echo "Getting latest RackTemp.."
 cd; git clone https://github.com/victorhaggqvist/racktemp.git racktemp
+cd racktemp
+git checkout dev
 
 echo "Configuring RackTemp.."
 RACKTEMP_PW=$(tr -dc A-Za-z0-9_ < /dev/urandom | head -c 20)
