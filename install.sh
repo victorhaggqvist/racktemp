@@ -73,7 +73,7 @@ sudo ln -sf /home/pi/racktemp/configs/racktemp.conf /etc/nginx/sites-enabled/rac
 sudo update-rc.d nginx defaults
 sudo usermod -a -G shadow www-data
 
-echo -n "Do you want to enable HTTPS acess to RackTemp? [Y/n]:"
+echo -n "Do you want to enable HTTPS access to RackTemp? [Y/n]:"
 read response
 
 if [[ $response =~ ^([yY][eE][sS]|[yY]|)$ ]]; then
