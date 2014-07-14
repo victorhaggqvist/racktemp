@@ -1,10 +1,11 @@
 RackTemp
 ========
-A temprature monitoring application for Raspberry Pi, built with the DS18B20 sensor. This project is still in early development and I will hopefully have time to add lots of more fun stuff.
+A temprature monitoring application for Raspberry Pi, built with the DS18B20 sensor.
 
 ##Requirements
 - A Raspberry Pi
-- A DS18B20 sensor to read from, head over to Adafruits [tutorial](http://learn.adafruit.com/adafruits-raspberry-pi-lesson-11-ds18b20-temperature-sensing) for how to hook it up
+- A DS18B20 sensor to read from, head over to Adafruits [tutorial](http://learn.adafruit.com/adafruits-raspberry-pi-lesson-11-ds18b20-temperature-sensing) for how to hook it up. You can get a pack of 5 for like $4-5 on ebay.
+- 4.7K resistor(s), please referer to Adafruits tutorial for the how and why.
 
 ##Install
 
@@ -48,8 +49,6 @@ Initiate Database
 ```sql
 source /home/pi/racktemp/bootstrap.sql;
 ```
-
-Type `\q` in the mysql prompt to exit it.
 
 Edit the file `/home/pi/racktemp/app/lib/config.inc` to correspond with the user you just created.
 
