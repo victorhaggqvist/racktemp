@@ -8,6 +8,14 @@ A temprature monitoring application for Raspberry Pi, built with the DS18B20 sen
 
 ##Install
 
+You can either go the automated route and paste the following in the terminal of your Raspberry  Pi.
+
+```sh
+curl -L https://raw.githubusercontent.com/victorhaggqvist/racktemp/master/install.sh | bash
+```
+
+Or you can perform the steps bellow.
+
 ###0 Install required packages (and make sure you are up-to-date)
 You will be asked to enter the root password for MySQL, make sure to remember it.
 ```sh
