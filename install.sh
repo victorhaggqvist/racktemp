@@ -74,9 +74,9 @@ sudo update-rc.d nginx defaults
 sudo usermod -a -G shadow www-data
 
 echo -n "Do you want to enable HTTPS acess to RackTemp? [Y/n]:"
-read https
+read response
 
-if [[ -z "$https" || "$https" != "n" || "$https" != "N" ]]; then
+if [[ $response =~ ^([yY][eE][sS]|[yY]|)$ ]]; then
   echo "HTTPS config.."
   conf=$(head -n 21 configs/racktemp.conf)
   sslstrip=$(tail -n 16 configs/racktemp.conf | cut -c2-)
@@ -90,9 +90,9 @@ if [[ -z "$https" || "$https" != "n" || "$https" != "N" ]]; then
 fi
 
 echo -n "Do you want to update your Raspberry Pi's timezone according to your location? [Y/n]: "
-read SET_TZ
+read response
 
-if [[ -z "$SET_TZ" || "$SET_TZ" != "n" || "$SET_TZ" != "N" ]]; then
+if [[ $response =~ ^([yY][eE][sS]|[yY]|)$ ]]; then
   echo "Updateing timezone"
   cd; git clone https://github.com/victorhaggqvist/tzupdate.git
   export TZ=$(./tzupdate/tzupdate -p)
