@@ -1,0 +1,16 @@
+{
+  "name": "Snilius/RackTemp",
+  "require": {
+      "slim/slim": "2.*",
+      "phpmailer/phpmailer": "5.2.*"
+  },
+  "authors": [
+      {
+          "name": "Victor Häggqvist",
+          "email": "victor@snilius.com"
+      }
+  ],
+  "autoload": {
+      "psr-4": {"Snilius\\": "php/"}
+  }
+}

@@ -16,23 +16,44 @@ module.exports = function(grunt) {
         banner: '<%= banner %>',
         stripBanners: true
       },
-      dist: {
-        src: ['lib/<%= pkg.name %>.js'],
-        dest: 'dist/<%= pkg.name %>.js'
+      css: {
+        src: 'build/*.css',
+        dest: 'app/style/racktemp.min.css'
       }
     },
     uglify: {
-      options: {
-        banner: '<%= banner %>'
+      js_dev: {
+        options: {
+          beautify: true,
+          mangle: false
+        },
+        src: 'js/RackTemp.js',
+        dest: 'app/js/racktemp.min.js'
       },
-      dist: {
-        src: '<%= concat.dist.dest %>',
-        dest: 'dist/<%= pkg.name %>.min.js'
+      js: {
+        options: {
+          stripBanners: true
+        },
+        src: 'js/RackTemp.js',
+        dest: 'app/js/racktemp.min.js'
+      },
+      bootstrap: {
+        options: {
+          stripBanners: true
+        },
+        src: 'bower_components/bootstrap-sass-twbs/assets/javascripts/bootstrap.js',
+        dest: 'app/js/bootstrap.min.js'
+      },
+      jquery: {
+        options: {
+          stripBanners: true
+        },
+        src: 'bower_components/jquery/dist/jquery.js',
+        dest: 'app/js/jquery.min.js'
       }
     },
     jshint: {
       options: {
-        curly: true,
         eqeqeq: true,
         immed: true,
         latedef: true,
@@ -44,41 +65,96 @@ module.exports = function(grunt) {
         boss: true,
         eqnull: true,
         browser: true,
+        indent: 2,
         globals: {
-          jQuery: true
+          jQuery: true,
+          $: true
         }
       },
       gruntfile: {
         src: 'Gruntfile.js'
       },
-      lib_test: {
-        src: ['lib/**/*.js', 'test/**/*.js']
+      main: {
+        src: ['js/**/*.js']
       }
-    },
-    qunit: {
-      files: ['test/**/*.html']
     },
     watch: {
       gruntfile: {
         files: '<%= jshint.gruntfile.src %>',
         tasks: ['jshint:gruntfile']
       },
-      lib_test: {
-        files: '<%= jshint.lib_test.src %>',
-        tasks: ['jshint:lib_test', 'qunit']
+      racktemp: {
+        files: ['**/*.php','js/*.js','sass/*'],
+        tasks: ['jshint:main','uglify:js_dev', 'phplint','sass:racktemp', 'concat:css'],
+        options: {
+          livereload: true
+        }
       }
-    }
+    },
+    copy: {
+      d3: {
+        src: 'bower_components/d3/d3.min.js',
+        dest:'app/js/d3.min.js'
+      },
+      c3: {
+        src: 'bower_components/c3/c3.min.js',
+        dest:'app/js/c3.min.js'
+      },
+      bootstrap_fonts: {
+        expand: true,
+        flatten: true,
+        src: 'bower_components/bootstrap-sass-twbs/assets/fonts/bootstrap/*',
+        dest:'app/style/'
+      }
+    },
+    sass: {
+      bootstrap: {
+        options: {
+          style: 'compressed',
+          loadPath: 'bower_components/bootstrap-sass-twbs/assets/stylesheets'
+        },
+        files: {
+          'build/bootstrap.min.css': 'sass/bootstrap.scss'
+        }
+      },
+      racktemp: {
+        options: {
+          style: 'compressed'
+        },
+        files: {
+          'build/racktemp.min.css': 'sass/racktemp.scss'
+        }
+      }
+    },
+    phplint: {
+      main: ['php/**/*.php', 'app/**/*.php']
+    },
+    cssmin: {
+      c3: {
+        files: {
+          'build/c3.min.css': 'bower_components/c3/c3.css'
+        }
+      }
+    },
+    clean: ["build", "app/js", "app/style"]
   });
 
-  // These plugins provide necessary tasks.
+  // load plugs
+  grunt.loadNpmTasks("grunt-notify");
+  grunt.loadNpmTasks("grunt-phplint");
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-qunit');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-sass');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
-  // Default task.
-  grunt.registerTask('default', ['jshint', 'qunit', 'concat', 'uglify']);
+
+  grunt.registerTask('jsdist', ['uglify:js', 'uglify:bootstrap', 'uglify:jquery']);
+  grunt.registerTask('default', ['sass', 'cssmin', 'jshint', 'copy', 'jsdist', 'concat', 'phplint']);
+  grunt.registerTask('build',['default']);
+  grunt.registerTask('cleanbuild',['clean', 'default']);
 
 };
