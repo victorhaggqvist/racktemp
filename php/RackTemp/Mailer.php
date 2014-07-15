@@ -85,6 +85,11 @@ class Mailer {
       return 'Notification has been sent';
     }
   }
+
+  public function enableDebug($level) {
+    $this->mail->SMTPDebug = $level;
+    $this->mail->Debugoutput = 'echo';
+  }
 }
 
  ?>

@@ -67,6 +67,12 @@ $app->get('/test', function(){
   echo 'test';
 });
 
+$app->get('/test/mail/:debugMode', function($debugMode) {
+  $mailer = new \Snilius\RackTemp\Mailer();
+  $mailer->enableDebug($debugMode);
+  var_dump($mailer->sendTest());
+});
+
 $app->run();
 
  ?>
