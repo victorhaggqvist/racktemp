@@ -3,6 +3,9 @@ RackTemp API
 
 Docs for RackTemps REST API
 
+#API Endpoint
+`http(s)://racktemp.install/api/`
+
 #Authentication
 HTTP Basic Authentication using username and password genarated with API key.
 See example, timestamp as user and token as password.
@@ -20,18 +23,25 @@ $token = hash('sha512', $timestamp . $apikey);
 ```
 
 #Methods
+###Testing
 `GET /`
 Correct request will be awarded with message telling that your authentication wass successfull.
 
 `GET /test/[whatever-you-like]`
 Another test to verify that your url routing settings are correct.
 
-##Graph
+`GET /test/mail/[debug level]`
+
+Param | Description
+:--------|:--------------
+debug level | Value between 0-2 where 2 gives the most out put. Ref https://phpmailer.github.io/PHPMailer/classes/PHPMailer.html#property_SMTPDebug
+
+###Graph
 `GET /graph`
 Designed to give output suitable for [c3](http://c3js.org/).
 
-Alailable spans
-`GET /graph/span/hour`
-`GET /graph/span/day`
-`GET /graph/span/week`
-`GET /graph/span/month`
+`GET /graph/span/[span]`
+
+Param | Description
+:--------|:--------------
+span | hour, day, week, month
