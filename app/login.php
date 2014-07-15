@@ -14,7 +14,7 @@ if(isset($_POST['sm'])){
   if(!$auth->validateLogin($us,$pw)){
     echo 'fail';
   }else{
-    echo 'success!';
+    // echo 'success!';
     $auth->createSession();
     header("Location: index.php");
   }

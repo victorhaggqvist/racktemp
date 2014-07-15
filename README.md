@@ -47,7 +47,7 @@ GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON racktemp.* TO 'racktemp'@'local
 ```
 Initiate Database
 ```sql
-source /home/pi/racktemp/bootstrap.sql;
+source /home/pi/racktemp/configs/bootstrap.sql;
 ```
 
 Edit the file `/home/pi/racktemp/app/lib/config.inc` to correspond with the user you just created.
@@ -57,7 +57,7 @@ You might also want to run `mysql_secure_installation` to make the your install 
 ###3 Nginx config
 ```sh
 sudo rm /etc/nginx/sites-enabled/default
-sudo ln -s /home/pi/racktemp/racktemp.conf /etc/nginx/sites-enabled/racktemp.conf
+sudo ln -s /home/pi/racktemp/configs/racktemp.conf /etc/nginx/sites-enabled/racktemp.conf
 sudo update-rc.d nginx defaults
 sudo usermod -a -G shadow www-data
 ```
@@ -75,7 +75,7 @@ openssl x509 -req -in racktemp.csr -out racktemp.crt -signkey racktemp.key -days
 
 Now you will need to uncomment the https server part of the config file.
 
-Open `/home/pi/racktemp/racktemp.conf` and uncomment the server section in the bottom of the file with `listen 443` in it. You might also uncomment the redirect on line 17.
+Open `/home/pi/racktemp/configs/racktemp.conf` and uncomment the server section in the bottom of the file with `listen 443` in it. You might also uncomment the redirect on line 17.
 
 ###4 Timezone
 Make sure you have your timezone set correctly. Otherwise you will get strange stats.
