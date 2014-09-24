@@ -80,7 +80,7 @@ Open `/home/pi/racktemp/configs/racktemp.conf` and uncomment the server section 
 ###4 Timezone
 Make sure you have your timezone set correctly. Otherwise you will get strange stats.
 
-If you want to auto set it, run follworing in the terminal.
+If you want to auto set it, run the following in the terminal.
 ```sh
 cd; git clone https://github.com/victorhaggqvist/tzupdate.git
 export TZ=$(./tzupdate/tzupdate -p)
