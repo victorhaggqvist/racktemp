@@ -45,7 +45,6 @@ require_once 'lib/head.inc';
 
     <script>
     RackTemp.loadToTab();
-    RackTemp.smtpSettingsSetup();
     $('.dropData').click(function(){
       console.log($(this));
       var sensor = $(this).attr('data-sensor');
