@@ -14,7 +14,7 @@ $app->group('/graph', function() use ($app) {
 
   /**
    * Check if given span is valid
-   * @param  SlimRoute $route
+   * @param \Slim\Route $route
    */
   function verifySpan(\Slim\Route $route){
     $span = $route->getParams()['span'];
