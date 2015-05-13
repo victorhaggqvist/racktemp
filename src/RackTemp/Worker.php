@@ -3,7 +3,7 @@
 namespace Snilius\RackTemp;
 
 /**
-* Woker for background tasks
+* Worker for background tasks
 */
 class Worker {
 
