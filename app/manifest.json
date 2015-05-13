@@ -1,0 +1,13 @@
+{
+  "name": "RackTemp",
+  "icons": [
+    {
+      "src": "img/apple-touch-icon-precomposed.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "density": "4.0"
+    }
+  ],
+  "start_url": "index.php",
+  "display": "standalone"
+}
