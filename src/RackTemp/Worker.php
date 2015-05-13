@@ -1,6 +1,7 @@
 <?php
 
 namespace Snilius\RackTemp;
+use Snilius\Sensor\Sensor;
 
 /**
 * Worker for background tasks
@@ -14,19 +15,20 @@ class Worker {
     $sensors = $sensorCtrl->getSensors();
 
     foreach ($sensors as $sensor) {
+      /* @var Sensor $sensor  */
       $ext = shell_exec("ls /sys/bus/w1/devices | grep ".$sensor->uid);
 
-      if(strlen($ext)>0){//file found
-        $file=shell_exec("cat /sys/bus/w1/devices/".$sensor->uid."/w1_slave");
-        $line=split("\n",$file);
+      if (strlen($ext) > 0) {//file found
+        $file = shell_exec("cat /sys/bus/w1/devices/".$sensor->uid."/w1_slave");
+        $line = explode("\n", $file);
 
         //get status
-        $parts=split(" ",$line[0]);
-        $ok=$parts[count($parts)-1];
-        if($ok=="YES"){
+        $parts = explode(" ", $line[0]);
+        $ok = $parts[count($parts)-1];
+        if ($ok == "YES") {
           //get temp
-          $parts=split("=",$line[1]);
-          $temp=$parts[count($parts)-1];
+          $parts = explode("=", $line[1]);
+          $temp = $parts[count($parts)-1];
           $sensor->addData($temp);
           echo "Log temp {$sensor->name} $temp";
         }else{
@@ -55,6 +57,7 @@ class Worker {
         $message = '';
 
         foreach ($sensors as $sensor) {
+          /* @var Sensor $sensor  */
           $temp = $sensor->getList(0, 1)[0];
           if (strtotime($temp['timestamp']) > strtotime('-10 minutes')) { // if temp is new
             $min = $s->getValue('tempt-'.$sensor->name.'-min');
