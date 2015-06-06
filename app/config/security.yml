@@ -1,0 +1,25 @@
+security:
+    providers:
+        user_provider:
+            id: app.security.user_provider
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt|error)|css|images|js)/
+            security: false
+
+        login_firewall:
+            pattern:   ^/login$
+            anonymous: ~
+
+        secured_area:
+            pattern: ^/
+            simple_form:
+                authenticator: app.security.pamform_authenticator
+                check_path:    login_check
+                login_path:    login
+                provider: user_provider
+
+    access_control:
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: ROLE_USER }
