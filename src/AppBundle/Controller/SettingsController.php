@@ -16,6 +16,13 @@ use Symfony\Component\HttpFoundation\Request;
 class SettingsController extends Controller {
 
     /**
+     * @Route("/settings")
+     */
+    public function indexAction() {
+        return $this->redirectToRoute('settings_sensors');
+    }
+
+    /**
      * @Route("/settings/sensor", name="settings_sensors")
      */
     public function sensorsAction(Request $request) {
