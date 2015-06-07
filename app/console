@@ -24,4 +24,6 @@ if ($debug) {
 
 $kernel = new AppKernel($env, $debug);
 $application = new Application($kernel);
+$application->add(new \AppBundle\Console\CronCommand());
+$application->add(new \AppBundle\Console\ReadTempCommand());
 $application->run($input);

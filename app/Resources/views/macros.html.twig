@@ -1,0 +1,9 @@
+{% macro alert(type, msg) %}
+  <div class="alert alert-{{ type }}">
+    {{ msg }}<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+  </div>
+{% endmacro %}
+
+{#{% macro alert_success(msg) %}#}
+  {#alert('success'#}
+{#{% endmacro %}#}

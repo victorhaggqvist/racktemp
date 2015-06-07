@@ -3,10 +3,21 @@ security:
         user_provider:
             id: app.security.user_provider
 
+        api_key_user_provider:
+            id: app.security.api_key_user_provider
+
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt|error)|css|images|js)/
             security: false
+
+        api:
+            pattern: ^/api
+            stateless: true
+            simple_preauth:
+                authenticator: app.security.api_key_authenticator
+            provider: api_key_user_provider
 
         login_firewall:
             pattern:   ^/login$
@@ -19,6 +30,8 @@ security:
                 check_path:    login_check
                 login_path:    login
                 provider: user_provider
+            logout:
+                path: logout
 
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }

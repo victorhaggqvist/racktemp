@@ -21,7 +21,9 @@
         "sensio/framework-extra-bundle": "~3.0,>=3.0.2",
         "incenteev/composer-parameter-handler": "~2.0",
         "guzzlehttp/guzzle": "^6.0",
-        "symfony/process": "^2.7"
+        "symfony/process": "^2.7",
+        "mailgun/mailgun-php": "~1.7",
+        "symfony/console": "^2.7"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

@@ -1,6 +1,62 @@
-{% extends 'base.html.twig' %}
+{% extends '::rtbase.html.twig' %}
 
-{% block body %}
-  {% include '::menu.html.twig' %}
+{% block container %}
 
+  <div class="row">
+    <div class="col-sm-4">
+      <h2>Latest Temperature</h2>
+      <div class="pull-right" id="clock" style="font-size: 2em;"></div>
+      <p>
+
+        {% for sensor in renderSensors  %}
+        <strong>{{ sensor.name }}</strong>: {{ sensor.currentTemp.temp }}C <span class="text-muted">{{ sensor.currentTemp.timespan }}</span><br>
+        {% endfor %}
+      </p>
+
+      <!-- <a href="#" class="btn btn-default" id="refresh"><span class="glyphicon glyphicon-refresh"></span> Refresh</a>-->
+      <strong>Past Hour</strong><br>
+      <div id="today" style="height: 180px;"></div>
+    </div><!-- /.col-sm-4 Latest Temperature -->
+
+    <div class="col-sm-4">
+      <h2>Daily Stats</h2>
+      <p>
+        {% for s in stats %}
+          <strong>{{ s.name }}</strong><br>
+
+          {% if not s.nostat %}
+            Min: {{ s.min.temp }}C <span class="text-muted">{{ s.min.timestamp }}</span><br>
+            Max: {{ s.max.temp }}C <span class="text-muted">{{ s.max.timestamp }}</span><br>
+            Avg: {{ s.avg.temp }}C<br>
+          {% else %}
+            No fresh stats for today
+          {% endif %}
+        {% endfor %}
+      </p>
+      <!--<a href="#" class="btn btn-default">Today &raquo;</a>-->
+    </div><!-- /.col-sm-4 Daily Stats -->
+
+    <div class="col-sm-4">
+      <h2>Weekly Stats</h2>
+      <p>
+        {% if weekly == false %}
+          There were no active sensors this week
+        {% else %}
+          <strong>Min</strong>: {{ weekly.min }}C<br>
+          <strong>Max</strong>: {{ weekly.max }}C<br>
+          <strong>Avg</strong>: {{ weekly.avg }}C
+        {% endif %}
+      </p>
+      <!-- <a href="#" class="btn btn-default">More &raquo;</a>-->
+    </div><!-- /.col-sm-4 Weekly Stats -->
+
+  </div>
+{% endblock %}
+
+{% block pagescript %}
+  <script>
+  RackTemp.clock();
+  RackTemp.setApiInfo({{ webKey|raw }}); // jshint ignore:line
+  RackTemp.createChartHour();
+  </script>
 {% endblock %}

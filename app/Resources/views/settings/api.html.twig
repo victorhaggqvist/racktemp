@@ -1,0 +1,60 @@
+{% extends ':settings:base.html.twig' %}
+{% from '::macros.html.twig' import alert %}
+{% import '::macros.html.twig' as m %}
+
+{% block tab %}
+  {% if keydeleted %}
+    {{ alert('success', 'Key removed') }}
+  {% endif %}
+
+  {% if keycreated %}
+    {{  alert('success', "API key '#{keycreated}' created") }}
+  {% endif %}
+
+  <h3>Add key</h3>
+  <form class="form-horizontal" role="form" action="{{ url('settings_api') }}" method="post">
+    <div class="form-group">
+      <label for="name" class="col-lg-1 control-label">Name</label>
+      <div class="col-lg-3">
+        <input type="text" class="form-control" id="name" name="name" placeholder="Just so you can identify it">
+      </div>
+      <input type="submit" class="btn btn-primary" name="submit-api" value="Generate">
+    </div>
+  </form>
+
+  <h3>Keys</h3>
+  <table class="table">
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Key</th>
+      <th>Last Access</th>
+      <th>Actions</th>
+    </tr>
+
+    {% for k in keys %}
+      <tr>
+        <td>{{ k.id }}</td>
+        <td>{{ k.name }}</td>
+        <td>{{ k.key }}</td>
+        <td>{{ k.lastAccess ? k.lastAccess : 'Never Accessed' }}</td>
+        <td style="padding:2px;"><a href="{{ url('settings_api') }}?delkey={{ k.id }}" class="btn btn-danger">Delete</a></td>
+      </tr>
+    {% endfor %}
+
+  </table>
+  <h3>Usage</h3>
+
+  <pre class="prettyprint">
+&lt;?php
+  $apikey = 'a_sample_key';
+  // value: a_sample_key
+  $timestamp = time();
+  // value: {{ samplekey.timestamp }}
+  $token = hash('sha512', $timestamp . $apikey);
+  // value: {{ samplekey.token }}
+?&gt;
+  </pre>
+  This is the used in HTTP Basic auth with the timestamp as user and token as password.
+  <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+{% endblock %}

@@ -1,3 +1,4 @@
+{% if app.request.attributes.get('_route') != 'login' %}
 <header class="navbar navbar-inverse navbar-fixed-top" role="banner">
   <div class="container">
     <nav role="navigation">
@@ -15,16 +16,17 @@
       <!-- Menu -->
       <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav">
-          <li><a href="{{ url('homepage') }}">Dashboard</a>
-          <li><a href="detailed.php">Detailed</a>
-          <li><a href="stats.php">Statistics</a>
-          <li><a href="./settings.php">Settings</a>
+          <li {{ app.request.attributes.get('_route') == 'homepage'?'class="active"':'' }}><a href="{{ url('homepage') }}">Dashboard</a>
+          <li {{ app.request.attributes.get('_route') == 'details'?'class="active"':'' }}><a href="{{ url('details') }}">Detailed</a>
+          <li {{ app.request.attributes.get('_route') == 'stats'?'class="active"':'' }}><a href="{{ url('stats') }}">Statistics</a>
+          <li {{ 'settings' in app.request.attributes.get('_route') ?'class="active"':'' }}><a href="{{ url('settings_sensors') }}">Settings</a>
         </ul>
 
-        <p class="navbar-text pull-right">Signed in as <strong>{{ app.user.username }}</strong>, <a href="logout.php" class="navbar-link">Sign out</a></p>
+        <p class="navbar-text pull-right">Signed in as <strong>{{ app.user.username }}</strong>, <a href="{{ url('logout') }}" class="navbar-link">Sign out</a></p>
 
 
       </div><!-- /.navbar-collapse -->
     </nav>
   </div>
 </header>
+{% endif %}

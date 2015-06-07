@@ -18,7 +18,7 @@ module.exports = function(grunt) {
       },
       css: {
         src: 'build/*.css',
-        dest: 'app/Resources/public/css/racktemp.min.css'
+        dest: 'web/css/racktemp.min.css'
       }
     },
     uglify: {
@@ -28,28 +28,28 @@ module.exports = function(grunt) {
           mangle: false
         },
         src: 'js/RackTemp.js',
-        dest: 'app/Resources/public/js/racktemp.min.js'
+        dest: 'web/js/racktemp.min.js'
       },
       js: {
         options: {
           stripBanners: true
         },
         src: 'js/RackTemp.js',
-        dest: 'app/Resources/public/js/racktemp.min.js'
+        dest: 'web/js/racktemp.min.js'
       },
       bootstrap: {
         options: {
           stripBanners: true
         },
-        src: 'bower_components/bootstrap-sass-twbs/assets/javascripts/bootstrap.js',
-        dest: 'app/Resources/public/js/bootstrap.min.js'
+        src: 'bower_components/bootstrap-sass/assets/javascripts/bootstrap.js',
+        dest: 'web/js/bootstrap.min.js'
       },
       jquery: {
         options: {
           stripBanners: true
         },
         src: 'bower_components/jquery/dist/jquery.js',
-        dest: 'app/Resources/public/js/jquery.min.js'
+        dest: 'web/js/jquery.min.js'
       }
     },
     jshint: {
@@ -94,24 +94,24 @@ module.exports = function(grunt) {
     copy: {
       d3: {
         src: 'bower_components/d3/d3.min.js',
-        dest:'app/Resources/public/js/d3.min.js'
+        dest:'web/js/d3.min.js'
       },
       c3: {
         src: 'bower_components/c3/c3.min.js',
-        dest:'app/Resources/public/js/c3.min.js'
+        dest:'web/js/c3.min.js'
       },
       bootstrap_fonts: {
         expand: true,
         flatten: true,
-        src: 'bower_components/bootstrap-sass-twbs/assets/fonts/bootstrap/*',
-        dest:'app/Resources/public/css/'
+        src: 'bower_components/bootstrap-sass/assets/fonts/bootstrap/*',
+        dest:'web/css/'
       }
     },
     sass: {
       bootstrap: {
         options: {
           style: 'compressed',
-          loadPath: 'bower_components/bootstrap-sass-twbs/assets/stylesheets'
+          includePaths: ['bower_components/bootstrap-sass/assets/stylesheets/bootstrap']
         },
         files: {
           'build/bootstrap.min.css': 'sass/bootstrap.scss'
@@ -136,7 +136,7 @@ module.exports = function(grunt) {
         }
       }
     },
-    clean: ["build", "app/Resources/public/js", "app/Resources/public/css"]
+    clean: ["build", "web/js", "web/css"]
   });
 
   // load plugs
@@ -147,7 +147,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-sass');
+  grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
 

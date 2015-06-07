@@ -1,0 +1,79 @@
+{% extends ':settings:base.html.twig' %}
+{% import '::macros.html.twig' as m %}
+
+{% block tab %}
+  {% for s in addStatus %}
+    m.alert(s.status, s.msg)
+  {% endfor %}
+
+  <form class="form-horizontal" role="form" action="{{ url('settings_sensors') }}" method="post">
+    {% if manual_sensor_add %}
+    <p>Find you sensor by typing the following in the terminal <code>$ ls /sys/bus/w1/devices/</code>.
+      The directory you a looking for will start with <code>28-****</code></p>
+    {% endif %}
+
+    {% if new|length > 0 %}
+      {% set label='<span class="label label-success">{{ new|length }} sensors detected</span>'  %}
+    {% else %}
+      {% set label='<span class="label label-default">No new sensors detected</span>' %}
+    {% endif %}
+
+    <h3>Add sensors {{ label|raw }}</h3>
+
+    {% for n in new %}
+      <div class="form-group">
+        <label for="label" class="col-lg-2 control-label">Auto detected sensor</label>
+        <div class="col-lg-1">
+          <input type="text" class="form-control" id="label" name="label[]" placeholder="Label">
+        </div>
+        <div class="col-lg-4">
+          <input type="text" class="form-control" id="uid" name="uid[]" value="{{ n }}" placeholder="uid eg. 28-***">
+        </div>
+        <div class="col-lg-5 help-block">
+          Label: A custom name for the sensor, must be unique
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary" name="add">Add</button>
+    {% endfor %}
+
+    {% if manual_sensor_add %}
+      <div class="form-group">
+        <label for="label" class="col-lg-2 control-label">Sensor</label>
+        <div class="col-lg-1">
+          <input type="text" class="form-control" id="label" name="label[]" placeholder="Label">
+        </div>
+        <div class="col-lg-4">
+          <input type="text" class="form-control" id="uid" name="uid[]" placeholder="id eg. 28-***">
+        </div>
+        <div class="col-lg-5 help-block">
+          Label: A custom name for the sensor, must be unique
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary" name="add">Add</button>
+    {% endif %}
+
+  </form>
+
+  <h3>Existing sensors</h3>
+  <form class="form-horizontal" role="form" method="post">
+    {% if registered|length < 1 %}
+      There are no sensors yet
+    {% endif %}
+    {% for r in registered %}
+      <div class="form-group">
+        <label for="ext0" class="col-sm-2 control-label">Sensor {{ r.id }}</label>
+        <div class="col-sm-1">
+          <input type="text" class="form-control" id="ext0lable" value="{{ r.name }}" placeholder="label">
+        </div>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="ext0id" value="{{ r.uid }}" placeholder="id">
+        </div>
+        <div class="col-sm-3">
+          <a href="#" class="btn btn-danger">Remove</a>
+          <a href="#" class="btn btn-warning dropData" data-toggle="modal" data-target="#dropModal" data-sensor="{{ r.name }}" title="Drop all data collected by sensor">Drop Data</a>
+        </div>
+      </div>
+    {% endfor %}
+  </form>
+{% endblock %}
