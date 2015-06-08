@@ -65,14 +65,16 @@ class SensorController {
         $this->em->getConnection()->beginTransaction();
         try {
             $this->em->persist($sensor);
-            $rsm = new ResultSetMapping();
-            $query = $this->em->createNativeQuery(sprintf("CREATE TABLE IF NOT EXISTS `sensor_%s` (
+
+            $conn = $this->em->getConnection();
+            $sql = sprintf("CREATE TABLE IF NOT EXISTS `sensor_%s` (
               `id` int(11) NOT NULL AUTO_INCREMENT,
               `temp` int(11) NOT NULL,
               `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-              PRIMARY KEY (`id`))", preg_replace('/\s/', '_', $sensor->getName())),$rsm);
-            var_dump($query->getSQL());
-            $query->execute();
+              PRIMARY KEY (`id`))", preg_replace('/\s/', '_', $sensor->getName());
+            $conn->exec($sql);
+
+
         } catch (Exception $e) {
             $this->em->getConnection()->rollback();
             throw $e;
