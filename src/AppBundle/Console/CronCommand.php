@@ -55,6 +55,7 @@ class CronCommand extends ContainerAwareCommand {
         $resp = $client->send($req);
 
         if ($resp->getStatusCode() == 201) {
+            $output->writeln('data sent');
             $logger->info('data sent');
         } else {
             $logger->warning(sprintf('slave -> master failed: (%s) %s', $resp->getStatusCode(), $resp->getBody()));
