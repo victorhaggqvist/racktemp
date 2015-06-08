@@ -38,7 +38,7 @@ class CronCommand extends ContainerAwareCommand {
         $master = $this->getContainer()->getParameter('master_host');
         $apiKey = $this->getContainer()->getParameter('master_key');
 
-        if (!preg_match('http', $master)) {
+        if (!preg_match('/http/', $master)) {
             $output->writeln("there is no protocol in 'master_host'");
             return;
         }
