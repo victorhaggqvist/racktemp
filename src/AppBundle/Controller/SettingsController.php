@@ -143,7 +143,7 @@ class SettingsController extends Controller {
 
             $settings->set('auth', $auth ? 1 : 0);
             $settings->set('use-cdn', $useCdn ? 1 : 0);
-            $settings->set('manual-sensor-add', $manualSensorAdd ? 1 : 0);
+            $settings->set('manual-sensor-add', $manualSensorAdd == 'on' ? 1 : 0);
             $settings->set('send-stats', $sendStats ? 1 : 0);
         }
 
