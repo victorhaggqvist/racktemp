@@ -71,7 +71,7 @@ class SensorController {
               `id` int(11) NOT NULL AUTO_INCREMENT,
               `temp` int(11) NOT NULL,
               `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-              PRIMARY KEY (`id`))", preg_replace('/\s/', '_', $sensor->getName());
+              PRIMARY KEY (`id`))", preg_replace('/\s/', '_', $sensor->getName()));
             $conn->exec($sql);
 
 
