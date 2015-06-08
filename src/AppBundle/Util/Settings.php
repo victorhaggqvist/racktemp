@@ -24,7 +24,7 @@ class Settings {
     }
 
     public function get($key, $default = '') {
-        $setting = $this->em->getRepository('AppBundle:Setting')->findOneBy(array('key' => $key));
+        $setting = $this->em->getRepository('AppBundle:Setting')->findOneBy(array('settingkey' => $key));
 
         if (!$setting){
             return $default;
@@ -34,7 +34,7 @@ class Settings {
     }
 
     public function set($key, $value) {
-        $setting = $this->em->getRepository('AppBundle:Setting')->findOneBy(array('key' => $key));
+        $setting = $this->em->getRepository('AppBundle:Setting')->findOneBy(array('settingkey' => $key));
 
         if ($setting == null) {
             $setting = new Setting($key, $value);
