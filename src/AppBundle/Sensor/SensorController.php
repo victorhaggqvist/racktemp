@@ -11,6 +11,7 @@ namespace AppBundle\Sensor;
 use AppBundle\Entity\Sensor;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Exception;
 use Guzzle\Plugin\Backoff\ReasonPhraseBackoffStrategy;
 use Symfony\Component\Process\Process;
 
@@ -61,7 +62,8 @@ class SensorController {
      * @return boolean if addition was successful
      */
     public function addSensor(Sensor $sensor) {
-        $this->em->transactional(function() use ($sensor) {
+        $this->em->getConnection()->beginTransaction();
+        try {
             $this->em->persist($sensor);
             $rsm = new ResultSetMapping();
             $this->em->createNativeQuery(sprintf("CREATE TABLE IF NOT EXISTS `sensor_%s` (
@@ -69,7 +71,10 @@ class SensorController {
               `temp` int(11) NOT NULL,
               `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
               PRIMARY KEY (`id`))", preg_replace('/\s/', '_', $sensor->getName())),$rsm)->execute();
-        });
+        } catch (Exception $e) {
+            $this->em->getConnection()->rollback();
+            throw $e;
+        }
     }
 
     /**
