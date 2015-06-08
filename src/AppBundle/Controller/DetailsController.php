@@ -27,7 +27,6 @@ class DetailsController extends Controller {
 
         $itemsPerPage = 50;
         $page = $request->query->get('page', 1);
-//        $sensorName = $request->query->get('sensor');
         $pagesToDisplay = 20;
 
         if ($sensorname == "_noname") {

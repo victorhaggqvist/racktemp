@@ -94,29 +94,46 @@ class SensorController {
         $this->em->flush();
     }
 
+    /**
+     * @param Sensor $sensor
+     * @return bool|string
+     */
     public function readSensor(Sensor $sensor) {
         $process = new Process(sprintf('ls /sys/bus/w1/devices | grep %s', $sensor->getUid()));
         $process->run();
         $output = $process->getOutput();
 
         if (strlen($output) > 0) {
-            $process = new Process(sprintf('cat /sys/bus/w1/devices/%s/w1_slave', $sensor->getUid()));
-            $process->run();
-            $read = $process->getOutput();
-
-            $lines = explode("\n", $read);
-
-            //get status
-            $parts = explode(" ", $lines[0]);
-            $ok = $parts[count($parts)-1];
-            if ($ok == "YES"){
-                //get temp
-                $parts = explode("=", $lines[1]);
-                $temp = $parts[count($parts)-1];
+            $temp = $this->readSensorByUid($sensor->getUid());
+            if (strlen($temp) > 0)
                 return $temp;
-            }else{
-                return false;
-            }
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * @param $uid
+     * @return bool|string
+     */
+    public function readSensorByUid($uid) {
+
+        $process = new Process(sprintf('cat /sys/bus/w1/devices/%s/w1_slave', $uid));
+        $process->run();
+        $read = $process->getOutput();
+
+        $lines = explode("\n", $read);
+
+        //get status
+        $parts = explode(" ", $lines[0]);
+        $ok = $parts[count($parts)-1];
+        if ($ok == "YES"){
+            //get temp
+            $parts = explode("=", $lines[1]);
+            $temp = $parts[count($parts)-1];
+            return $temp;
+        }else{
+            return false;
         }
     }
 }
