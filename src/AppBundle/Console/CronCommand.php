@@ -46,7 +46,7 @@ class CronCommand extends ContainerAwareCommand {
         $timestamp = time();
         $token = hash('sha512', $timestamp . $apiKey);
         $jsonbody = json_encode($body);
-        $output->writeln($jsonbody)
+        $output->writeln($jsonbody);
 
         $req = $client->createRequest('POST', sprintf('%s/api/record?token=%s&timestamp=%s', $master, $token, $timestamp), null, $jsonbody);
 //        $client->send($req);
