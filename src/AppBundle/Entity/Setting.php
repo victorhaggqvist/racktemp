@@ -30,6 +30,12 @@ class Setting {
      */
     private $value;
 
+    function __construct($key, $value) {
+        $this->key = $key;
+        $this->value = $value;
+    }
+
+
     /**
      * @return mixed
      */
