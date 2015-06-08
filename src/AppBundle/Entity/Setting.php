@@ -24,14 +24,14 @@ class Setting {
     /**
      * @ORM\Column(type="string")
      */
-    private $key;
+    private $settingkey;
     /**
      * @ORM\Column(type="string")
      */
     private $value;
 
     function __construct($key, $value) {
-        $this->key = $key;
+        $this->settingkey = $key;
         $this->value = $value;
     }
 
@@ -40,7 +40,7 @@ class Setting {
      * @return mixed
      */
     public function getKey() {
-        return $this->key;
+        return $this->settingkey;
     }
 
     /**
