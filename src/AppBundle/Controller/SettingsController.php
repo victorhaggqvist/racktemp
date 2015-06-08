@@ -30,9 +30,9 @@ class SettingsController extends Controller {
         $settings = $this->get('app.util.settings');
 
         $addStatus  = [];
-        if ($request->query->has('add')) {
-            $uids = $request->query->get('uid');
-            $labels = $request->query->get('label');
+        if ($request->request->has('add')) {
+            $uids = $request->request->get('uid');
+            $labels = $request->request->get('label');
 
             $currentSensors = $sensorController->getSensors();
 
