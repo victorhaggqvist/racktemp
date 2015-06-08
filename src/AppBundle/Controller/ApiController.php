@@ -42,6 +42,18 @@ class ApiController extends Controller {
      * @param Request $request
      */
     public function recordAction(Request $request){
+        $body = $request->getContent();
+        $json = json_decode($body, true);
 
+        $sensorController = $this->get('app.sensor.sensor_controller');
+        $sensors = $sensorController->getSensors();
+
+        $sensorTool = $this->get('app.sensor.sensor_tool');
+
+        foreach ($sensors as $s) {
+            $sensorTool->addData($s->getName(), $json[$s->getUid()]);
+        }
+
+        return new Response('', 201);
     }
 }
