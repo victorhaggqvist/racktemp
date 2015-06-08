@@ -30,7 +30,7 @@ class CronCommand extends ContainerAwareCommand {
 
         $body = [];
         foreach ($sensors as $s) {
-            $body[] = ['uid' => $s, 'temp' => $sensorController->readSensorByUid($s)];
+            $body[] = [$s => $sensorController->readSensorByUid($s)];
         }
 
         $client = new Client();
