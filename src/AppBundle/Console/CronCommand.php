@@ -26,11 +26,11 @@ class CronCommand extends ContainerAwareCommand {
         $output->writeln('cronie');
 
         $sensorController = $this->getContainer()->get('app.sensor.sensor_controller');
-        $sensors = $sensorController->getSensors();
+        $sensors = $sensorController->getAttachedSensors();
 
         $body = [];
         foreach ($sensors as $s) {
-            $body[] = ['name' => $s->getName(),'temp' => $sensorController->readSensor($s)];
+            $body[] = ['uid' => $s, 'temp' => $sensorController->readSensorByUid($s)];
         }
 
         $client = new Client();
@@ -45,9 +45,11 @@ class CronCommand extends ContainerAwareCommand {
 
         $timestamp = time();
         $token = hash('sha512', $timestamp . $apiKey);
+        $jsonbody = json_encode($body);
+        $output->writeln($jsonbody)
 
-        $req = $client->createRequest('POST', sprintf('%s/api/record?token=%s&timestamp=%s', $master, $token, $timestamp), null, json_encode($body));
-        $client->send($req);
+        $req = $client->createRequest('POST', sprintf('%s/api/record?token=%s&timestamp=%s', $master, $token, $timestamp), null, $jsonbody);
+//        $client->send($req);
 
     }
 
