@@ -29,12 +29,12 @@
         {% for s in stats %}
           <strong>{{ s.name }}</strong><br>
 
-          {% if not s.nostat %}
+          {% if s.nostat is defined %}
+            No fresh stats for today
+          {% else %}
             Min: {{ s.min.temp }}C <span class="text-muted">{{ s.min.timestamp }}</span><br>
             Max: {{ s.max.temp }}C <span class="text-muted">{{ s.max.timestamp }}</span><br>
             Avg: {{ s.avg.temp }}C<br>
-          {% else %}
-            No fresh stats for today
           {% endif %}
         {% endfor %}
       </p>
