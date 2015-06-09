@@ -59,6 +59,7 @@ class NotificationManager {
             $lastnote = (!$lastnote) ? strtotime('-'.($interval/60/60).' minutes') : $lastnote;
 
             if (time()-$interval < $lastnote) {   // if interval has past
+                $this->settings->set('notifications-last', $lastnote);
                 $this->logger->info('within notification interval');
                 $sensors = $this->sensorController->getSensors();
                 $message = '';
@@ -70,10 +71,10 @@ class NotificationManager {
                         $min = $this->settings->get('tempt-'.$sensor->getName().'-min');
                         $max = $this->settings->get('tempt-'.$sensor->getName().'-max');
 
-                        if ($temp['temp'] <= $min) {
+                        if (intval($temp['temp']) <= intval($min)) {
                             $message .= sprintf('%s is bellow defined minimum a %s\n', $sensor->getName(), Temperature::mktemp($temp['temp']));
                             $this->logger->info(sprintf('%s triggered min', $sensor->getName()));
-                        }elseif ($temp['temp'] >= $max) {
+                        } elseif (intval($temp['temp']) >= intval($max)) {
                             $message .= sprintf('%s is above defined maximum a %s\n', $sensor->getName(), Temperature::mktemp($temp['temp']));
                             $this->logger->info(sprintf('%s triggered max', $sensor->getName()));
                         }
