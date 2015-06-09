@@ -65,6 +65,7 @@ class SensorController {
         $this->em->getConnection()->beginTransaction();
         try {
             $this->em->persist($sensor);
+            $this->em->flush();
 
             $conn = $this->em->getConnection();
             $sql = sprintf("CREATE TABLE IF NOT EXISTS `sensor_%s` (
