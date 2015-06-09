@@ -41,7 +41,19 @@ module.exports = function(grunt) {
         options: {
           stripBanners: true
         },
-        src: 'bower_components/bootstrap-sass/assets/javascripts/bootstrap.js',
+        src: [
+          'bower_components/bootstrap-sass/assets/javascripts/bootstrap/affix.js',
+          'bower_components/bootstrap-sass/assets/javascripts/bootstrap/alert.js',
+          'bower_components/bootstrap-sass/assets/javascripts/bootstrap/button.js',
+          'bower_components/bootstrap-sass/assets/javascripts/bootstrap/carousel.js',
+          'bower_components/bootstrap-sass/assets/javascripts/bootstrap/collapse.js',
+          'bower_components/bootstrap-sass/assets/javascripts/bootstrap/dropdown.js',
+          'bower_components/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js',
+          'bower_components/bootstrap-sass/assets/javascripts/bootstrap/modal.js',
+          'bower_components/bootstrap-sass/assets/javascripts/bootstrap/popover.js',
+          'bower_components/bootstrap-sass/assets/javascripts/bootstrap/scrollspy.js',
+          'bower_components/bootstrap-sass/assets/javascripts/bootstrap/transition.js'
+        ],
         dest: 'web/js/bootstrap.min.js'
       },
       jquery: {
