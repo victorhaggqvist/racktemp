@@ -8,6 +8,7 @@
 namespace AppBundle\Controller;
 
 
+use AppBundle\Entity\Sensor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -50,6 +51,7 @@ class FrontPageController extends Controller {
 
         $renderSensors = [];
         foreach($activeSensors as $sensor){
+            /** @var Sensor $sensor */
             $name = $sensor->getName();
             $currentTemp = $sensorTool->getTemp($name);
             $renderSensors[] = array('name' => $name, 'currentTemp' => $currentTemp);
