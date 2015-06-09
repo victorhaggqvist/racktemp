@@ -67,7 +67,7 @@ class SensorStats {
     if ($res[1]>0) {
       $ret = $res[2][0];
       if ($format)
-        $ret['temp'] = $this->mktemp($ret['temp']);
+        $ret['temp'] = Temperature::mktemp($ret['temp']);
     }
 
     return $ret;
