@@ -22,16 +22,24 @@
 //  background-color: #eee;
   padding-bottom: 40px;
   padding-top: 40px;
-  width: 100% !important;
-  display: table-cell;
-  vertical-align: middle;
+}
+
+@media (min-width: 1200px) {
+  .signin {
+    //  background-color: #eee;
+    padding-bottom: 40px;
+    padding-top: 40px;
+    width: 100% !important;
+    display: table-cell;
+    vertical-align: middle;
+  }
 }
 
 .form-signin {
   background-color: rgba(255, 255, 255, 0.4);
   border-radius: 6px;
   margin: auto;
-  max-width: 360px;
+
   padding: 40px;
 //  margin-left: auto;
 //  margin-right: auto;
@@ -64,6 +72,12 @@
     margin-top: 10px;
     background-color: #303030;
     border-color: #111;
+  }
+}
+
+@media (min-width: 1200px) {
+  .form-signin {
+    max-width: 360px;
   }
 }
 

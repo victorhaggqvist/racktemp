@@ -5,10 +5,16 @@
   <style type="text/css">
     body {
       background-image: url({{ asset('img/signinbg.jpg') }});
-      height: 100%;
-      width: 100%;
-      display: table;
-      position: absolute;
+      background-size: cover;
+    }
+
+    @media (min-width: 1200px) {
+      body {
+        height: 100%;
+        width: 100%;
+        display: table;
+        position: absolute;
+      }
     }
   </style>
 {% endblock %}
@@ -19,6 +25,9 @@
   {% if error %}
     <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
   {% endif %}
+    <div class="row">
+      <div class="col-lg-12">
+
 
     <form class="form-signin" action="{{ path('login_check') }}" method="post">
       <h2 class="form-signin-heading">Sign in</h2>
@@ -34,8 +43,10 @@
 
       <input type="hidden" name="_target_path" value="{{ url('homepage') }}" />
       #}
-      <button class="btn btn-lg btn-primary btn-block" type="submit">login</button>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
     </form>
+      </div>
+    </div>
   </div>
 
 {% endblock %}
