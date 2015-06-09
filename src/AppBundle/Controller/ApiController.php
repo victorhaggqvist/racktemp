@@ -54,6 +54,9 @@ class ApiController extends Controller {
             $sensorTool->addData($s->getName(), $json[$s->getUid()]);
         }
 
+        $notificationManager = $this->get('app.util.notification_manager');
+        $notificationManager->sendNotifications();
+
         return new Response('', 201);
     }
 }
