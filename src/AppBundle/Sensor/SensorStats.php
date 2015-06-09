@@ -145,6 +145,7 @@ class SensorStats {
             ORDER BY timestamp ASC) as must';
 
         $ret = $this->pdo->justQuery($sql);
+        var_dump($ret);
 
         if ($ret[1]>0) {
             foreach ($ret[2] as &$row) {
