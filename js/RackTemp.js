@@ -166,7 +166,7 @@ var RackTemp = (function (){
 
   var _makeApiUrl = function (apiPath){
     // TODO: check on HTTP_REFERER PHP
-    return '//'+_host+'/api/'+apiPath+'?token='+_token+'&timestamp'+_timestamp;
+    return '//'+_host+'/api/'+apiPath+'?token='+_token+'&timestamp='+_timestamp;
   };
 
   var setApiInfo = function(timestamp, token, host){
