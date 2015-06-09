@@ -103,7 +103,7 @@ class SensorStats {
     if ($res[1]>0) {
       $ret = $res[2][0];
       if ($format)
-        $ret['temp'] = $this->mktemp($ret['temp']);
+        $ret['temp'] = Temperature::mktemp($ret['temp']);
     }
 
     return $ret;
@@ -119,7 +119,7 @@ class SensorStats {
 
         if ($ret[1]>0) {
             foreach ($ret[2] as &$row) {
-                $row['temp'] = $this->mktemp($row['temp']);
+                $row['temp'] = Temperature::mktemp($row['temp']);
             }
             return $ret[2];
         }
@@ -194,7 +194,7 @@ class SensorStats {
                 if (!$find) {
                     $expected[$i]['temp'] = null; // nulling makes a better chart then just skipping a time
                 }else{
-                    $expected[$i]['temp'] = $this->mktemp($ret[2][$find]['temp']);
+                    $expected[$i]['temp'] = Temperature::mktemp($ret[2][$find]['temp']);
                 }
             }
 
@@ -225,7 +225,7 @@ class SensorStats {
 
         if ($ret[1]>0) {
             foreach ($ret[2] as &$row) {
-                $row['temp'] = $this->mktemp($row['temp']);
+                $row['temp'] = Temperature::mktemp($row['temp']);
             }
             return $ret[2];
         }
