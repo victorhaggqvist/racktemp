@@ -58,7 +58,8 @@ class DetailsController extends Controller {
                 'listEnd' => $listEnd,
                 'sensor' => $sensor,
                 'total' => $total,
-                'pagination' => $pagination
+                'pagination' => $pagination,
+                'current' => $sensor->getName()
             )
         );
     }
