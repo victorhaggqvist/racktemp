@@ -22,17 +22,17 @@
       <h2>Daily Stats</h2>
       <p>
         {% dump(stats) %}
-        {% for s in stats %}
-          <strong>{{ s.name }}</strong><br>
+        {#{% for s in stats %}#}
+          {#<strong>{{ s.name }}</strong><br>#}
 
-          {% if not s.nostat %}
-            Min: {{ s.min.temp }}C <span class="text-muted">{{ s.min.timestamp }}</span><br>
-            Max: {{ s.max.temp }}C <span class="text-muted">{{ s.max.timestamp }}</span><br>
-            Avg: {{ s.avg.temp }}C<br>
-          {% else %}
-            No fresh stats for today
-          {% endif %}
-        {% endfor %}
+          {#{% if not s.nostat %}#}
+            {#Min: {{ s.min.temp }}C <span class="text-muted">{{ s.min.timestamp }}</span><br>#}
+            {#Max: {{ s.max.temp }}C <span class="text-muted">{{ s.max.timestamp }}</span><br>#}
+            {#Avg: {{ s.avg.temp }}C<br>#}
+          {#{% else %}#}
+            {#No fresh stats for today#}
+          {#{% endif %}#}
+        {#{% endfor %}#}
       </p>
       <!--<a href="#" class="btn btn-default">Today &raquo;</a>-->
     </div><!-- /.col-sm-4 Daily Stats -->
