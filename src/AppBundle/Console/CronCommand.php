@@ -34,8 +34,7 @@ class CronCommand extends ContainerAwareCommand {
             $body[$s] = $sensorController->readSensorByUid($s);
             $logger->info(sprintf('cron for %s', $s));
         }
-
-        $client = new Client();
+        
 
         $master = $this->getContainer()->getParameter('master_host');
         $apiKey = $this->getContainer()->getParameter('master_key');
@@ -51,7 +50,10 @@ class CronCommand extends ContainerAwareCommand {
         $jsonbody = json_encode($body);
         $output->writeln($jsonbody);
 
+        $client = new Client();
         $req = $client->createRequest('POST', sprintf('%s/api/record?token=%s&timestamp=%s', $master, $token, $timestamp), null, $jsonbody);
+        $req->getCurlOptions()->set(CURLOPT_SSL_VERIFYHOST, false);
+        $req->getCurlOptions()->set(CURLOPT_SSL_VERIFYPEER, false);
         $resp = $client->send($req);
 
         if ($resp->getStatusCode() == 201) {
