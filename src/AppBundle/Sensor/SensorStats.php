@@ -112,7 +112,7 @@ class SensorStats {
 
     public function getHourStats($name) {
         $sql = 'SELECT temp, timestamp
-            FROM sensor_'.$this->name.'
+            FROM sensor_'.$name.'
             WHERE timestamp >= NOW() - INTERVAL 1 HOUR';
 
         $ret = $this->pdo->justQuery($sql);
@@ -139,13 +139,12 @@ class SensorStats {
               ROUND(AVG(temp)) AS temp,
               timestamp,
               ROUND(UNIX_TIMESTAMP(timestamp) / (60 * 60)) AS timekey
-            FROM sensor_'.$this->name.'
+            FROM sensor_'.$name.'
             WHERE timestamp >= NOW() - INTERVAL 1 DAY
             GROUP BY timekey
             ORDER BY timestamp ASC) as must';
 
         $ret = $this->pdo->justQuery($sql);
-        var_dump($ret);
 
         if ($ret[1]>0) {
             foreach ($ret[2] as &$row) {
@@ -179,7 +178,7 @@ class SensorStats {
                 INTERVAL IF(HOUR(timestamp)%2<1,0,1) HOUR
               ) AS timestamp,
               ROUND(UNIX_TIMESTAMP(timestamp) / (120 * 60)) AS timekey
-            FROM sensor_'.$this->name.'
+            FROM sensor_'.$name.'
             WHERE timestamp >= NOW() - INTERVAL 1 WEEK
             GROUP BY timekey) as musthav';
 
@@ -218,7 +217,7 @@ class SensorStats {
               ROUND(AVG(temp)) AS temp,
               DATE_FORMAT(timestamp, "%Y-%m-%d %H:00:00") AS timestamp,
               ROUND(UNIX_TIMESTAMP(timestamp) / (300 * 60)) AS timekey
-            FROM sensor_'.$this->name.'
+            FROM sensor_'.$name.'
             WHERE timestamp >= NOW() - INTERVAL 1 MONTH
             GROUP BY timekey) as must';
 
