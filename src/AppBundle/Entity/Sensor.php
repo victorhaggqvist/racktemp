@@ -35,7 +35,7 @@ class Sensor {
     /**
      * @ORM\Column(type="boolean", options={"default" = true})
      */
-    private $placement;
+    private $placement = true;
 
     public static function create($name, $uid) {
         $new = new self();
