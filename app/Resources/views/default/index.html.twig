@@ -9,6 +9,7 @@
       <p>
         {% dump(renderSensors) %}
         {% for sensor in renderSensors  %}
+          {% dump(sensor) %}
         <strong>{{ sensor.name }}</strong>: {{ sensor.currentTemp.temp }}C <span class="text-muted">{{ sensor.currentTemp.timespan }}</span><br>
         {% endfor %}
       </p>
