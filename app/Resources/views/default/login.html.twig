@@ -1,8 +1,21 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+  <link rel="stylesheet" href="{{ asset('css/racktemp.min.css') }}">
+  <style type="text/css">
+    body {
+      background-image: url({{ asset('img/signinbg.jpg') }});
+      height: 100%;
+      width: 100%;
+      display: table;
+      position: absolute;
+    }
+  </style>
+{% endblock %}
+
 {% block body %}
 
-  <div class="container">
+  <div class="container signin">
   {% if error %}
     <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
   {% endif %}
@@ -10,10 +23,10 @@
     <form class="form-signin" action="{{ path('login_check') }}" method="post">
       <h2 class="form-signin-heading">Sign in</h2>
       <label for="username">Username:</label>
-      <input type="text" id="username" name="_username" value="{{ last_username }}" autofocus="" autocomplete="off" />
+      <input type="text" class="form-control" id="username" name="_username" value="{{ last_username }}" autofocus="" autocomplete="off" />
 
       <label for="password">Password:</label>
-      <input type="password" id="password" name="_password" />
+      <input type="password" class="form-control" id="password" name="_password" />
 
       {#
           If you want to control the URL the user
@@ -21,7 +34,7 @@
 
       <input type="hidden" name="_target_path" value="{{ url('homepage') }}" />
       #}
-      <button type="submit">login</button>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">login</button>
     </form>
   </div>
 

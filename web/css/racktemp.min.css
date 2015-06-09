@@ -4526,15 +4526,20 @@ button.close {
   margin: 0; }
 
 .signin {
-  background-color: #eee;
   padding-bottom: 40px;
-  padding-top: 40px; }
+  padding-top: 40px;
+  width: 100% !important;
+  display: table-cell;
+  vertical-align: middle; }
 
 .form-signin {
-  margin: 0 auto;
-  max-width: 330px;
-  padding: 15px; }
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 6px;
+  margin: auto;
+  max-width: 360px;
+  padding: 40px; }
   .form-signin .form-signin-heading {
+    margin-top: 0;
     margin-bottom: 10px; }
   .form-signin .checkbox {
     font-weight: normal;
@@ -4549,11 +4554,10 @@ button.close {
     position: relative; }
     .form-signin .form-control:focus {
       z-index: 2; }
-  .form-signin input[type="text"] {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    margin-bottom: -1px; }
-  .form-signin input[type="password"] {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    margin-bottom: 10px; }
+  .form-signin button {
+    margin-top: 10px;
+    background-color: #303030;
+    border-color: #111; }
+
+html {
+  height: 100%; }
