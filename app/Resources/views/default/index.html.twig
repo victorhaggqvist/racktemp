@@ -13,7 +13,7 @@
           {% dump(sensor.currentTemp) %}
           {% dump(sensor.currentTemp.temp) %}
           {% dump(sensor.currentTemp.timespan) %}
-        <strong>{{ sensor.name }}</strong>: {{ sensor.currentTemp.temp }}C <span class="text-muted">{{ sensor.currentTemp.timespan }}</span><br>
+        <strong>{{ sensor.name }}</strong>: {{ sensor.currentTemp.temp }}C <span class="text-muted">{{ sensor.currentTemp.timespan|date('H:i') }}</span><br>
         {% endfor %}
       </p>
 
