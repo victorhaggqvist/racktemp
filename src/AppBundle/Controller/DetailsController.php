@@ -38,12 +38,14 @@ class DetailsController extends Controller {
             }
         }
 
+        var_dump($sensor);
         $sensorTool = $this->get('app.sensor.sensor_tool');
         $total = $sensorTool->getListSize($sensor->getName());
 
         $paginator = new Paginator($itemsPerPage, $pagesToDisplay, $total);
 
         $list = $sensorTool->getList($sensor->getName(), (($page*$itemsPerPage)-$itemsPerPage), $itemsPerPage);
+        var_dump($list);
 
         $listStart = (($page*$itemsPerPage)-$itemsPerPage);
         $listEnd = ($page*$itemsPerPage>$total)?$total:($page*$itemsPerPage);
