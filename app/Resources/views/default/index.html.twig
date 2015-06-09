@@ -11,9 +11,9 @@
         {% for sensor in renderSensors  %}
           {% dump(sensor) %}
           {% dump(sensor.currentTemp) %}
-          {% dump(sensor.currentTemp.temp) %}
-          {% dump(sensor.currentTemp.timespan) %}
-        <strong>{{ sensor.name }}</strong>: {{ sensor.currentTemp.temp }}C <span class="text-muted">{{ sensor.currentTemp.timespan|date('H:i') }}</span><br>
+          {#{% dump(sensor.currentTemp.temp) %}#}
+          {% dump(sensor.currentTemp.timestamp) %}
+        <strong>{{ sensor.name }}</strong>: {{ sensor.currentTemp.temp }}C <span class="text-muted">{{ sensor.currentTemp.timestamp }}</span><br>
         {% endfor %}
       </p>
 
