@@ -21,6 +21,7 @@
     <div class="col-sm-4">
       <h2>Daily Stats</h2>
       <p>
+        {% dump(stats) %}
         {% for s in stats %}
           <strong>{{ s.name }}</strong><br>
 
