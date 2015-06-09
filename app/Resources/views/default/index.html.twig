@@ -7,13 +7,8 @@
       <h2>Latest Temperature</h2>
       <div class="pull-right" id="clock" style="font-size: 2em;"></div>
       <p>
-        {% dump(renderSensors) %}
         {% for sensor in renderSensors  %}
-          {% dump(sensor) %}
-          {% dump(sensor.currentTemp) %}
-          {#{% dump(sensor.currentTemp.temp) %}#}
-          {% dump(sensor.currentTemp.timestamp) %}
-        <strong>{{ sensor.name }}</strong>: {{ sensor.currentTemp.temp }}C <span class="text-muted">{{ sensor.currentTemp.timestamp }}</span><br>
+          <strong>{{ sensor.name }}</strong>: {{ sensor.currentTemp.temp }}C <span class="text-muted">{{ sensor.currentTemp.timestamp }}</span><br>
         {% endfor %}
       </p>
 
@@ -25,15 +20,14 @@
     <div class="col-sm-4">
       <h2>Daily Stats</h2>
       <p>
-        {% dump(stats) %}
         {% for s in stats %}
           <strong>{{ s.name }}</strong><br>
 
           {% if s.nostat is defined %}
             No fresh stats for today
           {% else %}
-            Min: {{ s.min.temp }}C <span class="text-muted">{{ s.min.timestamp }}</span><br>
-            Max: {{ s.max.temp }}C <span class="text-muted">{{ s.max.timestamp }}</span><br>
+            Min: {{ s.min.temp }}C <span class="text-muted">{{ s.min.timestamp|date('H:i') }}</span><br>
+            Max: {{ s.max.temp }}C <span class="text-muted">{{ s.max.timestamp|date('H:i') }}</span><br>
             Avg: {{ s.avg.temp }}C<br>
           {% endif %}
         {% endfor %}
