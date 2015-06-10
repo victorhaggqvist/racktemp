@@ -71,11 +71,11 @@ class NotificationManager {
                         $min = $this->settings->get('tempt-'.$sensor->getName().'-min');
                         $max = $this->settings->get('tempt-'.$sensor->getName().'-max');
 
-                        if (intval($temp['temp']) <= intval($min)) {
+                        if (intval(Temperature::mktemp($temp['temp'])) <= intval($min)) {
                             $message .= sprintf("%s is bellow defined minimum at %s\r\n", $sensor->getName(), Temperature::mktemp($temp['temp']));
                             $this->logger->info(sprintf('%s triggered min', $sensor->getName()));
-                        } elseif (intval($temp['temp']) >= intval($max)) {
-                            $this->logger->info(intval($temp['temp']).' >= '. intval($max));
+                        } elseif (intval(Temperature::mktemp($temp['temp'])) >= intval($max)) {
+                            $this->logger->info(intval(Temperature::mktemp($temp['temp'])).' >= '. intval($max));
                             $message .= sprintf("%s is above defined maximum at %s\r\n", $sensor->getName(), Temperature::mktemp($temp['temp']));
                             $this->logger->info(sprintf('%s triggered max', $sensor->getName()));
                         }
