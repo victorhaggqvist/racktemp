@@ -3,9 +3,15 @@
 {% block stylesheets %}
   <link rel="stylesheet" href="{{ asset('css/racktemp.min.css') }}">
   <style type="text/css">
+    html {
+      height: 100%;
+      width: 100%;
+    }
+
     body {
-      {#background-image: url({{ asset('img/signinbg.jpg') }});#}
-      {#background-size: cover;#}
+      background-image: url({{ asset('img/signinbg.jpg') }});
+      background-size: cover;
+      background-position: center
     }
 
     @media (min-width: 1200px) {
@@ -14,6 +20,12 @@
         width: 100%;
         display: table;
         position: absolute;
+      }
+
+      .container {
+        width: 100%;
+        display: table-cell;
+        vertical-align: middle;
       }
     }
   </style>
@@ -34,12 +46,6 @@
       <label for="password">Password:</label>
       <input type="password" class="form-control" id="password" name="_password" />
 
-      {#
-          If you want to control the URL the user
-          is redirected to on success (more details below)
-
-      <input type="hidden" name="_target_path" value="{{ url('homepage') }}" />
-      #}
       <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
     </form>
 
