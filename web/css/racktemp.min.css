@@ -4545,17 +4545,10 @@ button.close {
   .form-signin .form-signin-heading {
     margin-top: 0;
     margin-bottom: 10px; }
-  .form-signin .checkbox {
-    font-weight: normal;
-    margin-bottom: 10px; }
   .form-signin .form-control {
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
     font-size: 16px;
     height: auto;
-    padding: 10px;
-    position: relative; }
+    padding: 10px; }
     .form-signin .form-control:focus {
       z-index: 2; }
   .form-signin button {
@@ -4566,6 +4559,3 @@ button.close {
 @media (min-width: 1200px) {
   .form-signin {
     max-width: 360px; } }
-
-html {
-  height: 100%; }
