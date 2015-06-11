@@ -47,6 +47,12 @@ services:
     app.util.notification_manager:
         class: AppBundle\Util\NotificationManager
         arguments: [ @app.util.settings, @app.sensor.sensor_controller, @app.sensor.sensor_tool, @logger, @app.util.mailer ]
+    app.twig.settings_loader:
+        class: AppBundle\Twig\SettingsLoader
+        arguments: [ @app.util.settings, @logger ]
+        public: false
+        tags:
+            - { name: twig.extension }
 
 #    service_name:
 #        class: AppBundle\Directory\ClassName
