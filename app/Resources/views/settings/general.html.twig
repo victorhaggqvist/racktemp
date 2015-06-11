@@ -5,7 +5,7 @@
   <form class="form-horizontal" role="form" action="{{ url('settings_general') }}" method="post">
     <div class="checkbox">
       <label>
-        <input type="checkbox" name="auth" {{ auth=='1'?'checked':'' }}> Require Authentication
+        <input type="checkbox" name="auth" {{ setting('auth')=='1'?'checked':'' }}> Require Authentication
       </label>
       <span class="help-block">Require users to login in order to access racktemp</span>
     </div>
@@ -19,14 +19,14 @@
 
     <div class="checkbox">
       <label>
-        <input type="checkbox" name="manual-sensor-add" {{ manual_sensor_add=='1'?'checked':'' }}> Manualy add sensors
+        <input type="checkbox" name="manual-sensor-add" {{ setting('manual-sensor-add')=='1'?'checked':'' }}> Manualy add sensors
       </label>
       <span class="help-block">Enable the ability to manual add sensors</span>
     </div>
 
     <div class="checkbox">
       <label>
-        <input type="checkbox" name="send-stats" {{ send_stats=='1'?'checked':'' }}> Send stats
+        <input type="checkbox" name="send-stats" {{ setting('send-stats')=='1'?'checked':'' }}> Send stats
       </label>
     </div>
 

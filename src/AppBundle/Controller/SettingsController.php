@@ -140,21 +140,9 @@ class SettingsController extends Controller {
             $useCdn = $request->request->has('use-cdn');
             $manualSensorAdd = $request->request->has('manual-sensor-add');
             $sendStats = $request->request->has('send-stats');
-
-            $settings->set('auth', $auth ? 1 : 0);
-            $settings->set('use-cdn', $useCdn ? 1 : 0);
-            $settings->set('manual-sensor-add', $manualSensorAdd ? 1 : 0);
-            $settings->set('send-stats', $sendStats ? 1 : 0);
         }
 
-        return $this->render(':settings:general.html.twig',
-            array(
-                'auth' => $settings->get('auth'),
-                'use_cdn' => $settings->get('use-cdn'),
-                'manual_sensor_add' => $settings->get('manual-sensor-add'),
-                'send_stats' => $settings->get('send-stats')
-            )
-        );
+        return $this->render(':settings:general.html.twig');
     }
 
     /**
@@ -208,12 +196,7 @@ class SettingsController extends Controller {
             array(
                 'settingsupdate' => $settingsupdate,
                 'testresult' => $testresult,
-                'sensors' => $sensors,
-                'mg_key' => $settings->get('mg-key'),
-                'mg_domain' => $settings->get('mg-domain'),
-                'mg_to' => $settings->get('mg-to'),
-                'notifications_enabled' => $settings->get('notifications-enabled'),
-                'notifications_interval' => $settings->get('notifications-interval')
+                'sensors' => $sensors
             )
         );
     }

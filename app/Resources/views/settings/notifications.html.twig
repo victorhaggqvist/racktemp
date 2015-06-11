@@ -19,7 +19,7 @@
         <div class="form-group">
           <label for="notifications-enabled" class="col-sm-4 control-label">Notifications enabled</label>
           <div class="col-sm-8 checkbox">
-            <input type="checkbox" name="notifications-enabled" id="notifications-enabled" {{ notifications_enabled=='1'?'checked':'' }}>
+            <input type="checkbox" name="notifications-enabled" id="notifications-enabled" {{ setting('notifications-enabled')=='1'?'checked':'' }}>
             <span class="help-block">When box IS checked you will get notifications</span>
           </div>
         </div>
@@ -27,7 +27,7 @@
         <div class="form-group">
           <label for="notifications-interval" class="col-sm-2 control-label">Interval</label>
           <div class="col-sm-8">
-            <input type="number" class="form-control" name="notifications-interval" id="notifications-interval" value="{{ notifications_interval }}" required>
+            <input type="number" class="form-control" name="notifications-interval" id="notifications-interval" value="{{ setting('notifications-interval') }}" required>
             <span class="help-block">Even if there is more to report, this is the min interval anything sent. Interval in minutes. Enter 0 to ignore this.</span>
           </div>
         </div>
@@ -41,12 +41,12 @@
           <div class="col-sm-4">
             <div class="input-group">
               <span class="input-group-addon">MIN</span>
-              <input type="number" class="form-control" name="tempt-{{ s.name }}-min" value="<?=$s->getValue('tempt-'.$sensor->name.'-min')?>">
+              <input type="number" class="form-control" name="tempt-{{ s.name }}-min" value="{{ setting('tempt-'~s.name~'-min') }}">
             </div>
           </div>
           <div class="col-sm-4">
             <div class="input-group">
-              <input type="number" class="form-control" name="tempt-{{ s.name }}-max" value="<?=$s->getValue('tempt-'.$sensor->name.'-max')?>">
+              <input type="number" class="form-control" name="tempt-{{ s.name }}-max" value="{{ setting('tempt-'~s.name~'-max') }}">
               <span class="input-group-addon">MAX</span>
             </div>
           </div>
@@ -65,21 +65,21 @@
         <div class="form-group">
           <label for="mg-domain" class="col-sm-2 control-label">Domain</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" name="mg-domain" id="mg-domain" value="{{ mg_domain }}" placeholder="https://api.mailgun.net/v2/mg.example.com" required>
+            <input type="text" class="form-control" name="mg-domain" id="mg-domain" value="{{ setting('mg-domain') }}" placeholder="https://api.mailgun.net/v2/mg.example.com" required>
           </div>
         </div>
 
         <div class="form-group">
           <label for="mg-key" class="col-sm-2 control-label">API Key</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" name="mg-key" id="mg-key" value="{{ mg_key }}" required>
+            <input type="text" class="form-control" name="mg-key" id="mg-key" value="{{ setting('mg-key') }}" required>
           </div>
         </div>
 
         <div class="form-group">
           <label for="mg-to" class="col-sm-2 control-label">To</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" name="mg-to" id="mg-to" value="{{ mg_to }}" required>
+            <input type="text" class="form-control" name="mg-to" id="mg-to" value="{{ setting('mg-to') }}" required>
           </div>
         </div>
 
