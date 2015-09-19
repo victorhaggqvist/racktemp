@@ -36,7 +36,7 @@ curl -sS https://getcomposer.org/installer | php -- --filename=composer
 ### Composer install
 Fill the stuff you are prompted for. You may just ignore the stuff about `mailer_`.
 
-    ./composer update
+    ./composer install
     
 ### 2 Database config
 
@@ -58,15 +58,14 @@ sudo usermod -a -G shadow www-data
 ```
 
 ### Symfony
-Make sure symfony can write ot the log and cache dirs.
+Make sure Symfony can write to the log and cache dirs.
 ```sh
 chown -R someuser:www-data app/logs/
 chown -R someuser:www-data app/cache/
 ```
 
-This will give you RackTemps web UI over regular HTTP. But if you are like me you will likely want to have HTTPS too. If you don't care about HTTPS you could jump right to step 4.
-
-Here is how to enable https.
+### Setting up HTTPS
+You may optionally setup access to RackTemp over HTTPS, default is just regular HTTP.
 
 First of you will need a Key and a Certificate (and well a CSR too). The following will give you a selfsigned cert.
 ```sh
@@ -101,7 +100,7 @@ sudo sh -c 'echo "w1-therm" >> /etc/modules'
 ### 6 Add cron job
 ```sh
 crontab -l > crons
-echo "*/5 * * * * php /home/pi/racktemp/cron.php >> /dev/null" >> crons
+echo "*/5 * * * * php /home/pi/racktemp/app/console racktemp:cron >> /dev/null" >> crons
 crontab crons
 rm crons
 ```
