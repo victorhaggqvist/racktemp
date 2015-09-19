@@ -32,6 +32,10 @@
         vertical-align: middle;
       }
     }
+
+    .form-signin-heading {
+      margin-top: 10px;
+    }
   </style>
 {% endblock %}
 
@@ -43,7 +47,7 @@
   {% endif %}
 
     <form class="form-signin" action="{{ path('login_check') }}" method="post">
-      <h2 class="form-signin-heading">Sign in</h2>
+      <h2 class="form-signin-heading">RackTemp Sign in</h2>
       <label for="username">Username:</label>
       <input type="text" class="form-control" id="username" name="_username" value="{{ last_username }}" autofocus="" autocomplete="off" />
 
