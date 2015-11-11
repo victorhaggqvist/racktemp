@@ -44,6 +44,9 @@ services:
     app.console.read_temp_command:
         class: AppBundle\Console\ReadTempCommand
         arguments: [ @app.sensor.sensor_controller ]
+    app.util.notification_manager:
+        class: AppBundle\Util\NotificationManager
+        arguments: [ @app.util.settings, @app.sensor.sensor_controller, @app.sensor.sensor_tool, @logger, @app.util.mailer ]
 
 #    service_name:
 #        class: AppBundle\Directory\ClassName

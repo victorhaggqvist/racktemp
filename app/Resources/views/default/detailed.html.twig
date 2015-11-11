@@ -1,15 +1,17 @@
 {% extends '::rtbase.html.twig' %}
 
+{% block title %} - Details{% endblock %}
+
 {% block container %}
 
   <ul class="nav nav-tabs">
   {% for s in sensors %}
-    <li class=""><a href="{{ url('details', {'sensorname': s.name}) }}" data-toggle="tab">{{ s.name }}</a></li>
+    <li {{ s.name == current ? 'class="active"' : '' }}><a href="{{ url('details', {'sensorname': s.name}) }}" data-toggle="tab">{{ s.name }}</a></li>
   {% endfor %}
   </ul>
 
   <div class="tab-content">
-    <div class="tab-pane">
+    <div class="tab-pane" style="display: block !important;">
       <p>Listing {{ listStart }} - {{ listEnd }} of {{ total }} from {{ sensor.name }}</p>
 
       {{ pagination|raw }}

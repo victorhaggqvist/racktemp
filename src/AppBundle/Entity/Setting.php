@@ -24,17 +24,23 @@ class Setting {
     /**
      * @ORM\Column(type="string")
      */
-    private $key;
+    private $settingkey;
     /**
      * @ORM\Column(type="string")
      */
     private $value;
 
+    function __construct($key, $value) {
+        $this->settingkey = $key;
+        $this->value = $value;
+    }
+
+
     /**
      * @return mixed
      */
     public function getKey() {
-        return $this->key;
+        return $this->settingkey;
     }
 
     /**

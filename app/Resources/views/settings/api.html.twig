@@ -37,7 +37,7 @@
         <td>{{ k.id }}</td>
         <td>{{ k.name }}</td>
         <td>{{ k.key }}</td>
-        <td>{{ k.lastAccess ? k.lastAccess : 'Never Accessed' }}</td>
+        <td>{{ k.lastAccess ? k.lastAccess|date('Y-m-d H:i') : 'Never Accessed' }}</td>
         <td style="padding:2px;"><a href="{{ url('settings_api') }}?delkey={{ k.id }}" class="btn btn-danger">Delete</a></td>
       </tr>
     {% endfor %}

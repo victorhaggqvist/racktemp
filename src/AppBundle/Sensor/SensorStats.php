@@ -67,7 +67,7 @@ class SensorStats {
     if ($res[1]>0) {
       $ret = $res[2][0];
       if ($format)
-        $ret['temp'] = $this->mktemp($ret['temp']);
+        $ret['temp'] = Temperature::mktemp($ret['temp']);
     }
 
     return $ret;
@@ -103,7 +103,7 @@ class SensorStats {
     if ($res[1]>0) {
       $ret = $res[2][0];
       if ($format)
-        $ret['temp'] = $this->mktemp($ret['temp']);
+        $ret['temp'] = Temperature::mktemp($ret['temp']);
     }
 
     return $ret;
@@ -112,14 +112,14 @@ class SensorStats {
 
     public function getHourStats($name) {
         $sql = 'SELECT temp, timestamp
-            FROM sensor_'.$this->name.'
+            FROM sensor_'.$name.'
             WHERE timestamp >= NOW() - INTERVAL 1 HOUR';
 
         $ret = $this->pdo->justQuery($sql);
 
         if ($ret[1]>0) {
             foreach ($ret[2] as &$row) {
-                $row['temp'] = $this->mktemp($row['temp']);
+                $row['temp'] = Temperature::mktemp($row['temp']);
             }
             return $ret[2];
         }
@@ -139,7 +139,7 @@ class SensorStats {
               ROUND(AVG(temp)) AS temp,
               timestamp,
               ROUND(UNIX_TIMESTAMP(timestamp) / (60 * 60)) AS timekey
-            FROM sensor_'.$this->name.'
+            FROM sensor_'.$name.'
             WHERE timestamp >= NOW() - INTERVAL 1 DAY
             GROUP BY timekey
             ORDER BY timestamp ASC) as must';
@@ -178,7 +178,7 @@ class SensorStats {
                 INTERVAL IF(HOUR(timestamp)%2<1,0,1) HOUR
               ) AS timestamp,
               ROUND(UNIX_TIMESTAMP(timestamp) / (120 * 60)) AS timekey
-            FROM sensor_'.$this->name.'
+            FROM sensor_'.$name.'
             WHERE timestamp >= NOW() - INTERVAL 1 WEEK
             GROUP BY timekey) as musthav';
 
@@ -194,7 +194,7 @@ class SensorStats {
                 if (!$find) {
                     $expected[$i]['temp'] = null; // nulling makes a better chart then just skipping a time
                 }else{
-                    $expected[$i]['temp'] = $this->mktemp($ret[2][$find]['temp']);
+                    $expected[$i]['temp'] = Temperature::mktemp($ret[2][$find]['temp']);
                 }
             }
 
@@ -217,7 +217,7 @@ class SensorStats {
               ROUND(AVG(temp)) AS temp,
               DATE_FORMAT(timestamp, "%Y-%m-%d %H:00:00") AS timestamp,
               ROUND(UNIX_TIMESTAMP(timestamp) / (300 * 60)) AS timekey
-            FROM sensor_'.$this->name.'
+            FROM sensor_'.$name.'
             WHERE timestamp >= NOW() - INTERVAL 1 MONTH
             GROUP BY timekey) as must';
 
@@ -225,7 +225,7 @@ class SensorStats {
 
         if ($ret[1]>0) {
             foreach ($ret[2] as &$row) {
-                $row['temp'] = $this->mktemp($row['temp']);
+                $row['temp'] = Temperature::mktemp($row['temp']);
             }
             return $ret[2];
         }
@@ -268,6 +268,24 @@ class SensorStats {
         $ret = $this->pdo->justQuery($sql);
         if ($ret[1]>0) {
             return $ret[2][0]['timestamp'];
+        }
+        return false;
+    }
+
+    /**
+     * Find the row key of a value in a matix
+     *
+     * From http://www.php.net/manual/en/function.array-search.php#91365
+     * @param  mixed  $needle   The searched value.
+     * @param  array  $haystack The array
+     * @return mixed           row index
+     */
+    private function recursive_array_search($needle,$haystack) {
+        foreach($haystack as $key=>$value) {
+            $current_key = $key;
+            if($needle === $value OR (is_array($value) && $this->recursive_array_search($needle, $value) !== false)) {
+                return $current_key;
+            }
         }
         return false;
     }

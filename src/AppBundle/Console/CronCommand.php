@@ -24,31 +24,45 @@ class CronCommand extends ContainerAwareCommand {
 
     protected function execute(InputInterface $input, OutputInterface $output) {
         $output->writeln('cronie');
+        $logger = $this->getContainer()->get('logger');
 
         $sensorController = $this->getContainer()->get('app.sensor.sensor_controller');
-        $sensors = $sensorController->getSensors();
+        $sensors = $sensorController->getAttachedSensors();
 
         $body = [];
         foreach ($sensors as $s) {
-            $body[] = ['name' => $s->getName(),'temp' => $sensorController->readSensor($s)];
+            $body[$s] = $sensorController->readSensorByUid($s);
+            $logger->info(sprintf('cron for %s', $s));
         }
 
-        $client = new Client();
 
         $master = $this->getContainer()->getParameter('master_host');
         $apiKey = $this->getContainer()->getParameter('master_key');
 
-        if (!preg_match('http', $master)) {
+        if (!preg_match('/http/', $master)) {
             $output->writeln("there is no protocol in 'master_host'");
+            $logger->warning("there is no protocol in 'master_host', aborting");
             return;
         }
 
         $timestamp = time();
         $token = hash('sha512', $timestamp . $apiKey);
+        $jsonbody = json_encode($body);
+        $output->writeln($jsonbody);
 
-        $req = $client->createRequest('POST', sprintf('%s/api/record?token=%s&timestamp=%s', $master, $token, $timestamp), null, json_encode($body));
-        $client->send($req);
+        $client = new Client();
+        $client->setDefaultOption('verify', false);
+        $req = $client->createRequest('POST', sprintf('%s/api/record?token=%s&timestamp=%s', $master, $token, $timestamp), null, $jsonbody);
+//        $req->getCurlOptions()->set(CURLOPT_SSL_VERIFYHOST, false);
+//        $req->getCurlOptions()->set(CURLOPT_SSL_VERIFYPEER, false);
+        $resp = $client->send($req);
 
+        if ($resp->getStatusCode() == 201) {
+            $output->writeln('data sent');
+            $logger->info('data sent');
+        } else {
+            $logger->warning(sprintf('slave -> master failed: (%s) %s', $resp->getStatusCode(), $resp->getBody()));
+        }
     }
 
 

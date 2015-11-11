@@ -125,7 +125,7 @@ class GraphApi {
 
       // show only sensors with recent stats
       if (count($stats[$i])>1) {
-        $response[$i+1][] = $sensors[$i]->name;
+        $response[$i+1][] = $sensors[$i]->getName();
         foreach ($stats[$i] as $s)
           $response[$i+1][] = $s['temp'];
       }

@@ -21,3 +21,5 @@ parameters:
     # Setting for the slave server
     master_host: 'http://fqdn.master'
     master_key: ThisIsYourApiKey
+
+    dev-disable-redirects: false

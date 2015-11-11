@@ -26,4 +26,5 @@ $kernel = new AppKernel($env, $debug);
 $application = new Application($kernel);
 $application->add(new \AppBundle\Console\CronCommand());
 $application->add(new \AppBundle\Console\ReadTempCommand());
+$application->add(new \AppBundle\Console\ReadSensorsCommand());
 $application->run($input);
