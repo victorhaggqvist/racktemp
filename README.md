@@ -19,7 +19,9 @@ echo "dtoverlay=w1-gpio" | sudo tee -a /boot/config.txt
 
 You may read more [here](https://www.raspberrypi.org/forums/viewtopic.php?f=28&t=97314), [here](https://www.raspberrypi.org/forums/viewtopic.php?f=37&t=98407) and [here](https://raspberrypi.stackexchange.com/a/27570/4407)
 
-### 0 Install required packages (and make sure you are up-to-date)
+## Setup
+
+### Install required packages
 You will be asked to enter the root password for MySQL, make sure to remember it.
 
 ```sh
@@ -28,17 +30,16 @@ sudo apt-get -y install git nginx php5 php5-fpm php5-mysql php5-curl php5-cli my
 curl -sS https://getcomposer.org/installer | php -- --filename=composer
 ```
 
-### 1 Get latest RackTemp
+### Get latest RackTemp
 
-    cd; git clone https://github.com/victorhaggqvist/racktemp.git racktemp
-
+    git clone https://github.com/victorhaggqvist/racktemp.git racktemp
 
 ### Composer install
 Fill the stuff you are prompted for. You may just ignore the stuff about `mailer_`.
 
     ./composer install
-    
-### 2 Database config
+
+### Database config
 
 ```sh
 app/console doctrine:database:create
@@ -49,7 +50,7 @@ Edit the file `app/config/parameters.yml` to correspond with the user you just c
 
 You might also want to run `mysql_secure_installation` to make the your install a bit more secure.
 
-### 3 Nginx config
+### Nginx config
 ```sh
 sudo rm /etc/nginx/sites-enabled/default
 sudo ln -s /home/pi/racktemp/configs/racktemp.conf /etc/nginx/sites-enabled/racktemp.conf
@@ -78,10 +79,10 @@ Now you will need to uncomment the https server part of the config file.
 
 Open `/home/pi/racktemp/configs/racktemp.conf` and uncomment the server section in the bottom of the file with `listen 443` in it. You might also uncomment the redirect on line 17.
 
-### 4 Timezone
+### Timezone
 Make sure you have your timezone set correctly. Otherwise you will get strange stats.
 
-If you want to auto set it, run follworing in the terminal.
+If you want to auto set it, run following in the terminal.
 ```sh
 cd; git clone https://github.com/victorhaggqvist/tzupdate.git
 export TZ=$(./tzupdate/tzupdate -p)
@@ -91,13 +92,13 @@ sudo cp /usr/share/zoneinfo/${TZ} /etc/localtime
 echo "Timezone is set to ${TZ}"
 ```
 
-### 5 Enable Sensors
+### Enable Sensors
 ```sh
 sudo sh -c 'echo "w1-gpio" >> /etc/modules'
 sudo sh -c 'echo "w1-therm" >> /etc/modules'
 ```
 
-### 6 Add cron job
+### Add cron job
 ```sh
 crontab -l > crons
 echo "*/5 * * * * php /home/pi/racktemp/app/console racktemp:cron >> /dev/null" >> crons
@@ -105,13 +106,7 @@ crontab crons
 rm crons
 ```
 
-### 7 Install RackTemp dependencies
-```sh
-cd; cd racktemp; curl -sS https://getcomposer.org/installer | php
-php composer.phar install
-```
-
-### 8 Reboot
+### Reboot
 Now reboot your Raspberry Pi to make all changes go through.
 ```sh
 sudo reboot
