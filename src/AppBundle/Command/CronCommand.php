@@ -5,7 +5,7 @@
  * Time: 8:37 PM
  */
 
-namespace AppBundle\Console;
+namespace AppBundle\Command;
 
 
 use Guzzle\Http\Client;
