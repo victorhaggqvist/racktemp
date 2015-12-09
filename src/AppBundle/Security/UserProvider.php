@@ -51,8 +51,11 @@ class UserProvider implements UserProviderInterface {
             $process->mustRun();
 
             if ($process->getOutput() == null) {
-                $this->logger->debug("cat /etc/shadow gave permission denied, make sure you have done 'sudo usermod -a -G shadow www-data'");
+                $this->logger->error("cat /etc/shadow gave permission denied, make sure you have done 'sudo usermod -a -G shadow www-data'");
                 $this->logger->error(sprintf('Failed to fetch user %s', $username));
+                throw new UsernameNotFoundException(
+                    sprintf('Username "%s" does not exist.', $username)
+                );
             }
 //            $this->logger->critical($process->getOutput());
             $shadow = explode("$", $process->getOutput());
