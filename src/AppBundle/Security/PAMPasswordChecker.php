@@ -69,7 +69,7 @@ class PAMPasswordChecker {
                 $this->logger->debug($shadowLine);
             }
         } catch (ProcessFailedException $e) {
-            $this->logger->debug('The command mkpasswd might be missing, please install the \'whois\' package');
+            $this->logger->error('The command "mkpasswd" is missing, if on ubuntu/debian install the "whois" package');
             $this->logger->error($e->getMessage());
         }
 
