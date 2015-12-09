@@ -28,7 +28,7 @@ class SensorController {
 
     /**
      * Get registered sensors
-     * @return Sensor[]|array
+     * @return Sensor[]
      */
     public function getSensors() {
         return $this->em->getRepository('AppBundle:Sensor')->findAll();

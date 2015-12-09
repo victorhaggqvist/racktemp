@@ -8,6 +8,7 @@
 namespace AppBundle\Controller;
 
 
+use AppBundle\Entity\Sensor;
 use AppBundle\Util\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -22,13 +23,15 @@ class DetailsController extends Controller {
         $sensorController = $this->get('app.sensor.sensor_controller');
         $sensors = $sensorController->getSensors();
 
-        if (count($sensors) < 1 && !$this->getParameter('dev-disable-redirects'))
-            return $this->redirectToRoute('firsttime');
+        if (count($sensors) < 1)
+            return $this->render(':details:nosensors.html.twig');
 
         $itemsPerPage = 50;
         $page = $request->query->get('page', 1);
         $pagesToDisplay = 20;
 
+        /** @var Sensor $sensor */
+        $sensor = null;
         if ($sensorname == "_noname") {
             $sensor = $sensors[0];
         } else {
@@ -50,7 +53,7 @@ class DetailsController extends Controller {
 
         $pagination = $paginator->getPagination($page, $sensor->getName());
 
-        return $this->render(':default:detailed.html.twig',
+        return $this->render(':details:index.html.twig',
             array(
                 'sensors' => $sensors,
                 'list' => $list,

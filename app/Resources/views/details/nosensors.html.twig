@@ -1,0 +1,13 @@
+{% extends '::rtbase.html.twig' %}
+
+{% block title %} - Details{% endblock %}
+
+{% block container %}
+
+    <div class="jumbotron">
+        <h1>Greetings</h1>
+        <p class="lead">There is no sensors added yet, please go <a href="{{ path('settings_sensors') }}">setting</a> and add one.</p>
+        <p><a class="btn btn-primary btn-lg" href="{{ path('settings_sensors') }}" role="button">Add sensor</a></p>
+    </div>
+
+{% endblock %}
