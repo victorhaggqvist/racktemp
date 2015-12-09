@@ -10,50 +10,46 @@ services:
 
     app.util.settings:
         class: AppBundle\Util\Settings
-        arguments: [ @doctrine.orm.entity_manager ]
+        arguments: [ '@doctrine.orm.entity_manager' ]
     app.security.user_provider:
         class: AppBundle\Security\UserProvider
-        arguments: [ @logger ]
+        arguments: [ '@logger' ]
     app.security.pampassword_checker:
         class: AppBundle\Security\PAMPasswordChecker
-        arguments: [ @logger ]
+        arguments: [ '@logger' ]
     app.security.pamform_authenticator:
         class: AppBundle\Security\PAMFormAuthenticator
-        arguments: [ @app.security.pampassword_checker ]
+        arguments: [ '@app.security.pampassword_checker' ]
     app.sensor.sensor_controller:
         class: AppBundle\Sensor\SensorController
-        arguments: [ @doctrine.orm.entity_manager ]
+        arguments: [ '@doctrine.orm.entity_manager' ]
     app.sensor.sensor_tool:
         class: AppBundle\Sensor\SensorTool
-        arguments: [ @doctrine.orm.entity_manager, @service_container ]
+        arguments: [ '@doctrine.orm.entity_manager', '@service_container' ]
     app.sensor.sensor_stats:
         class: AppBundle\Sensor\SensorStats
-        arguments: [ @service_container ]
+        arguments: [ '@service_container' ]
     app.security.api_key_user_provider:
         class: AppBundle\Security\ApiKeyUserProvider
-        arguments: [ @doctrine.orm.entity_manager, @logger ]
+        arguments: [ '@doctrine.orm.entity_manager', '@logger' ]
     app.security.api_key_authenticator:
         class: AppBundle\Security\ApiKeyAuthenticator
-        arguments: [ @logger ]
+        arguments: [ '@logger' ]
     app.util.mailer:
         class: AppBundle\Util\Mailer
-        arguments: [ @app.util.settings, @logger ]
+        arguments: [ '@app.util.settings', '@logger' ]
     app.api.graph_api:
         class: AppBundle\Api\GraphApi
-        arguments: [ @app.sensor.sensor_controller, @app.sensor.sensor_stats ]
+        arguments: [ '@app.sensor.sensor_controller', '@app.sensor.sensor_stats' ]
     app.console.read_temp_command:
         class: AppBundle\Console\ReadTempCommand
-        arguments: [ @app.sensor.sensor_controller ]
+        arguments: [ '@app.sensor.sensor_controller' ]
     app.util.notification_manager:
         class: AppBundle\Util\NotificationManager
-        arguments: [ @app.util.settings, @app.sensor.sensor_controller, @app.sensor.sensor_tool, @logger, @app.util.mailer ]
+        arguments: [ '@app.util.settings', '@app.sensor.sensor_controller', '@app.sensor.sensor_tool', '@logger', '@app.util.mailer' ]
     app.twig.settings_loader:
         class: AppBundle\Twig\SettingsLoader
-        arguments: [ @app.util.settings, @logger ]
+        arguments: [ '@app.util.settings', '@logger' ]
         public: false
         tags:
             - { name: twig.extension }
-
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
