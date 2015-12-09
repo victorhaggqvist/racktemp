@@ -44,13 +44,10 @@ class GraphApi {
     }
   }
 
-  /**
-   * [getSpanHour description]
-   * @return [type] [description]
-   */
   private function getSpanHour() {
     $sensors = $this->sensorController->getSensors();
 
+    $stats = array();
     foreach ($sensors as $sensor) {
       $stats[] = $this->sensorStats->getHourStats($sensor->getName());
     }
@@ -64,6 +61,7 @@ class GraphApi {
   private function getSpanDay() {
     $sensors = $this->sensorController->getSensors();
 
+    $stats = array();
     foreach ($sensors as $sensor) {
       $stats[] = $this->sensorStats->getDayStats($sensor->getName());
     }
@@ -76,7 +74,7 @@ class GraphApi {
   private function getSpanWeek() {
     $sensors = $this->sensorController->getSensors();
 
-    // $stats = array();
+    $stats = array();
     foreach ($sensors as $sensor) {
       $stats[] = $this->sensorStats->getWeekStats($sensor->getName());
     }
@@ -89,7 +87,7 @@ class GraphApi {
   private function getSpanMonth() {
     $sensors = $this->sensorController->getSensors();
 
-    // $stats = array();
+    $stats = array();
     foreach ($sensors as $sensor) {
       $stats[] = $this->sensorStats->getMonthStats($sensor->getName());
     }
