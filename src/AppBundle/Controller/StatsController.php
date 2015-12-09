@@ -20,7 +20,7 @@ class StatsController extends Controller {
         $apiKeyProvider = $this->get('app.security.api_key_user_provider');
         $webKey = $apiKeyProvider->getWebKey();
 
-        return $this->render(':default:statistics.html.twig',
+        return $this->render(':stats:index.html.twig',
             array(
                 'webKey' => $webKey
             )
