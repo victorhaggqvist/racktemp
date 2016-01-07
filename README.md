@@ -25,7 +25,7 @@ You may read more [here](https://www.raspberrypi.org/forums/viewtopic.php?f=28&t
 You will be asked to enter the root password for MySQL, make sure to remember it.
 
 ```sh
-sudo apt-get update; sudo apt-get -y upgrade
+sudo apt-get update && sudo apt-get -y upgrade
 sudo apt-get -y install git nginx php5 php5-fpm php5-mysql php5-curl php5-cli mysql-server whois unzip
 curl -sS https://getcomposer.org/installer | php -- --filename=composer
 ```
@@ -35,7 +35,7 @@ curl -sS https://getcomposer.org/installer | php -- --filename=composer
     git clone https://github.com/victorhaggqvist/racktemp.git racktemp
 
 ### Composer install
-Fill the stuff you are prompted for. You may just ignore the stuff about `mailer_`.
+Fill the stuff you are prompted for.
 
     ./composer install
 
@@ -84,7 +84,7 @@ Make sure you have your timezone set correctly. Otherwise you will get strange s
 
 If you want to auto set it, run following in the terminal.
 ```sh
-cd; git clone https://github.com/victorhaggqvist/tzupdate.git
+cd && git clone https://github.com/victorhaggqvist/tzupdate.git
 export TZ=$(./tzupdate/tzupdate -p)
 sudo echo "date.timezone = '${TZ}'" | sudo tee -a /etc/php5/fpm/php.ini
 sudo echo ${TZ} | sudo tee -a /etc/timezone
@@ -121,7 +121,7 @@ sudo adduser [username] --no-create-home
 ```
 
 ## Credits
-Image on the signin-page us from unsplash.com, https://unsplash.com/photos/bW2vHKCxbx4 by Dmitry Sytnik 
+Image on the signin-page, http://subtlepatterns.com/dark-sharp-edges/
 
 ## License
 
