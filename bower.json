@@ -1,14 +1,9 @@
 {
   "name": "racktemp",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "authors": [
     "Victor Häggqvist <victor@snilius.com>"
   ],
-  "description": "tempp",
-  "keywords": [
-    "temp"
-  ],
-  "license": "GPL-3.0",
   "private": true,
   "ignore": [
     "**/.*",
