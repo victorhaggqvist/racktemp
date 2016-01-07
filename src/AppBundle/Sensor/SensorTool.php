@@ -8,13 +8,9 @@
 namespace AppBundle\Sensor;
 
 
-use AppBundle\Util\PDOHelper;
 use AppBundle\Util\Temperature;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Query\ResultSetMapping;
-use stdClass;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class SensorTool {
 
@@ -23,21 +19,8 @@ class SensorTool {
      */
     private $conn;
 
-    /**
-     * @var PDOHelper
-     */
-    private $pdo;
-
-    function __construct(EntityManager $em, ContainerInterface $container) {
+    function __construct(EntityManager $em) {
         $this->conn = $em->getConnection();
-
-        $db_conf = new stdClass();
-        $db_conf->host = $container->getParameter('database_host');
-        $db_conf->db =  $container->getParameter('database_name');
-        $db_conf->user =  $container->getParameter('database_user');
-        $db_conf->pass =  $container->getParameter('database_password');
-
-        $this->pdo = new PDOHelper($db_conf);
     }
 
     /**
@@ -49,7 +32,6 @@ class SensorTool {
     public function getTemp($name, $unit = 'c',$mktemp=true) {
         $sql = "SELECT temp,timestamp FROM sensor_".$name." ORDER BY timestamp DESC LIMIT 1";
         $res = $this->conn->fetchAll($sql);
-//        $res = $this->pdo->justQuery($sql);
 
         if(count($res) < 1)
             return null;
@@ -72,13 +54,11 @@ class SensorTool {
 
     public function getList($name, $start, $stop) {
         $sql = "SELECT id,temp,timestamp FROM sensor_".$name." ORDER BY timestamp DESC LIMIT ".$start.",".$stop;
-//        $res = $this->pdo->justQuery($sql);
         return $this->conn->fetchAll($sql);
     }
 
     public function getListSize($name) {
         $sql = "SELECT COUNT(temp) AS count FROM sensor_".$name;
-//        $res = $this->pdo->justQuery($sql);
         $res = $this->conn->fetchAll($sql);
         return $res[0]['count'];
     }
@@ -101,7 +81,6 @@ class SensorTool {
             FROM sensor_'.$name.'
             WHERE timestamp >= NOW() - INTERVAL 1 HOUR';
 
-//        $ret = $this->pdo->justQuery($sql);
         $ret = $this->conn->fetchAll($sql);
 
         if (count($ret) > 0) {
@@ -131,7 +110,6 @@ class SensorTool {
             GROUP BY timekey
             ORDER BY timestamp ASC) as must';
 
-//        $ret = $this->pdo->justQuery($sql);
         $ret = $this->conn->fetchAll($sql);
 
         if (count($ret) > 0) {
@@ -170,7 +148,6 @@ class SensorTool {
             WHERE timestamp >= NOW() - INTERVAL 1 WEEK
             GROUP BY timekey) as musthav';
 
-//        $ret = $this->pdo->justQuery($sql);
         $ret = $this->conn->fetchAll($sql);
 
         if (count($ret) == 1) {
@@ -210,7 +187,6 @@ class SensorTool {
             WHERE timestamp >= NOW() - INTERVAL 1 MONTH
             GROUP BY timekey) as must';
 
-//        $ret = $this->pdo->justQuery($sql);
         $ret = $this->conn->fetchAll($sql);
 
         if (count($ret) > 0) {
@@ -255,7 +231,6 @@ class SensorTool {
     private function getFirstReportedDataTime($name) {
         $sql = 'SELECT timestamp FROM  sensor_'.$name.' ORDER BY timestamp ASC LIMIT 0,1';
 
-//        $ret = $this->pdo->justQuery($sql);
         $ret = $this->conn->fetchAll($sql);
 
         if (count($ret) > 0) {

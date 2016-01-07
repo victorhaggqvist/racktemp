@@ -25,7 +25,7 @@ services:
         arguments: [ '@doctrine.orm.entity_manager' ]
     app.sensor.sensor_tool:
         class: AppBundle\Sensor\SensorTool
-        arguments: [ '@doctrine.orm.entity_manager', '@service_container' ]
+        arguments: [ '@doctrine.orm.entity_manager' ]
     app.sensor.sensor_stats:
         class: AppBundle\Sensor\SensorStats
         arguments: [ '@doctrine.orm.entity_manager' ]
