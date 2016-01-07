@@ -17,11 +17,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class SensorStats {
   private $name;
-  private $pdo;
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
 
     /**
      * @var Connection
@@ -32,15 +27,9 @@ class SensorStats {
    * Create a stats object for given Sensor
    * @param Sensor $sensor Sensor to get stats for
    */
-  public function __construct(EntityManager $em, ContainerInterface $container) {
+  public function __construct(EntityManager $em) {
       $this->conn = $em->getConnection();
-      $db_conf = new stdClass();
-      $db_conf->host = $container->getParameter('database_host');
-      $db_conf->db =  $container->getParameter('database_name');
-      $db_conf->user =  $container->getParameter('database_user');
-      $db_conf->pass =  $container->getParameter('database_password');
 
-      $this->pdo = new PDOHelper($db_conf);
 //    if (is_object($sensor))
 //      $this->name = $sensor->name;
 //    else
@@ -70,11 +59,10 @@ class SensorStats {
     }
 
     $res = $this->conn->fetchAll($sql);
-//    $res = $this->pdo->justQuery($sql);
 
     // if there are rows, otherwise no stats today
-    if ($res[1]>0) {
-      $ret = $res[2][0];
+    if (count($res) > 0) {
+      $ret = $res[0];
       if ($format)
         $ret['temp'] = Temperature::mktemp($ret['temp']);
     }
@@ -109,8 +97,8 @@ class SensorStats {
     $res = $this->conn->fetchAll($sql);
 
     // if there are rows, otherwise no stats today
-    if ($res[1]>0) {
-      $ret = $res[2][0];
+    if (count($res) > 0) {
+      $ret = $res[0];
       if ($format)
         $ret['temp'] = Temperature::mktemp($ret['temp']);
     }
@@ -126,11 +114,11 @@ class SensorStats {
 
         $ret = $this->conn->fetchAll($sql);
 
-        if ($ret[1]>0) {
-            foreach ($ret[2] as &$row) {
+        if (count($ret) > 0) {
+            foreach ($ret as &$row) {
                 $row['temp'] = Temperature::mktemp($row['temp']);
             }
-            return $ret[2];
+            return $ret;
         }
         return false;
     }
@@ -155,11 +143,11 @@ class SensorStats {
 
         $ret = $this->conn->fetchAll($sql);
 
-        if ($ret[1]>0) {
-            foreach ($ret[2] as &$row) {
+        if (count($ret) > 0) {
+            foreach ($ret as &$row) {
                 $row['temp'] = Temperature::mktemp($row['temp']);
             }
-            return $ret[2];
+            return $ret;
         }
         return false;
     }
@@ -193,24 +181,20 @@ class SensorStats {
 
         $ret = $this->conn->fetchAll($sql);
 
-        if ($ret[0] == 1) {
-            $aWeekBack = strtotime(date('H')%2==0?'-1 week':'-1 week -1 hour');
-            $expected = $this->getExpectedTimes('week', $aWeekBack);
+        $aWeekBack = strtotime(date('H')%2==0?'-1 week':'-1 week -1 hour');
+        $expected = $this->getExpectedTimes('week', $aWeekBack);
 
-            for ($i=0; $i < count($expected); $i++) {
-                $find = $this->recursive_array_search($expected[$i]['timestamp'],$ret[2]);
+        for ($i=0; $i < count($expected); $i++) {
+            $find = $this->recursive_array_search($expected[$i]['timestamp'],$ret);
 
-                if (!$find) {
-                    $expected[$i]['temp'] = null; // nulling makes a better chart then just skipping a time
-                }else{
-                    $expected[$i]['temp'] = Temperature::mktemp($ret[2][$find]['temp']);
-                }
+            if (!$find) {
+                $expected[$i]['temp'] = null; // nulling makes a better chart then just skipping a time
+            }else{
+                $expected[$i]['temp'] = Temperature::mktemp($ret[$find]['temp']);
             }
-
-            return $expected;
         }
 
-        return false;
+        return $expected;
     }
 
     public function getMonthStats($name) {
@@ -232,11 +216,11 @@ class SensorStats {
 
         $ret = $this->conn->fetchAll($sql);
 
-        if ($ret[1]>0) {
-            foreach ($ret[2] as &$row) {
+        if (count($ret) > 0) {
+            foreach ($ret as &$row) {
                 $row['temp'] = Temperature::mktemp($row['temp']);
             }
-            return $ret[2];
+            return $ret;
         }
 
         return false;
@@ -275,8 +259,8 @@ class SensorStats {
         $sql = 'SELECT timestamp FROM  sensor_'.$name.' ORDER BY timestamp ASC LIMIT 0,1';
 
         $ret = $this->conn->fetchAll($sql);
-        if ($ret[1]>0) {
-            return $ret[2][0]['timestamp'];
+        if (count($ret) > 0) {
+            return $ret[0]['timestamp'];
         }
         return false;
     }
