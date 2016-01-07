@@ -22,6 +22,7 @@ gulp.task('copy', function() {
     gulp.src('./bower_components/bootstrap-sass/assets/javascripts/bootstrap.min.js').pipe(gulp.dest('./web/js'));
     gulp.src('./bower_components/jquery/dist/jquery.min.js').pipe(gulp.dest('./web/js'));
     gulp.src('./bower_components/c3/c3.min.js').pipe(gulp.dest('./web/js'));
+    gulp.src('./bower_components/c3/c3.css').pipe(gulp.dest('./web/css'));
     gulp.src('./bower_components/d3/d3.min.js').pipe(gulp.dest('./web/js'));
     gulp.src('./bower_components/bootstrap-sass/assets/fonts/bootstrap/*').pipe(gulp.dest('./web/css'));
 });
