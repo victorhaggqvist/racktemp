@@ -6,7 +6,7 @@
 
   <ul class="nav nav-tabs">
   {% for s in sensors %}
-    <li {{ s.name == current ? 'class="active"' : '' }}><a href="{{ url('details', {'sensorname': s.name}) }}" data-toggle="tab">{{ s.name }}</a></li>
+    <li {{ s.name == current ? 'class="active"' : '' }}><a href="{{ url('details', {'sensorname': s.name}) }}">{{ s.name }}</a></li>
   {% endfor %}
   </ul>
 

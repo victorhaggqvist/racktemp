@@ -4,11 +4,11 @@
 
 {% block container %}
   <ul class="nav nav-tabs">
-    <li {{ app.request.attributes.get('_route') == 'settings_sensors'?'class="active"':'' }}><a href="{{ url('settings_sensors') }}" data-toggle="tab">Sensors</a></li>
-    <!-- <li><a href="#logging" data-toggle="tab">Logging</a></li> -->
-    <li {{ app.request.attributes.get('_route') == 'settings_general'?'class="active"':'' }}><a href="{{ url('settings_general') }}" data-toggle="tab">General</a></li>
-    <li {{ app.request.attributes.get('_route') == 'settings_api'?'class="active"':'' }}><a href="{{ url('settings_api') }}" data-toggle="tab">API</a></li>
-    <li {{ app.request.attributes.get('_route') == 'settings_notifications'?'class="active"':'' }}><a href="{{ url('settings_notifications') }}" data-toggle="tab">Notifications</a></li>
+    <li {{ app.request.attributes.get('_route') == 'settings_sensors'?'class="active"':'' }}><a href="{{ url('settings_sensors') }}">Sensors</a></li>
+    {#<li><a href="#logging" data-toggle="tab">Logging</a></li>#}
+    <li {{ app.request.attributes.get('_route') == 'settings_general'?'class="active"':'' }}><a href="{{ url('settings_general') }}">General</a></li>
+    <li {{ app.request.attributes.get('_route') == 'settings_api'?'class="active"':'' }}><a href="{{ url('settings_api') }}">API</a></li>
+    <li {{ app.request.attributes.get('_route') == 'settings_notifications'?'class="active"':'' }}><a href="{{ url('settings_notifications') }}">Notifications</a></li>
   </ul>
 
   <div class="tab-content">
