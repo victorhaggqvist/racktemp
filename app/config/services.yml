@@ -28,7 +28,7 @@ services:
         arguments: [ '@doctrine.orm.entity_manager', '@service_container' ]
     app.sensor.sensor_stats:
         class: AppBundle\Sensor\SensorStats
-        arguments: [ '@service_container' ]
+        arguments: [ '@doctrine.orm.entity_manager', '@service_container' ]
     app.security.api_key_user_provider:
         class: AppBundle\Security\ApiKeyUserProvider
         arguments: [ '@doctrine.orm.entity_manager', '@logger' ]

@@ -1,9 +1,11 @@
 <?php
 namespace AppBundle\Sensor;
 
-// require_once('SensorTools.php');
+use AppBundle\Entity\Sensor;
 use AppBundle\Util\PDOHelper;
 use AppBundle\Util\Temperature;
+use Doctrine\DBAL\Driver\Connection;
+use Doctrine\ORM\EntityManager;
 use stdClass;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -22,10 +24,16 @@ class SensorStats {
     private $container;
 
     /**
+     * @var Connection
+     */
+    private $conn;
+
+    /**
    * Create a stats object for given Sensor
    * @param Sensor $sensor Sensor to get stats for
    */
-  public function __construct(ContainerInterface $container) {
+  public function __construct(EntityManager $em, ContainerInterface $container) {
+      $this->conn = $em->getConnection();
       $db_conf = new stdClass();
       $db_conf->host = $container->getParameter('database_host');
       $db_conf->db =  $container->getParameter('database_name');
@@ -61,7 +69,8 @@ class SensorStats {
         throw new \Exception("Unexpected stat parameter: ".$stat, 1);
     }
 
-    $res = $this->pdo->justQuery($sql);
+    $res = $this->conn->fetchAll($sql);
+//    $res = $this->pdo->justQuery($sql);
 
     // if there are rows, otherwise no stats today
     if ($res[1]>0) {
@@ -97,7 +106,7 @@ class SensorStats {
         throw new \Exception("Unexpected stat parameter: ".$stat, 1);
     }
 
-    $res = $this->pdo->justQuery($sql);
+    $res = $this->conn->fetchAll($sql);
 
     // if there are rows, otherwise no stats today
     if ($res[1]>0) {
@@ -115,7 +124,7 @@ class SensorStats {
             FROM sensor_'.$name.'
             WHERE timestamp >= NOW() - INTERVAL 1 HOUR';
 
-        $ret = $this->pdo->justQuery($sql);
+        $ret = $this->conn->fetchAll($sql);
 
         if ($ret[1]>0) {
             foreach ($ret[2] as &$row) {
@@ -144,7 +153,7 @@ class SensorStats {
             GROUP BY timekey
             ORDER BY timestamp ASC) as must';
 
-        $ret = $this->pdo->justQuery($sql);
+        $ret = $this->conn->fetchAll($sql);
 
         if ($ret[1]>0) {
             foreach ($ret[2] as &$row) {
@@ -182,7 +191,7 @@ class SensorStats {
             WHERE timestamp >= NOW() - INTERVAL 1 WEEK
             GROUP BY timekey) as musthav';
 
-        $ret = $this->pdo->justQuery($sql);
+        $ret = $this->conn->fetchAll($sql);
 
         if ($ret[0] == 1) {
             $aWeekBack = strtotime(date('H')%2==0?'-1 week':'-1 week -1 hour');
@@ -221,7 +230,7 @@ class SensorStats {
             WHERE timestamp >= NOW() - INTERVAL 1 MONTH
             GROUP BY timekey) as must';
 
-        $ret = $this->pdo->justQuery($sql);
+        $ret = $this->conn->fetchAll($sql);
 
         if ($ret[1]>0) {
             foreach ($ret[2] as &$row) {
@@ -265,7 +274,7 @@ class SensorStats {
     private function getFirstReportedDataTime($name) {
         $sql = 'SELECT timestamp FROM  sensor_'.$name.' ORDER BY timestamp ASC LIMIT 0,1';
 
-        $ret = $this->pdo->justQuery($sql);
+        $ret = $this->conn->fetchAll($sql);
         if ($ret[1]>0) {
             return $ret[2][0]['timestamp'];
         }
