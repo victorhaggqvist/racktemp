@@ -136,10 +136,13 @@ class SettingsController extends Controller {
         $settings = $this->get('app.util.settings');
 
         if ($request->request->has('submit')) {
-            $auth = $request->request->has('auth');
-            $useCdn = $request->request->has('use-cdn');
+//            $auth = $request->request->has('auth');
+//            $useCdn = $request->request->has('use-cdn');
             $manualSensorAdd = $request->request->has('manual-sensor-add');
-            $sendStats = $request->request->has('send-stats');
+//            $sendStats = $request->request->has('send-stats');
+
+//            $settings->set('send-stats', $sendStats);
+            $settings->set('manual-sensor-add', $manualSensorAdd);
         }
 
         return $this->render(':settings:general.html.twig');
