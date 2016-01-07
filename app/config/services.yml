@@ -42,7 +42,7 @@ services:
         class: AppBundle\Api\GraphApi
         arguments: [ '@app.sensor.sensor_controller', '@app.sensor.sensor_stats' ]
     app.console.read_temp_command:
-        class: AppBundle\Console\ReadTempCommand
+        class: AppBundle\Command\ReadTempCommand
         arguments: [ '@app.sensor.sensor_controller' ]
     app.util.notification_manager:
         class: AppBundle\Util\NotificationManager
