@@ -10,6 +10,7 @@ namespace AppBundle\Sensor;
 
 use AppBundle\Util\PDOHelper;
 use AppBundle\Util\Temperature;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\ResultSetMapping;
 use stdClass;
@@ -17,11 +18,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class SensorTool {
 
-
     /**
-     * @var EntityManager
+     * @var Connection
      */
-    private $em;
+    private $conn;
 
     /**
      * @var PDOHelper
@@ -29,7 +29,7 @@ class SensorTool {
     private $pdo;
 
     function __construct(EntityManager $em, ContainerInterface $container) {
-        $this->em = $em;
+        $this->conn = $em->getConnection();
 
         $db_conf = new stdClass();
         $db_conf->host = $container->getParameter('database_host');
@@ -48,12 +48,13 @@ class SensorTool {
      */
     public function getTemp($name, $unit = 'c',$mktemp=true) {
         $sql = "SELECT temp,timestamp FROM sensor_".$name." ORDER BY timestamp DESC LIMIT 1";
-        $res = $this->pdo->justQuery($sql);
+        $res = $this->conn->fetchAll($sql);
+//        $res = $this->pdo->justQuery($sql);
 
-        if($res[1] < 1)
+        if(count($res) < 1)
             return null;
 
-        $ret = $res[2][0];
+        $ret = $res[0];
         if ($mktemp)
             $ret['temp'] = Temperature::mktemp($ret['temp'],$unit);
 
@@ -71,14 +72,15 @@ class SensorTool {
 
     public function getList($name, $start, $stop) {
         $sql = "SELECT id,temp,timestamp FROM sensor_".$name." ORDER BY timestamp DESC LIMIT ".$start.",".$stop;
-        $res = $this->pdo->justQuery($sql);
-        return $res[2];
+//        $res = $this->pdo->justQuery($sql);
+        return $this->conn->fetchAll($sql);
     }
 
     public function getListSize($name) {
         $sql = "SELECT COUNT(temp) AS count FROM sensor_".$name;
-        $res = $this->pdo->justQuery($sql);
-        return $res[2][0]['count'];
+//        $res = $this->pdo->justQuery($sql);
+        $res = $this->conn->fetchAll($sql);
+        return $res[0]['count'];
     }
 
     /**
@@ -86,8 +88,12 @@ class SensorTool {
      * @param int $temp Temprature to add
      */
     public function addData($name, $temp) {
-        $sql = "INSERT INTO sensor_".$name." (temp)VALUES(?)";
-        $this->pdo->prepExec($sql,array($temp));
+        $sql = "INSERT INTO sensor_".$name." (temp) VALUES(:temp)";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(array(
+            'temp' => $temp
+        ));
     }
 
     public function getHourStats($name) {
@@ -95,13 +101,14 @@ class SensorTool {
             FROM sensor_'.$name.'
             WHERE timestamp >= NOW() - INTERVAL 1 HOUR';
 
-        $ret = $this->pdo->justQuery($sql);
+//        $ret = $this->pdo->justQuery($sql);
+        $ret = $this->conn->fetchAll($sql);
 
-        if ($ret[1] > 0) {
-            foreach ($ret[2] as &$row) {
+        if (count($ret) > 0) {
+            foreach ($ret as &$row) {
                 $row['temp'] = Temperature::mktemp($row['temp']);
             }
-            return $ret[2];
+            return $ret;
         }
         return false;
     }
@@ -124,13 +131,14 @@ class SensorTool {
             GROUP BY timekey
             ORDER BY timestamp ASC) as must';
 
-        $ret = $this->pdo->justQuery($sql);
+//        $ret = $this->pdo->justQuery($sql);
+        $ret = $this->conn->fetchAll($sql);
 
-        if ($ret[1]>0) {
-            foreach ($ret[2] as &$row) {
+        if (count($ret) > 0) {
+            foreach ($ret as &$row) {
                 $row['temp'] = $this->mktemp($row['temp']);
             }
-            return $ret[2];
+            return $ret;
         }
         return false;
     }
@@ -162,19 +170,20 @@ class SensorTool {
             WHERE timestamp >= NOW() - INTERVAL 1 WEEK
             GROUP BY timekey) as musthav';
 
-        $ret = $this->pdo->justQuery($sql);
+//        $ret = $this->pdo->justQuery($sql);
+        $ret = $this->conn->fetchAll($sql);
 
-        if ($ret[0] == 1) {
+        if (count($ret) == 1) {
             $aWeekBack = strtotime(date('H')%2==0?'-1 week':'-1 week -1 hour');
             $expected = $this->getExpectedTimes('week', $aWeekBack);
 
             for ($i=0; $i < count($expected); $i++) {
-                $find = $this->recursive_array_search($expected[$i]['timestamp'],$ret[2]);
+                $find = $this->recursive_array_search($expected[$i]['timestamp'],$ret);
 
                 if (!$find) {
                     $expected[$i]['temp'] = null; // nulling makes a better chart then just skipping a time
                 }else{
-                    $expected[$i]['temp'] = Temperature::mktemp($ret[2][$find]['temp']);
+                    $expected[$i]['temp'] = Temperature::mktemp($ret[$find]['temp']);
                 }
             }
 
@@ -201,13 +210,14 @@ class SensorTool {
             WHERE timestamp >= NOW() - INTERVAL 1 MONTH
             GROUP BY timekey) as must';
 
-        $ret = $this->pdo->justQuery($sql);
+//        $ret = $this->pdo->justQuery($sql);
+        $ret = $this->conn->fetchAll($sql);
 
-        if ($ret[1] > 0) {
-            foreach ($ret[2] as &$row) {
+        if (count($ret) > 0) {
+            foreach ($ret as &$row) {
                 $row['temp'] = Temperature::mktemp($row['temp']);
             }
-            return $ret[2];
+            return $ret;
         }
 
         return false;
@@ -245,9 +255,11 @@ class SensorTool {
     private function getFirstReportedDataTime($name) {
         $sql = 'SELECT timestamp FROM  sensor_'.$name.' ORDER BY timestamp ASC LIMIT 0,1';
 
-        $ret = $this->pdo->justQuery($sql);
-        if ($ret[1]>0) {
-            return $ret[2][0]['timestamp'];
+//        $ret = $this->pdo->justQuery($sql);
+        $ret = $this->conn->fetchAll($sql);
+
+        if (count($ret) > 0) {
+            return $ret[0]['timestamp'];
         }
         return false;
     }
